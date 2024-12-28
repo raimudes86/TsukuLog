@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "875762331979",
+    "project_id": "tsukulog-1285f",
+    "storage_bucket": "tsukulog-1285f.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:875762331979:android:76e47a8385db5ec751f8ce",
+        "android_client_info": {
+          "package_name": "com.example.tsukulog"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA-1G_53iDePz_2lGN_b4ih9y_B8H2wMaM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
