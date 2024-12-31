@@ -10,18 +10,14 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
+  List<String> _hiromu = [];
 
   void _fetchhiromu() async {
     await FirebaseFirestore.instance.collection("test").get().then((event) {
       for (var doc in event.docs) {
-        print("${doc.id} => ${doc.data()}");
+        setState(() {
+          _hiromu.add(doc.data()["people"]);
+        });
       }
     });
   }
@@ -41,7 +37,7 @@ class _MyHomePageState extends State<MyHomePage> {
               'You any times:',
             ),
             Text(
-              '$_counter',
+              '$_hiromu',
               style: Theme.of(context).textTheme.headlineMedium,
             ),
           ],
