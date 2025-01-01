@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:tsukulog/pages/show_page.dart';
+import 'package:tsukulog/repositories/user_repository.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
@@ -11,16 +12,9 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  List<String> _hiromu = [];
+  List<String> _user = [];
 
-  void _fetchhiromu() async {
-    await FirebaseFirestore.instance.collection("test").get().then((event) {
-      for (var doc in event.docs) {
-        setState(() {
-          _hiromu.add(doc.data()["people"]);
-        });
-      }
-    });
+  void _fetchTestData() async {
   }
 
   @override
@@ -46,14 +40,14 @@ class _MyHomePageState extends State<MyHomePage> {
               'You any times:',
             ),
             Text(
-              '$_hiromu',
+              '$_user',
               style: Theme.of(context).textTheme.headlineMedium,
             ),
           ],
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: _fetchhiromu,
+        onPressed: _fetchTestData,
         tooltip: 'Increment',
         child: const Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.
