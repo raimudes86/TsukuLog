@@ -97,7 +97,7 @@ class _MyHomePageState extends State<MyHomePage> {
                             style: TextStyle(
                                 fontSize: 20, fontWeight: FontWeight.bold)),
                         Text('  Name: ${_user?.qualifications[0].name}'),
-                        Text('  Comment: ${_user?.qualifications[0].year}'),
+                        Text('  Year: ${_user?.qualifications[0].year}'),
                       ],
                     ),
 
