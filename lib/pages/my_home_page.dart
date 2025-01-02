@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:tsukulog/pages/show_page.dart';
 
@@ -11,18 +10,6 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  List<String> _hiromu = [];
-
-  void _fetchhiromu() async {
-    await FirebaseFirestore.instance.collection("test").get().then((event) {
-      for (var doc in event.docs) {
-        setState(() {
-          _hiromu.add(doc.data()["people"]);
-        });
-      }
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,31 +19,39 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       body: Center(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
+            const SizedBox(height: 16),
             ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  minimumSize: Size(200, 50),
+                ),
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => ShowPage()),
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            ShowPage(uid: "AWSshw5P8MNmpa5Qk3an")),
                   );
                 },
-                child: Text("Show Page")),
-            const Text(
-              'You any times:',
-            ),
-            Text(
-              '$_hiromu',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
+                child: Text("Show ビットくん")),
+            const SizedBox(height: 16),
+            ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  minimumSize: Size(200, 50),
+                ),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            ShowPage(uid: "WBqBABwIlO2yiiWn5ywV")),
+                  );
+                },
+                child: Text("Show 205")),
+            const SizedBox(height: 16),
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _fetchhiromu,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }
