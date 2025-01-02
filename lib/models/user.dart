@@ -4,6 +4,7 @@ import 'package:tsukulog/models/lesson.dart';
 import 'package:tsukulog/models/portfolio.dart';
 import 'package:tsukulog/models/qualification.dart';
 
+//このユーザーはサブコレクションのデータまで全てリストで保持している
 class User {
   final String id;
   final String nickname;
@@ -31,6 +32,7 @@ class User {
     required this.portfolios,
   });
 
+  //サブコレクションたちはfetchしてきた後に
   factory User.fromFirestore(
     String id,
     Map<String, dynamic> userMap,

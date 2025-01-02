@@ -16,7 +16,7 @@ class UserRepository {
       _firestore
           .collection('users')
           .doc(userId)
-          .collection('career_history')
+          .collection('carrer_history')
           .get(),
       _firestore
           .collection('users')
@@ -41,6 +41,8 @@ class UserRepository {
     ]);
 
     //それぞれのサブコレクションを、そのままの形で取得
+    //.get()で取得した時点でQuerySnapshot<Map<String, dynamic>>型を返している
+    //可読性や、型エラーを起こさせないために一応？多分大丈夫だけど
     final careerSnapshot = futures[0] as QuerySnapshot<Map<String, dynamic>>;
     final qualificationSnapshot =
         futures[1] as QuerySnapshot<Map<String, dynamic>>;
