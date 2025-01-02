@@ -13,11 +13,4 @@ class Qualification {
       year: map['year'] ?? '',
     );
   }
-
-  Map<String, dynamic> toMap() {
-    return {
-      'name': name,
-      'year': year,
-    };
-  }
 }
