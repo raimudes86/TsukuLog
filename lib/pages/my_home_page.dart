@@ -48,10 +48,22 @@ class _MyHomePageState extends State<MyHomePage> {
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => ShowPage()),
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            ShowPage(uid: "AWSshw5P8MNmpa5Qk3an")),
                   );
                 },
                 child: Text("Show ビットくん")),
+                ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            ShowPage(uid: "WBqBABwIlO2yiiWn5ywV")),
+                  );
+                },
+                child: Text("Show テストくん")),
             Expanded(
               child: ListView(
                 children: [
@@ -67,7 +79,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       style: TextStyle(fontSize: 18)),
 
                   const SizedBox(height: 16),
-            
+
                   // Career History
                   if (_user != null && _user!.careerHistorys.isNotEmpty)
                     Column(
