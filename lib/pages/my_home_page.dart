@@ -42,9 +42,12 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       body: Center(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
+            const SizedBox(height: 16),
             ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  minimumSize: Size(200, 50), // 横幅200、高さ50を指定
+                ),
                 onPressed: () {
                   Navigator.push(
                     context,
@@ -54,7 +57,11 @@ class _MyHomePageState extends State<MyHomePage> {
                   );
                 },
                 child: Text("Show ビットくん")),
-                ElevatedButton(
+            const SizedBox(height: 16),
+            ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  minimumSize: Size(200, 50), // 横幅200、高さ50を指定
+                ),
                 onPressed: () {
                   Navigator.push(
                     context,
@@ -63,103 +70,104 @@ class _MyHomePageState extends State<MyHomePage> {
                             ShowPage(uid: "WBqBABwIlO2yiiWn5ywV")),
                   );
                 },
-                child: Text("Show テストくん")),
-            Expanded(
-              child: ListView(
-                children: [
-                  // メイン情報
-                  Text('Name: ${_user?.nickname}',
-                      style: TextStyle(fontSize: 18)),
-                  Text('Star: ${_user?.star}', style: TextStyle(fontSize: 18)),
-                  Text('Grade: ${_user?.grade}',
-                      style: TextStyle(fontSize: 18)),
-                  Text('Major: ${_user?.major}',
-                      style: TextStyle(fontSize: 18)),
-                  Text('Future Path: ${_user?.futurePath}',
-                      style: TextStyle(fontSize: 18)),
+                child: Text("Show 205")),
+            const SizedBox(height: 16),
+            // Expanded(
+            //   child: ListView(
+            //     children: [
+            //       // メイン情報
+            //       Text('Name: ${_user?.nickname}',
+            //           style: TextStyle(fontSize: 18)),
+            //       Text('Star: ${_user?.star}', style: TextStyle(fontSize: 18)),
+            //       Text('Grade: ${_user?.grade}',
+            //           style: TextStyle(fontSize: 18)),
+            //       Text('Major: ${_user?.major}',
+            //           style: TextStyle(fontSize: 18)),
+            //       Text('Future Path: ${_user?.futurePath}',
+            //           style: TextStyle(fontSize: 18)),
 
-                  const SizedBox(height: 16),
+            //       const SizedBox(height: 16),
 
-                  // Career History
-                  if (_user != null && _user!.careerHistorys.isNotEmpty)
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text('Career History:',
-                            style: TextStyle(
-                                fontSize: 20, fontWeight: FontWeight.bold)),
-                        Text('  Title: ${_user?.careerHistorys[0].title}'),
-                        Text(
-                            '  Category: ${_user?.careerHistorys[0].category}'),
-                        Text(
-                            '  Start Date: ${_user?.careerHistorys[0].startDate}'),
-                        Text('  Span: ${_user?.careerHistorys[0].span}'),
-                        Text('  Comment: ${_user?.careerHistorys[0].comment}'),
-                      ],
-                    ),
+            //       // Career History
+            //       if (_user != null && _user!.careerHistorys.isNotEmpty)
+            //         Column(
+            //           crossAxisAlignment: CrossAxisAlignment.start,
+            //           children: [
+            //             const Text('Career History:',
+            //                 style: TextStyle(
+            //                     fontSize: 20, fontWeight: FontWeight.bold)),
+            //             Text('  Title: ${_user?.careerHistorys[0].title}'),
+            //             Text(
+            //                 '  Category: ${_user?.careerHistorys[0].category}'),
+            //             Text(
+            //                 '  Start Date: ${_user?.careerHistorys[0].startDate}'),
+            //             Text('  Span: ${_user?.careerHistorys[0].span}'),
+            //             Text('  Comment: ${_user?.careerHistorys[0].comment}'),
+            //           ],
+            //         ),
 
-                  const SizedBox(height: 16),
+            //       const SizedBox(height: 16),
 
-                  // Qualification
-                  if (_user != null && _user!.qualifications.isNotEmpty)
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text('Qualification:',
-                            style: TextStyle(
-                                fontSize: 20, fontWeight: FontWeight.bold)),
-                        Text('  Name: ${_user?.qualifications[0].name}'),
-                        Text('  Year: ${_user?.qualifications[0].year}'),
-                      ],
-                    ),
+            //       // Qualification
+            //       if (_user != null && _user!.qualifications.isNotEmpty)
+            //         Column(
+            //           crossAxisAlignment: CrossAxisAlignment.start,
+            //           children: [
+            //             const Text('Qualification:',
+            //                 style: TextStyle(
+            //                     fontSize: 20, fontWeight: FontWeight.bold)),
+            //             Text('  Name: ${_user?.qualifications[0].name}'),
+            //             Text('  Year: ${_user?.qualifications[0].year}'),
+            //           ],
+            //         ),
 
-                  const SizedBox(height: 16),
+            //       const SizedBox(height: 16),
 
-                  // Lesson
-                  if (_user != null && _user!.lessons.isNotEmpty)
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text('Lesson:',
-                            style: TextStyle(
-                                fontSize: 20, fontWeight: FontWeight.bold)),
-                        Text('  Name: ${_user?.lessons[0].name}'),
-                        Text('  Comment: ${_user?.lessons[0].comment}'),
-                      ],
-                    ),
+            //       // Lesson
+            //       if (_user != null && _user!.lessons.isNotEmpty)
+            //         Column(
+            //           crossAxisAlignment: CrossAxisAlignment.start,
+            //           children: [
+            //             const Text('Lesson:',
+            //                 style: TextStyle(
+            //                     fontSize: 20, fontWeight: FontWeight.bold)),
+            //             Text('  Name: ${_user?.lessons[0].name}'),
+            //             Text('  Comment: ${_user?.lessons[0].comment}'),
+            //           ],
+            //         ),
 
-                  const SizedBox(height: 16),
+            //       const SizedBox(height: 16),
 
-                  // Portfolio
-                  if (_user != null && _user!.portfolios.isNotEmpty)
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text('Portfolio:',
-                            style: TextStyle(
-                                fontSize: 20, fontWeight: FontWeight.bold)),
-                        Text('  Name: ${_user?.portfolios[0].name}'),
-                        Text('  Comment: ${_user?.portfolios[0].comment}'),
-                      ],
-                    ),
+            //       // Portfolio
+            //       if (_user != null && _user!.portfolios.isNotEmpty)
+            //         Column(
+            //           crossAxisAlignment: CrossAxisAlignment.start,
+            //           children: [
+            //             const Text('Portfolio:',
+            //                 style: TextStyle(
+            //                     fontSize: 20, fontWeight: FontWeight.bold)),
+            //             Text('  Name: ${_user?.portfolios[0].name}'),
+            //             Text('  Comment: ${_user?.portfolios[0].comment}'),
+            //           ],
+            //         ),
 
-                  const SizedBox(height: 16),
+            //       const SizedBox(height: 16),
 
-                  // Club
-                  if (_user != null && _user!.clubs.isNotEmpty)
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text('Club:',
-                            style: TextStyle(
-                                fontSize: 20, fontWeight: FontWeight.bold)),
-                        Text('  Name: ${_user?.clubs[0].name}'),
-                        Text('  Comment: ${_user?.clubs[0].comment}'),
-                      ],
-                    ),
-                ],
-              ),
-            )
+            //       // Club
+            //       if (_user != null && _user!.clubs.isNotEmpty)
+            //         Column(
+            //           crossAxisAlignment: CrossAxisAlignment.start,
+            //           children: [
+            //             const Text('Club:',
+            //                 style: TextStyle(
+            //                     fontSize: 20, fontWeight: FontWeight.bold)),
+            //             Text('  Name: ${_user?.clubs[0].name}'),
+            //             Text('  Comment: ${_user?.clubs[0].comment}'),
+            //           ],
+            //         ),
+            //     ],
+            //   ),
+            // )
           ],
         ),
       ),
