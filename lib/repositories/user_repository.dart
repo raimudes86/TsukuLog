@@ -23,32 +23,16 @@ class UserRepository {
           .doc(userId)
           .collection('qualification')
           .get(),
-      _firestore
-          .collection('users')
-          .doc(userId)
-          .collection('lesson')
-          .get(),
-      _firestore
-          .collection('users')
-          .doc(userId)
-          .collection('portfolio')
-          .get(),
-      _firestore
-          .collection('users')
-          .doc(userId)
-          .collection('club')
-          .get(),
+      _firestore.collection('users').doc(userId).collection('lesson').get(),
+      _firestore.collection('users').doc(userId).collection('portfolio').get(),
+      _firestore.collection('users').doc(userId).collection('club').get(),
     ]);
 
-    //それぞれのサブコレクションを、そのままの形で取得
-    //.get()で取得した時点でQuerySnapshot<Map<String, dynamic>>型を返している
-    //可読性や、型エラーを起こさせないために一応？多分大丈夫だけど
-    final careerSnapshot = futures[0] as QuerySnapshot<Map<String, dynamic>>;
-    final qualificationSnapshot =
-        futures[1] as QuerySnapshot<Map<String, dynamic>>;
-    final lessonSnapshot = futures[2] as QuerySnapshot<Map<String, dynamic>>;
-    final portFolioSnapshot = futures[3] as QuerySnapshot<Map<String, dynamic>>;
-    final clubSnapshot = futures[4] as QuerySnapshot<Map<String, dynamic>>;
+    final careerSnapshot = futures[0];
+    final qualificationSnapshot = futures[1];
+    final lessonSnapshot = futures[2];
+    final portFolioSnapshot = futures[3];
+    final clubSnapshot = futures[4];
 
     //コレクションのインスタンスから、中身の取得とUserに渡すリストの作成
     List<Map<String, dynamic>> careerData =
@@ -78,4 +62,3 @@ class UserRepository {
     }
   }
 }
-

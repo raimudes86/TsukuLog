@@ -12,6 +12,7 @@ class User {
   final String grade;
   final String major;
   final String futurePath;
+  final String turningPointId;
   final List<CareerHistory> careerHistorys;
   final List<Qualification> qualifications;
   final List<Lesson> lessons;
@@ -25,6 +26,7 @@ class User {
     required this.grade,
     required this.major,
     required this.futurePath,
+    required this.turningPointId,
     required this.careerHistorys,
     required this.qualifications,
     required this.lessons,
@@ -49,6 +51,7 @@ class User {
       grade: userMap['grade'] ?? '',
       major: userMap['major'] ?? '',
       futurePath: userMap['future_path'] ?? '',
+      turningPointId: userMap['turning_point_id'] ?? '',
       careerHistorys:
           careerData.map((data) => CareerHistory.fromMap(data)).toList(),
       qualifications:

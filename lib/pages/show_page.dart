@@ -5,15 +5,24 @@ import 'package:tsukulog/repositories/user_repository.dart';
 class ShowPage extends StatefulWidget {
   final String uid; // ユーザーIDを受け取るプロパティ
 
-  const ShowPage({Key? key, required this.uid}) : super(key: key);
+  const ShowPage({super.key, required this.uid});
 
   @override
-  _ShowPageState createState() => _ShowPageState(); // Stateクラスを作成
+  State<ShowPage> createState() => _ShowPageState();
 }
 
 class _ShowPageState extends State<ShowPage> {
-  // nullableにする必要ある？？
-  User? userData;
+  String nickname = '';
+  int star = 0;
+  String grade = '';
+  String major = '';
+  String futurePath = '';
+  List<Map<String, dynamic>> careerHistories = [];
+  List<Map<String, dynamic>> qualifications = [];
+  List<Map<String, dynamic>> lessons = [];
+  List<Map<String, dynamic>> portfolios = [];
+  List<Map<String, dynamic>> clubs = [];
+
   final userRepository = UserRepository();
 
   @override
@@ -24,19 +33,67 @@ class _ShowPageState extends State<ShowPage> {
 
   Future<void> fetchUserData() async {
     try {
-      User user = await userRepository.fetchUser(widget.uid); // 非同期処理
+      User user = await userRepository.fetchUser(widget.uid);
+
       setState(() {
-        userData = user;
+        nickname = user.nickname;
+        star = user.star;
+        grade = user.grade;
+        major = user.major;
+        futurePath = user.futurePath;
+
+        // Career Histories
+        careerHistories = user.careerHistorys
+            .map((history) => {
+                  'title': history.title,
+                  'category': history.category,
+                  'startDate': history.startDate,
+                  'span': history.span,
+                  'comment': history.comment,
+                })
+            .toList();
+
+        // Qualifications
+        qualifications = user.qualifications
+            .map((qualification) => {
+                  'name': qualification.name,
+                  'year': qualification.year,
+                })
+            .toList();
+
+        // Lessons
+        lessons = user.lessons
+            .map((lesson) => {
+                  'name': lesson.name,
+                  'comment': lesson.comment,
+                })
+            .toList();
+
+        // Portfolios
+        portfolios = user.portfolios
+            .map((portfolio) => {
+                  'name': portfolio.name,
+                  'comment': portfolio.comment,
+                })
+            .toList();
+
+        // Clubs
+        clubs = user.clubs
+            .map((club) => {
+                  'name': club.name,
+                  'comment': club.comment,
+                })
+            .toList();
       });
     } catch (e) {
       print('Error: $e');
       setState(() {
-        userData = null; // エラー時またはデータなし
+        nickname = 'Error';
       });
     }
-    // print('${userData?.lessons[0].name}'); 情報取得できてました
   }
 
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -55,95 +112,118 @@ class _ShowPageState extends State<ShowPage> {
               child: ListView(
                 children: [
                   // メイン情報
-                  Text('Name: ${userData?.nickname}',
-                      style: TextStyle(fontSize: 18)),
-                  Text('Star: ${userData?.star}',
-                      style: TextStyle(fontSize: 18)),
-                  Text('Grade: ${userData?.grade}',
-                      style: TextStyle(fontSize: 18)),
-                  Text('Major: ${userData?.major}',
-                      style: TextStyle(fontSize: 18)),
-                  Text('Future Path: ${userData?.futurePath}',
+                  Text('Name: $nickname', style: TextStyle(fontSize: 18)),
+                  Text('Star: $star', style: TextStyle(fontSize: 18)),
+                  Text('Grade: $grade', style: TextStyle(fontSize: 18)),
+                  Text('Major: $major', style: TextStyle(fontSize: 18)),
+                  Text('Future Path: $futurePath',
                       style: TextStyle(fontSize: 18)),
 
                   const SizedBox(height: 16),
 
                   // Career History
-                  if (userData != null && userData!.careerHistorys.isNotEmpty)
+                  if (careerHistories.isNotEmpty)
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         const Text('Career History:',
                             style: TextStyle(
                                 fontSize: 20, fontWeight: FontWeight.bold)),
-                        Text('  Title: ${userData?.careerHistorys[0].title}'),
-                        Text(
-                            '  Category: ${userData?.careerHistorys[0].category}'),
-                        Text(
-                            '  Start Date: ${userData?.careerHistorys[0].startDate}'),
-                        Text('  Span: ${userData?.careerHistorys[0].span}'),
-                        Text(
-                            '  Comment: ${userData?.careerHistorys[0].comment}'),
+                        for (var history in careerHistories)
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text('  Title: ${history['title']}'),
+                              Text('  Category: ${history['category']}'),
+                              Text('  Start Date: ${history['startDate']}'),
+                              Text('  Span: ${history['span']}'),
+                              Text('  Comment: ${history['comment']}'),
+                            ],
+                          ),
                       ],
                     ),
 
                   const SizedBox(height: 16),
 
                   // Qualification
-                  if (userData != null && userData!.qualifications.isNotEmpty)
+                  if (qualifications.isNotEmpty)
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         const Text('Qualification:',
                             style: TextStyle(
                                 fontSize: 20, fontWeight: FontWeight.bold)),
-                        Text('  Name: ${userData?.qualifications[0].name}'),
-                        Text('  Year: ${userData?.qualifications[0].year}'),
+                        for (var qualification in qualifications)
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text('  Name: ${qualification['name']}'),
+                              Text('  Year: ${qualification['year']}'),
+                            ],
+                          ),
                       ],
                     ),
 
                   const SizedBox(height: 16),
 
                   // Lesson
-                  if (userData != null && userData!.lessons.isNotEmpty)
+                  if (lessons.isNotEmpty)
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         const Text('Lesson:',
                             style: TextStyle(
                                 fontSize: 20, fontWeight: FontWeight.bold)),
-                        Text('  Name: ${userData?.lessons[0].name}'),
-                        Text('  Comment: ${userData?.lessons[0].comment}'),
+                        for (var lesson in lessons)
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text('  Name: ${lesson['name']}'),
+                              Text('  Comment: ${lesson['comment']}'),
+                            ],
+                          ),
                       ],
                     ),
 
                   const SizedBox(height: 16),
 
                   // Portfolio
-                  if (userData != null && userData!.portfolios.isNotEmpty)
+                  if (portfolios.isNotEmpty)
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         const Text('Portfolio:',
                             style: TextStyle(
                                 fontSize: 20, fontWeight: FontWeight.bold)),
-                        Text('  Name: ${userData?.portfolios[0].name}'),
-                        Text('  Comment: ${userData?.portfolios[0].comment}'),
+                        for (var portfolio in portfolios)
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text('  Name: ${portfolio['name']}'),
+                              Text('  Comment: ${portfolio['comment']}'),
+                            ],
+                          ),
                       ],
                     ),
 
                   const SizedBox(height: 16),
 
                   // Club
-                  if (userData != null && userData!.clubs.isNotEmpty)
+                  if (clubs.isNotEmpty)
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         const Text('Club:',
                             style: TextStyle(
                                 fontSize: 20, fontWeight: FontWeight.bold)),
-                        Text('  Name: ${userData?.clubs[0].name}'),
-                        Text('  Comment: ${userData?.clubs[0].comment}'),
+                        for (var club in clubs)
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text('  Name: ${club['name']}'),
+                              Text('  Comment: ${club['comment']}'),
+                            ],
+                          ),
                       ],
                     ),
                 ],
