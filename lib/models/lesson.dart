@@ -13,11 +13,4 @@ class Lesson {
       comment: map['comment'] ?? '',
     );
   }
-
-  Map<String, dynamic> toMap() {
-    return {
-      'name': name,
-      'comment': comment,
-    };
-  }
 }
