@@ -9,14 +9,14 @@ class CareerHistory {
   final String comment;
 
   CareerHistory({
-    required this.title,
-    required this.category,
-    required this.startDate,
-    required this.span,
-    required this.difficultLevel,
-    required this.recommendLevel,
-    required this.reason,
-    required this.comment,
+    this.title = '',
+    this.category = '',
+    this.startDate = '',
+    this.span = '',
+    this.difficultLevel = 0,
+    this.recommendLevel = 0,
+    this.reason = '',
+    this.comment = '',
   });
 
   factory CareerHistory.fromMap(Map<String, dynamic> map) {
