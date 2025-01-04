@@ -22,7 +22,6 @@ class _ShowPageState extends State<ShowPage> {
   String grade = '';
   String major = '';
   String futurePath = '';
-  String bestCareerId = '';
   CareerHistory? bestCareer;
   List<CareerHistory> careerHistories = [];
   List<Qualification> qualifications = [];
@@ -101,7 +100,6 @@ class _ShowPageState extends State<ShowPage> {
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            // Text('  historyId: ${history.}'),
                             Text('  Title: ${bestCareer?.title}'),
                             Text('  Category: ${bestCareer?.category}'),
                             Text('  Start Date: ${bestCareer?.startDate}'),

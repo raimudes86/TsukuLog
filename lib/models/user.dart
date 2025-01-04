@@ -52,7 +52,8 @@ class User {
       grade: userMap['grade'] ?? '',
       major: userMap['major'] ?? '',
       futurePath: userMap['future_path'] ?? '',
-      bestCareer: bestCareerData != null ?CareerHistory.fromMap(bestCareerData) : null,
+      bestCareer:
+          bestCareerData != null ? CareerHistory.fromMap(bestCareerData) : null,
       careerHistorys:
           careerData.map((data) => CareerHistory.fromMap(data)).toList(),
       qualifications:
