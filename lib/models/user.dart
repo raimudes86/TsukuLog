@@ -12,7 +12,7 @@ class User {
   final String grade;
   final String major;
   final String futurePath;
-  final String turningPointId;
+  final CareerHistory? bestCareer;
   final List<CareerHistory> careerHistorys;
   final List<Qualification> qualifications;
   final List<Lesson> lessons;
@@ -26,7 +26,7 @@ class User {
     required this.grade,
     required this.major,
     required this.futurePath,
-    required this.turningPointId,
+    required this.bestCareer,
     required this.careerHistorys,
     required this.qualifications,
     required this.lessons,
@@ -38,6 +38,7 @@ class User {
   factory User.fromFirestore(
     String id,
     Map<String, dynamic> userMap,
+    Map<String, dynamic>? bestCareerData,
     List<Map<String, dynamic>> careerData,
     List<Map<String, dynamic>> qualificationData,
     List<Map<String, dynamic>> lessonData,
@@ -51,7 +52,7 @@ class User {
       grade: userMap['grade'] ?? '',
       major: userMap['major'] ?? '',
       futurePath: userMap['future_path'] ?? '',
-      turningPointId: userMap['turning_point_id'] ?? '',
+      bestCareer: bestCareerData != null ?CareerHistory.fromMap(bestCareerData) : null,
       careerHistorys:
           careerData.map((data) => CareerHistory.fromMap(data)).toList(),
       qualifications:

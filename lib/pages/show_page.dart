@@ -1,4 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:tsukulog/models/career_history.dart';
+import 'package:tsukulog/models/club.dart';
+import 'package:tsukulog/models/lesson.dart';
+import 'package:tsukulog/models/portfolio.dart';
+import 'package:tsukulog/models/qualification.dart';
 import 'package:tsukulog/models/user.dart';
 import 'package:tsukulog/repositories/user_repository.dart';
 
@@ -17,11 +22,13 @@ class _ShowPageState extends State<ShowPage> {
   String grade = '';
   String major = '';
   String futurePath = '';
-  List<Map<String, dynamic>> careerHistories = [];
-  List<Map<String, dynamic>> qualifications = [];
-  List<Map<String, dynamic>> lessons = [];
-  List<Map<String, dynamic>> portfolios = [];
-  List<Map<String, dynamic>> clubs = [];
+  String bestCareerId = '';
+  CareerHistory? bestCareer;
+  List<CareerHistory> careerHistories = [];
+  List<Qualification> qualifications = [];
+  List<Lesson> lessons = [];
+  List<PortFolio> portfolios = [];
+  List<Club> clubs = [];
 
   final userRepository = UserRepository();
 
@@ -41,49 +48,12 @@ class _ShowPageState extends State<ShowPage> {
         grade = user.grade;
         major = user.major;
         futurePath = user.futurePath;
-
-        // Career Histories
-        careerHistories = user.careerHistorys
-            .map((history) => {
-                  'title': history.title,
-                  'category': history.category,
-                  'startDate': history.startDate,
-                  'span': history.span,
-                  'comment': history.comment,
-                })
-            .toList();
-
-        // Qualifications
-        qualifications = user.qualifications
-            .map((qualification) => {
-                  'name': qualification.name,
-                  'year': qualification.year,
-                })
-            .toList();
-
-        // Lessons
-        lessons = user.lessons
-            .map((lesson) => {
-                  'name': lesson.name,
-                  'comment': lesson.comment,
-                })
-            .toList();
-
-        // Portfolios
-        portfolios = user.portfolios
-            .map((portfolio) => {
-                  'name': portfolio.name,
-                  'comment': portfolio.comment,
-                })
-            .toList();
-
-        // Clubs
-        clubs = user.clubs
-            .map((club) => {
-                  'name': club.name,
-                  'comment': club.comment,
-                })
-            .toList();
+        bestCareer = user.bestCareer;
+        careerHistories = user.careerHistorys;
+        qualifications = user.qualifications;
+        lessons = user.lessons;
+        portfolios = user.portfolios;
+        clubs = user.clubs;
       });
     } catch (e) {
       print('Error: $e');
@@ -121,6 +91,29 @@ class _ShowPageState extends State<ShowPage> {
 
                   const SizedBox(height: 16),
 
+                  if (bestCareer != null)
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text('Best Career:',
+                            style: TextStyle(
+                                fontSize: 20, fontWeight: FontWeight.bold)),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            // Text('  historyId: ${history.}'),
+                            Text('  Title: ${bestCareer?.title}'),
+                            Text('  Category: ${bestCareer?.category}'),
+                            Text('  Start Date: ${bestCareer?.startDate}'),
+                            Text('  Span: ${bestCareer?.span}'),
+                            Text('  Comment: ${bestCareer?.comment}'),
+                          ],
+                        ),
+                      ],
+                    ),
+
+                  const SizedBox(height: 16),
+
                   // Career History
                   if (careerHistories.isNotEmpty)
                     Column(
@@ -133,11 +126,11 @@ class _ShowPageState extends State<ShowPage> {
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text('  Title: ${history['title']}'),
-                              Text('  Category: ${history['category']}'),
-                              Text('  Start Date: ${history['startDate']}'),
-                              Text('  Span: ${history['span']}'),
-                              Text('  Comment: ${history['comment']}'),
+                              Text('  Title: ${history.title}'),
+                              Text('  Category: ${history.category}'),
+                              Text('  Start Date: ${history.startDate}'),
+                              Text('  Span: ${history.span}'),
+                              Text('  Comment: ${history.comment}'),
                             ],
                           ),
                       ],
@@ -157,8 +150,8 @@ class _ShowPageState extends State<ShowPage> {
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text('  Name: ${qualification['name']}'),
-                              Text('  Year: ${qualification['year']}'),
+                              Text('  Name: ${qualification.name}'),
+                              Text('  Year: ${qualification.year}'),
                             ],
                           ),
                       ],
@@ -178,8 +171,8 @@ class _ShowPageState extends State<ShowPage> {
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text('  Name: ${lesson['name']}'),
-                              Text('  Comment: ${lesson['comment']}'),
+                              Text('  Name: ${lesson.name}'),
+                              Text('  Comment: ${lesson.comment}'),
                             ],
                           ),
                       ],
@@ -199,8 +192,8 @@ class _ShowPageState extends State<ShowPage> {
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text('  Name: ${portfolio['name']}'),
-                              Text('  Comment: ${portfolio['comment']}'),
+                              Text('  Name: ${portfolio.name}'),
+                              Text('  Comment: ${portfolio.comment}'),
                             ],
                           ),
                       ],
@@ -220,8 +213,8 @@ class _ShowPageState extends State<ShowPage> {
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text('  Name: ${club['name']}'),
-                              Text('  Comment: ${club['comment']}'),
+                              Text('  Name: ${club.name}'),
+                              Text('  Comment: ${club.comment}'),
                             ],
                           ),
                       ],

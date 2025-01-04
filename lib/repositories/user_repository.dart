@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:collection/collection.dart';
 import '../models/user.dart';
 
 class UserRepository {
@@ -45,12 +46,18 @@ class UserRepository {
         portFolioSnapshot.docs.map((doc) => doc.data()).toList();
     List<Map<String, dynamic>> clubData =
         clubSnapshot.docs.map((doc) => doc.data()).toList();
+    Map<String, dynamic>? bestCareer = careerSnapshot.docs
+        .firstWhereOrNull(
+          (doc) => doc.id == userDoc.data()!['best_career_id'],
+        )
+        ?.data();
 
     //Userの作成
     if (userDoc.exists) {
       return User.fromFirestore(
         userDoc.id,
         userDoc.data()!,
+        bestCareer,
         careerData,
         qualificationData,
         lessonData,
