@@ -28,7 +28,11 @@ class ShowPage extends StatefulWidget {
 class _ShowPageState extends State<ShowPage> {
   String nickname = '';
   int star = 0;
-  String grade = '';
+  // String grade = '';
+  //ここの変数を(startGradeとstartMonth)変えたので付随して変更する箇所を変更してください
+  //startGradeにはB1などの文字列が入り、startMonthには1、2などのintが入っているので表示を変更してください
+  String startGrade = '';
+  int startMonth = 0;
   String major = '';
   String futurePath = '';
   CareerHistory? bestCareer;
