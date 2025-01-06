@@ -1,5 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:tsukulog/components/best_carrer_card.dart';
+import 'package:tsukulog/components/best_career_card.dart';
+import 'package:tsukulog/components/career_history_card.dart';
+import 'package:tsukulog/components/career_detail_card.dart';
+import 'package:tsukulog/components/club_card.dart';
+import 'package:tsukulog/components/portfolio_card.dart';
+import 'package:tsukulog/components/profile_card.dart';
+import 'package:tsukulog/components/qualification_card.dart';
+import 'package:tsukulog/components/lesson_card.dart';
 import 'package:tsukulog/models/career_history.dart';
 import 'package:tsukulog/models/club.dart';
 import 'package:tsukulog/models/lesson.dart';
@@ -72,222 +79,81 @@ class _ShowPageState extends State<ShowPage> {
       ),
       body: Center(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center, // 子要素を中央に配置
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Text(
-              'This is the Show Page',
-            ),
-            Text('UID: ${widget.uid}'), // ShowPageから渡されたUIDを表示
+            // デバッグ用
+            // const Text(
+            //   'This is the Show Page',
+            // ),
+            // Text('UID: ${widget.uid}'),
             Expanded( 
               child: ListView(
                 children: [
-                  // メイン情報
-                  Container(
-                    padding: const EdgeInsets.all(16),
-                    decoration: BoxDecoration(
-                      color: Color(0xFF9424E3),
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        // 星アイコンとスター数
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            Icon(Icons.star, color: Colors.white),
-                            const SizedBox(width: 4),
-                            Text(
-                              '参考になった $star',
-                              style: const TextStyle(color: Colors.white, fontSize: 14),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 16),
-                        // 名前
-                        Text(
-                          nickname,
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 24,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        const SizedBox(height: 6),
-                        // 学年と専攻
-                        Text(
-                          '$grade  $major',
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 18,
-                          ),
-                        ),
-                        const SizedBox(height: 10),
-                        // 進路情報
-                        Container(
-                          padding: const EdgeInsets.all(3),
-                          decoration: BoxDecoration(
-                            color: Color.fromARGB(255, 230, 230, 230),
-                            borderRadius: BorderRadius.circular(16),
-                          ),
-                          child: Text(
-                            '  $futurePath  ',
-                            style: const TextStyle(
-                              color: Colors.black,
-                              fontSize: 16,
-                            ),
-                          ),
-                        ),
-                        const SizedBox(height: 16),
-                      ],
-                    ),
+                  // Profile
+                  ProfileCard(
+                    nickname: nickname,
+                    grade: grade, 
+                    major: major, 
+                    futurePath: futurePath, 
+                    star: star, 
+                    // imageUrl: '',
                   ),
-                
-                  const SizedBox(height: 16),
-
+                  
+                  // Best Career
                   if (bestCareer != null)
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            SizedBox(width: 10),
-                            Icon(Icons.double_arrow, color: Color(0xFF252525)),
-                            SizedBox(width: 4),
-                            Text(
-                              'ベストキャリア',
-                              style: TextStyle(
-                                color: Color(0xFF252525),
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                                ),
-                            ),
-                          ],
-                        ),
-                        Center(
-                          child: BestCarrerCard(
-                            title: bestCareer!.title,
-                            category: bestCareer!.category,
-                            startDate: bestCareer!.startDate,
-                            span: bestCareer!.span,
-                            difficultLevel: bestCareer!.difficultLevel,
-                            recommendLevel: bestCareer!.recommendLevel,
-                            reason: bestCareer!.reason,
-                            comment: bestCareer!.comment,
-                          ),
-                        ),
-                      ],
+                    BestCareerCard(
+                      title: bestCareer!.title,
+                      category: bestCareer!.category,
+                      startDate: bestCareer!.startDate,
+                      span: bestCareer!.span,
+                      difficultLevel: bestCareer!.difficultLevel,
+                      recommendLevel: bestCareer!.recommendLevel,
+                      reason: bestCareer!.reason,
+                      comment: bestCareer!.comment,
                     ),
 
-                  const SizedBox(height: 16),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          SizedBox(width: 10),
+                          Icon(Icons.double_arrow, color: Color(0xFF252525)),
+                          SizedBox(width: 4),
+                          Text(
+                            'これだけはやっておけ！！！',
+                            style: TextStyle(
+                              color: Color(0xFF252525),
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                              ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 16),
+                    ],
+                  ),
 
                   // Career History
                   if (careerHistories.isNotEmpty)
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            SizedBox(width: 10),
-                            Icon(Icons.double_arrow, color: Color(0xFF252525)),
-                            SizedBox(width: 4),
-                            Text(
-                              'これだけはやっておけ！！！',
-                              style: TextStyle(
-                                color: Color(0xFF252525),
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                                ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-
-                  const SizedBox(height: 16),
+                    CareerHistoryCard(careerHistories: careerHistories),
 
                   // Qualification
                   if (qualifications.isNotEmpty)
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text('Qualification:',
-                            style: TextStyle(
-                                fontSize: 20, fontWeight: FontWeight.bold)),
-                        for (var qualification in qualifications)
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text('  Name: ${qualification.name}'),
-                              Text('  Year: ${qualification.year}'),
-                            ],
-                          ),
-                      ],
-                    ),
-
-                  const SizedBox(height: 16),
+                    QualificationCard(qualifications: qualifications),
 
                   // Lesson
                   if (lessons.isNotEmpty)
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text('Lesson:',
-                            style: TextStyle(
-                                fontSize: 20, fontWeight: FontWeight.bold)),
-                        for (var lesson in lessons)
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text('  Name: ${lesson.name}'),
-                              Text('  Comment: ${lesson.comment}'),
-                            ],
-                          ),
-                      ],
-                    ),
-
-                  const SizedBox(height: 16),
+                    LessonCard(lessons: lessons),
 
                   // Portfolio
                   if (portfolios.isNotEmpty)
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text('Portfolio:',
-                            style: TextStyle(
-                                fontSize: 20, fontWeight: FontWeight.bold)),
-                        for (var portfolio in portfolios)
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text('  Name: ${portfolio.name}'),
-                              Text('  Comment: ${portfolio.comment}'),
-                            ],
-                          ),
-                      ],
-                    ),
-
-                  const SizedBox(height: 16),
+                    PortfolioCard(portfolios: portfolios),
 
                   // Club
                   if (clubs.isNotEmpty)
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text('Club:',
-                            style: TextStyle(
-                                fontSize: 20, fontWeight: FontWeight.bold)),
-                        for (var club in clubs)
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text('  Name: ${club.name}'),
-                              Text('  Comment: ${club.comment}'),
-                            ],
-                          ),
-                      ],
-                    ),
+                    ClubCard(clubs: clubs),
                 ],
               ),
             ),

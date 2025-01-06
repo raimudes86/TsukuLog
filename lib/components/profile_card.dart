@@ -1,21 +1,21 @@
 import 'package:flutter/material.dart';
 
 class ProfileCard extends StatelessWidget {
-  final String name;
+  final String nickname;
   final String grade;
   final String major;
   final String futurePath;
   final int star;
-  final String imageUrl;
+  // final String imageUrl;
 
   const ProfileCard({
     Key? key,
-    required this.name,
+    required this.nickname,
     required this.grade,
     required this.major,
     required this.futurePath,
     required this.star,
-    required this.imageUrl,
+    // required this.imageUrl,
   }) : super(key: key);
 
   @override
@@ -23,8 +23,7 @@ class ProfileCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Color.fromARGB(255, 157, 65, 180),
-        borderRadius: BorderRadius.circular(16),
+        color: Color(0xFF9424E3),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -44,7 +43,7 @@ class ProfileCard extends StatelessWidget {
           const SizedBox(height: 16),
           // 名前
           Text(
-            name,
+            nickname,
             style: const TextStyle(
               color: Colors.white,
               fontSize: 24,
@@ -61,30 +60,20 @@ class ProfileCard extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 16),
-          // プロフィール画像と進路情報
-          Row(
-            children: [
-              // プロフィール画像
-              ClipOval(
-                child: Image.network(
-                  imageUrl,
-                  width: 64,
-                  height: 64,
-                  fit: BoxFit.cover,
-                ),
+          // 進路情報
+          Container(
+            padding: const EdgeInsets.all(3),
+            decoration: BoxDecoration(
+              color: Color.fromARGB(255, 230, 230, 230),
+              borderRadius: BorderRadius.circular(16),
+            ),
+            child: Text(
+              '  $futurePath  ',
+              style: const TextStyle(
+                color: Colors.black,
+                fontSize: 16,
               ),
-              const SizedBox(width: 16),
-              // 進路情報
-              Expanded(
-                child: Text(
-                  futurePath,
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 16,
-                  ),
-                ),
-              ),
-            ],
+            ),
           ),
         ],
       ),
