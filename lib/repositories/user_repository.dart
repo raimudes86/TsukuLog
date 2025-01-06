@@ -52,6 +52,31 @@ class UserRepository {
         )
         ?.data();
 
+    //careerDataを日付順にソート
+    const sortMap = {
+      'B1': 1,
+      'B2': 2,
+      'B3': 3,
+      'M1': 4,
+      'M2': 5,
+      'D1': 6,
+      'D2': 7,
+      'D3': 8
+    };
+    careerData.sort((a, b) {
+      int gradeA = sortMap[a['start_grade']] ?? 0;
+      int gradeB = sortMap[b['start_grade']] ?? 0;
+      int gradeDiff = gradeA.compareTo(gradeB);
+      if (gradeDiff != 0) {
+        return gradeDiff;
+      }
+      return a['start_month'].compareTo(b['start_month']);
+    });
+
+    qualificationData.sort((a, b) {
+      return a['year'].compareTo(b['year']);
+    });
+
     //Userの作成
     if (userDoc.exists) {
       return User.fromFirestore(
