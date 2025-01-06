@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tsukulog/components/best_carrer_card.dart';
 import 'package:tsukulog/models/career_history.dart';
 import 'package:tsukulog/models/club.dart';
 import 'package:tsukulog/models/lesson.dart';
@@ -77,35 +78,103 @@ class _ShowPageState extends State<ShowPage> {
               'This is the Show Page',
             ),
             Text('UID: ${widget.uid}'), // ShowPageから渡されたUIDを表示
-            Expanded(
+            Expanded( 
               child: ListView(
                 children: [
                   // メイン情報
-                  Text('Name: $nickname', style: TextStyle(fontSize: 18)),
-                  Text('Star: $star', style: TextStyle(fontSize: 18)),
-                  Text('Grade: $grade', style: TextStyle(fontSize: 18)),
-                  Text('Major: $major', style: TextStyle(fontSize: 18)),
-                  Text('Future Path: $futurePath',
-                      style: TextStyle(fontSize: 18)),
-
+                  Container(
+                    padding: const EdgeInsets.all(16),
+                    decoration: BoxDecoration(
+                      color: Color(0xFF9424E3),
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        // 星アイコンとスター数
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            Icon(Icons.star, color: Colors.white),
+                            const SizedBox(width: 4),
+                            Text(
+                              '参考になった $star',
+                              style: const TextStyle(color: Colors.white, fontSize: 14),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 16),
+                        // 名前
+                        Text(
+                          nickname,
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        const SizedBox(height: 6),
+                        // 学年と専攻
+                        Text(
+                          '$grade  $major',
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 18,
+                          ),
+                        ),
+                        const SizedBox(height: 10),
+                        // 進路情報
+                        Container(
+                          padding: const EdgeInsets.all(3),
+                          decoration: BoxDecoration(
+                            color: Color.fromARGB(255, 230, 230, 230),
+                            borderRadius: BorderRadius.circular(16),
+                          ),
+                          child: Text(
+                            '  $futurePath  ',
+                            style: const TextStyle(
+                              color: Colors.black,
+                              fontSize: 16,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 16),
+                      ],
+                    ),
+                  ),
+                
                   const SizedBox(height: 16),
 
                   if (bestCareer != null)
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Text('Best Career:',
-                            style: TextStyle(
-                                fontSize: 20, fontWeight: FontWeight.bold)),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                        const Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
                           children: [
-                            Text('  Title: ${bestCareer?.title}'),
-                            Text('  Category: ${bestCareer?.category}'),
-                            Text('  Start Date: ${bestCareer?.startDate}'),
-                            Text('  Span: ${bestCareer?.span}'),
-                            Text('  Comment: ${bestCareer?.comment}'),
+                            SizedBox(width: 10),
+                            Icon(Icons.double_arrow, color: Color(0xFF252525)),
+                            SizedBox(width: 4),
+                            Text(
+                              'ベストキャリア',
+                              style: TextStyle(
+                                color: Color(0xFF252525),
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                ),
+                            ),
                           ],
+                        ),
+                        Center(
+                          child: BestCarrerCard(
+                            title: bestCareer!.title,
+                            category: bestCareer!.category,
+                            startDate: bestCareer!.startDate,
+                            span: bestCareer!.span,
+                            difficultLevel: bestCareer!.difficultLevel,
+                            recommendLevel: bestCareer!.recommendLevel,
+                            reason: bestCareer!.reason,
+                            comment: bestCareer!.comment,
+                          ),
                         ),
                       ],
                     ),
@@ -117,20 +186,22 @@ class _ShowPageState extends State<ShowPage> {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Text('Career History:',
-                            style: TextStyle(
-                                fontSize: 20, fontWeight: FontWeight.bold)),
-                        for (var history in careerHistories)
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text('  Title: ${history.title}'),
-                              Text('  Category: ${history.category}'),
-                              Text('  Start Date: ${history.startDate}'),
-                              Text('  Span: ${history.span}'),
-                              Text('  Comment: ${history.comment}'),
-                            ],
-                          ),
+                        const Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            SizedBox(width: 10),
+                            Icon(Icons.double_arrow, color: Color(0xFF252525)),
+                            SizedBox(width: 4),
+                            Text(
+                              'これだけはやっておけ！！！',
+                              style: TextStyle(
+                                color: Color(0xFF252525),
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                ),
+                            ),
+                          ],
+                        ),
                       ],
                     ),
 
@@ -219,7 +290,7 @@ class _ShowPageState extends State<ShowPage> {
                     ),
                 ],
               ),
-            )
+            ),
           ],
         ),
       ),
