@@ -12,6 +12,7 @@ import 'package:tsukulog/models/club.dart';
 import 'package:tsukulog/models/lesson.dart';
 import 'package:tsukulog/models/portfolio.dart';
 import 'package:tsukulog/models/qualification.dart';
+import 'package:tsukulog/models/suggest.dart';
 import 'package:tsukulog/models/user.dart';
 import 'package:tsukulog/repositories/user_repository.dart';
 
@@ -36,6 +37,7 @@ class _ShowPageState extends State<ShowPage> {
   List<Lesson> lessons = [];
   List<PortFolio> portfolios = [];
   List<Club> clubs = [];
+  List<Suggest> suggests = [];
 
   final userRepository = UserRepository();
 
@@ -61,6 +63,7 @@ class _ShowPageState extends State<ShowPage> {
         lessons = user.lessons;
         portfolios = user.portfolios;
         clubs = user.clubs;
+        suggests = user.suggests;
       });
     } catch (e) {
       print('Error: $e');
@@ -86,19 +89,19 @@ class _ShowPageState extends State<ShowPage> {
             //   'This is the Show Page',
             // ),
             // Text('UID: ${widget.uid}'),
-            Expanded( 
+            Expanded(
               child: ListView(
                 children: [
                   // Profile
                   ProfileCard(
                     nickname: nickname,
-                    grade: grade, 
-                    major: major, 
-                    futurePath: futurePath, 
-                    star: star, 
+                    grade: grade,
+                    major: major,
+                    futurePath: futurePath,
+                    star: star,
                     // imageUrl: '',
                   ),
-                  
+
                   // Best Career
                   if (bestCareer != null)
                     BestCareerCard(
@@ -115,7 +118,8 @@ class _ShowPageState extends State<ShowPage> {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Row(
+                      //ここのRowのconstを一旦消しました
+                      Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           SizedBox(width: 10),
@@ -127,10 +131,36 @@ class _ShowPageState extends State<ShowPage> {
                               color: Color(0xFF252525),
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
-                              ),
+                            ),
                           ),
                         ],
                       ),
+                      for (var suggest in suggests)
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 8.0), // 上下に余白を追加
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Name: ${suggest.name}',
+                                style: const TextStyle(
+                                  fontSize: 16.0, // フォントサイズ
+                                  fontWeight: FontWeight.bold, // 太字
+                                ),
+                              ),
+                              const SizedBox(height: 4.0), // 行間を追加
+                              Text(
+                                'Comment: ${suggest.comment}',
+                                style: const TextStyle(
+                                  fontSize: 14.0, // フォントサイズ
+                                  color: Colors.grey, // コメントを目立たせない色
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+
                       const SizedBox(height: 16),
                     ],
                   ),
@@ -144,16 +174,14 @@ class _ShowPageState extends State<ShowPage> {
                     QualificationCard(qualifications: qualifications),
 
                   // Lesson
-                  if (lessons.isNotEmpty)
-                    LessonCard(lessons: lessons),
+                  if (lessons.isNotEmpty) LessonCard(lessons: lessons),
 
                   // Portfolio
                   if (portfolios.isNotEmpty)
                     PortfolioCard(portfolios: portfolios),
 
                   // Club
-                  if (clubs.isNotEmpty)
-                    ClubCard(clubs: clubs),
+                  if (clubs.isNotEmpty) ClubCard(clubs: clubs),
                 ],
               ),
             ),

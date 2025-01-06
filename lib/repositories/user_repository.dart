@@ -27,6 +27,7 @@ class UserRepository {
       _firestore.collection('users').doc(userId).collection('lesson').get(),
       _firestore.collection('users').doc(userId).collection('portfolio').get(),
       _firestore.collection('users').doc(userId).collection('club').get(),
+      _firestore.collection('users').doc(userId).collection('suggest').get(),
     ]);
 
     final careerSnapshot = futures[0];
@@ -34,6 +35,7 @@ class UserRepository {
     final lessonSnapshot = futures[2];
     final portFolioSnapshot = futures[3];
     final clubSnapshot = futures[4];
+    final suggestSnapshot = futures[5];
 
     //コレクションのインスタンスから、中身の取得とUserに渡すリストの作成
     List<Map<String, dynamic>> careerData =
@@ -46,6 +48,8 @@ class UserRepository {
         portFolioSnapshot.docs.map((doc) => doc.data()).toList();
     List<Map<String, dynamic>> clubData =
         clubSnapshot.docs.map((doc) => doc.data()).toList();
+    List<Map<String, dynamic>> suggestData =
+        suggestSnapshot.docs.map((doc) => doc.data()).toList();
     Map<String, dynamic>? bestCareer = careerSnapshot.docs
         .firstWhereOrNull(
           (doc) => doc.id == userDoc.data()!['best_career_id'],
@@ -88,6 +92,7 @@ class UserRepository {
         lessonData,
         portfolioData,
         clubData,
+        suggestData,
       );
     } else {
       throw Exception('User not found');
