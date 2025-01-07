@@ -68,4 +68,15 @@ class UserRepository {
       throw Exception('User not found');
     }
   }
+
+  Future<List<User>> fetchAllUsers() async {
+    //全ユーザードキュメントを取得
+    QuerySnapshot<Map<String, dynamic>> userSnapshot =
+        await _firestore.collection('users').get();
+    //各ユーザーのIDを取得してfetchUserを呼び出す
+    final userIds = userSnapshot.docs.map((doc) => doc.id).toList();
+
+    //全ユーザーのリストを作成
+    return Future.wait(userIds.map((userId) => fetchUser(userId)));
+  }
 }
