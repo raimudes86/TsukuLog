@@ -1,7 +1,8 @@
 class CareerHistory {
   final String title;
   final String category;
-  final String startDate;
+  final String startGrade;
+  final int startMonth;
   final String span;
   final int difficultLevel;
   final int recommendLevel;
@@ -11,7 +12,8 @@ class CareerHistory {
   CareerHistory({
     this.title = '',
     this.category = '',
-    this.startDate = '',
+    this.startGrade = '',
+    this.startMonth = 0,
     this.span = '',
     this.difficultLevel = 0,
     this.recommendLevel = 0,
@@ -23,7 +25,8 @@ class CareerHistory {
     return CareerHistory(
       title: map['title'] ?? '',
       category: map['category'] ?? '',
-      startDate: map['start_date'] ?? '',
+      startGrade: map['start_grade'] ?? '',
+      startMonth: map['start_month'] ?? 0,
       span: map['span'] ?? '',
       difficultLevel: map['difficult_level'] ?? 0,
       recommendLevel: map['recommend_level'] ?? 0,

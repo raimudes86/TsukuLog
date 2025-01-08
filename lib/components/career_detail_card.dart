@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 class CareerDetailCard extends StatefulWidget {
   final String title;
   final String category;
-  final String startDate;
+  final String startGrade;
+  final int startMonth;
   final String span;
   final int difficultLevel;
   final int recommendLevel;
@@ -14,7 +15,8 @@ class CareerDetailCard extends StatefulWidget {
     Key? key,
     required this.title,
     required this.category,
-    required this.startDate,
+    required this.startGrade,
+    required this.startMonth,
     required this.span,
     required this.difficultLevel,
     required this.recommendLevel,
@@ -44,23 +46,43 @@ class _CareerDetailCardState extends State<CareerDetailCard> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 // 左側のアイコン
-                Container(
-                  width: 48,
-                  height: 48,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: Colors.grey[400],
-                  ),
-                  child: const Center(
-                    child: Text(
-                      '*',
-                      style: TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      width: 48,
+                      height: 48,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: Colors.grey[400],
+                      ),
+                      child: const Center(
+                        child: Text(
+                          '*',
+                          style: TextStyle(
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
+                        ),
                       ),
                     ),
-                  ),
+                    const SizedBox(height: 16),
+                    Text(
+                      '${widget.startGrade}/${widget.startMonth}月から',
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: Color(0xFF252525),
+                      ),
+                    ),
+                    Text(
+                      '${widget.span}',
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: Color(0xFF252525),
+                      ),
+                    ),
+                  ],
                 ),
                 const SizedBox(width: 16),
                 // タイトルとカテゴリ

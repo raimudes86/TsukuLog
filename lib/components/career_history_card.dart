@@ -39,7 +39,8 @@ class _CareerHistoryCardState extends State<CareerHistoryCard> {
             (career) => CareerDetailCard(
               title: career.title, 
               category: career.category, 
-              startDate: career.startDate, 
+              startGrade: career.startGrade, 
+              startMonth: career.startMonth,
               span: career.span, 
               difficultLevel: career.difficultLevel, 
               recommendLevel: career.recommendLevel, 

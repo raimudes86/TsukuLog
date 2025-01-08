@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:tsukulog/components/best_career_card.dart';
 import 'package:tsukulog/components/career_history_card.dart';
 import 'package:tsukulog/components/career_detail_card.dart';
+import 'package:tsukulog/components/suggest_card.dart';
 import 'package:tsukulog/components/club_card.dart';
 import 'package:tsukulog/components/portfolio_card.dart';
 import 'package:tsukulog/components/profile_card.dart';
@@ -28,11 +29,7 @@ class ShowPage extends StatefulWidget {
 class _ShowPageState extends State<ShowPage> {
   String nickname = '';
   int star = 0;
-  // String grade = '';
-  //ここの変数を(startGradeとstartMonth)変えたので付随して変更する箇所を変更してください
-  //startGradeにはB1などの文字列が入り、startMonthには1、2などのintが入っているので表示を変更してください
-  String startGrade = '';
-  int startMonth = 0;
+  String grade = '';
   String major = '';
   String futurePath = '';
   CareerHistory? bestCareer;
@@ -111,7 +108,8 @@ class _ShowPageState extends State<ShowPage> {
                     BestCareerCard(
                       title: bestCareer!.title,
                       category: bestCareer!.category,
-                      startDate: bestCareer!.startDate,
+                      startGrade: bestCareer!.startGrade,
+                      startMonth: bestCareer!.startMonth,
                       span: bestCareer!.span,
                       difficultLevel: bestCareer!.difficultLevel,
                       recommendLevel: bestCareer!.recommendLevel,
@@ -119,55 +117,7 @@ class _ShowPageState extends State<ShowPage> {
                       comment: bestCareer!.comment,
                     ),
 
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      //ここのRowのconstを一旦消しました
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          SizedBox(width: 10),
-                          Icon(Icons.double_arrow, color: Color(0xFF252525)),
-                          SizedBox(width: 4),
-                          Text(
-                            'これだけはやっておけ！！！',
-                            style: TextStyle(
-                              color: Color(0xFF252525),
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ],
-                      ),
-                      for (var suggest in suggests)
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                              vertical: 8.0), // 上下に余白を追加
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'Name: ${suggest.name}',
-                                style: const TextStyle(
-                                  fontSize: 16.0, // フォントサイズ
-                                  fontWeight: FontWeight.bold, // 太字
-                                ),
-                              ),
-                              const SizedBox(height: 4.0), // 行間を追加
-                              Text(
-                                'Comment: ${suggest.comment}',
-                                style: const TextStyle(
-                                  fontSize: 14.0, // フォントサイズ
-                                  color: Colors.grey, // コメントを目立たせない色
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-
-                      const SizedBox(height: 16),
-                    ],
-                  ),
+                  if (suggests.isNotEmpty) SuggestCard(suggests: suggests),
 
                   // Career History
                   if (careerHistories.isNotEmpty)

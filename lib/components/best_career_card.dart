@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 class BestCareerCard extends StatelessWidget {
   final String title;
   final String category;
-  final String startDate;
+  final String startGrade;
+  final int startMonth;
   final String span;
   final int difficultLevel;
   final int recommendLevel;
@@ -14,7 +15,8 @@ class BestCareerCard extends StatelessWidget {
     Key? key,
     required this.title,
     required this.category,
-    required this.startDate,
+    required this.startGrade,
+    required this.startMonth,
     required this.span,
     required this.difficultLevel,
     required this.recommendLevel,
@@ -80,7 +82,7 @@ class BestCareerCard extends StatelessWidget {
                       const SizedBox(width: 16),
                       // 学年/月
                       Text(
-                        '$startDate から $span',
+                        '$startGrade / $startMonth月 から $span',
                         style: TextStyle(
                           fontSize: 14,
                           color: Color(0xFF252525),
