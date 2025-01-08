@@ -27,6 +27,7 @@ class UserRepository {
       _firestore.collection('users').doc(userId).collection('lesson').get(),
       _firestore.collection('users').doc(userId).collection('portfolio').get(),
       _firestore.collection('users').doc(userId).collection('club').get(),
+      _firestore.collection('users').doc(userId).collection('suggest').get(),
     ]);
 
     final careerSnapshot = futures[0];
@@ -34,6 +35,7 @@ class UserRepository {
     final lessonSnapshot = futures[2];
     final portFolioSnapshot = futures[3];
     final clubSnapshot = futures[4];
+    final suggestSnapshot = futures[5];
 
     //コレクションのインスタンスから、中身の取得とUserに渡すリストの作成
     List<Map<String, dynamic>> careerData =
@@ -46,11 +48,38 @@ class UserRepository {
         portFolioSnapshot.docs.map((doc) => doc.data()).toList();
     List<Map<String, dynamic>> clubData =
         clubSnapshot.docs.map((doc) => doc.data()).toList();
+    List<Map<String, dynamic>> suggestData =
+        suggestSnapshot.docs.map((doc) => doc.data()).toList();
     Map<String, dynamic>? bestCareer = careerSnapshot.docs
         .firstWhereOrNull(
           (doc) => doc.id == userDoc.data()!['best_career_id'],
         )
         ?.data();
+
+    //careerDataを日付順にソート
+    const sortMap = {
+      'B1': 1,
+      'B2': 2,
+      'B3': 3,
+      'M1': 4,
+      'M2': 5,
+      'D1': 6,
+      'D2': 7,
+      'D3': 8
+    };
+    careerData.sort((a, b) {
+      int gradeA = sortMap[a['start_grade']] ?? 0;
+      int gradeB = sortMap[b['start_grade']] ?? 0;
+      int gradeDiff = gradeA.compareTo(gradeB);
+      if (gradeDiff != 0) {
+        return gradeDiff;
+      }
+      return a['start_month'].compareTo(b['start_month']);
+    });
+
+    qualificationData.sort((a, b) {
+      return a['year'].compareTo(b['year']);
+    });
 
     //Userの作成
     if (userDoc.exists) {
@@ -63,6 +92,7 @@ class UserRepository {
         lessonData,
         portfolioData,
         clubData,
+        suggestData,
       );
     } else {
       throw Exception('User not found');

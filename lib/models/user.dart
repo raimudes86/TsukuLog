@@ -3,6 +3,7 @@ import 'package:tsukulog/models/club.dart';
 import 'package:tsukulog/models/lesson.dart';
 import 'package:tsukulog/models/portfolio.dart';
 import 'package:tsukulog/models/qualification.dart';
+import 'package:tsukulog/models/suggest.dart';
 
 //このユーザーはサブコレクションのデータまで全てリストで保持している
 class User {
@@ -18,6 +19,7 @@ class User {
   final List<Lesson> lessons;
   final List<Club> clubs;
   final List<PortFolio> portfolios;
+  final List<Suggest> suggests;
 
   User({
     required this.id,
@@ -32,6 +34,7 @@ class User {
     required this.lessons,
     required this.clubs,
     required this.portfolios,
+    required this.suggests,
   });
 
   //サブコレクションたちはfetchしてきた後に
@@ -44,6 +47,7 @@ class User {
     List<Map<String, dynamic>> lessonData,
     List<Map<String, dynamic>> portfolioData,
     List<Map<String, dynamic>> clubData,
+    List<Map<String, dynamic>> suggestData,
   ) {
     return User(
       id: id,
@@ -61,6 +65,7 @@ class User {
       lessons: lessonData.map((data) => Lesson.fromMap(data)).toList(),
       portfolios: portfolioData.map((data) => PortFolio.fromMap(data)).toList(),
       clubs: clubData.map((data) => Club.fromMap(data)).toList(),
+      suggests: suggestData.map((data) => Suggest.fromMap(data)).toList(),
     );
   }
 }
