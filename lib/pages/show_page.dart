@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'dart:developer' as developer;
 import 'package:tsukulog/components/best_career_card.dart';
 import 'package:tsukulog/components/career_history_card.dart';
-import 'package:tsukulog/components/career_detail_card.dart';
 import 'package:tsukulog/components/suggest_card.dart';
 import 'package:tsukulog/components/club_card.dart';
 import 'package:tsukulog/components/portfolio_card.dart';
@@ -67,7 +67,7 @@ class _ShowPageState extends State<ShowPage> {
         suggests = user.suggests;
       });
     } catch (e) {
-      print('Error: $e');
+      developer.log('Error: $e');
       setState(() {
         nickname = 'Error';
       });
@@ -120,19 +120,20 @@ class _ShowPageState extends State<ShowPage> {
                   if (suggests.isNotEmpty) SuggestCard(suggests: suggests),
 
                   // Career History
-                  if (careerHistories.isNotEmpty)
-                    CareerHistoryCard(careerHistories: careerHistories),
+                  if (careerHistories.isNotEmpty) 
+                    CareerHistoryCard(
+                      nickname: nickname,
+                      careerHistories: careerHistories
+                    ),
 
                   // Qualification
-                  if (qualifications.isNotEmpty)
-                    QualificationCard(qualifications: qualifications),
+                  if (qualifications.isNotEmpty) QualificationCard(qualifications: qualifications),
 
                   // Lesson
                   if (lessons.isNotEmpty) LessonCard(lessons: lessons),
 
                   // Portfolio
-                  if (portfolios.isNotEmpty)
-                    PortfolioCard(portfolios: portfolios),
+                  if (portfolios.isNotEmpty) PortfolioCard(portfolios: portfolios),
 
                   // Club
                   if (clubs.isNotEmpty) ClubCard(clubs: clubs),

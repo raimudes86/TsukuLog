@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tsukulog/pages/show_page.dart';
+import 'package:tsukulog/components/user_button.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
@@ -20,35 +21,26 @@ class _MyHomePageState extends State<MyHomePage> {
       body: Center(
         child: Column(
           children: <Widget>[
-            const SizedBox(height: 16),
-            ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  minimumSize: Size(200, 50),
-                ),
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) =>
-                            ShowPage(uid: "AWSshw5P8MNmpa5Qk3an")),
-                  );
-                },
-                child: Text("Show ビットくん")),
-            const SizedBox(height: 16),
-            ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  minimumSize: Size(200, 50),
-                ),
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) =>
-                            ShowPage(uid: "WBqBABwIlO2yiiWn5ywV")),
-                  );
-                },
-                child: Text("Show 205")),
-            const SizedBox(height: 16),
+            UserButton(
+              label: "ドミニカ共和国",
+              uid: "qGOCYiLS8tEb9DDwSzf9",
+            ),
+            UserButton(
+              label: "ビットくん",
+              uid: "AWSshw5P8MNmpa5Qk3an",
+            ),
+            UserButton(
+              label: "205",
+              uid: "WBqBABwIlO2yiiWn5ywV",
+            ),
+            UserButton(
+              label: "ひつじ",
+              uid: "HZ0c1aD7Q2Q3nGIWxvvd",
+            ),
+            UserButton(
+              label: "U",
+              uid: "Rhxpp8kvJXw4FNCT7idj",
+            ),
           ],
         ),
       ),
