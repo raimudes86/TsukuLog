@@ -5,9 +5,9 @@ class ClubCard extends StatelessWidget {
   final List<Club> clubs;
 
   const ClubCard({
-    Key? key,
+    super.key,
     required this.clubs,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

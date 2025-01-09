@@ -12,7 +12,7 @@ class BestCareerCard extends StatelessWidget {
   final String comment;
 
   const BestCareerCard({
-    Key? key,
+    super.key,
     required this.title,
     required this.category,
     required this.startGrade,
@@ -22,7 +22,7 @@ class BestCareerCard extends StatelessWidget {
     required this.recommendLevel,
     required this.reason,
     required this.comment,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -160,7 +160,7 @@ class BestCareerCard extends StatelessWidget {
                   // 理由
                   const Text(
                     '入ったきっかけ',
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 16,
                       color: Color(0xFF252525),
                       fontWeight: FontWeight.bold,
@@ -179,7 +179,7 @@ class BestCareerCard extends StatelessWidget {
                   // コメント
                   const Text(
                     'コメント',
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 16,
                       color: Color(0xFF252525),
                       fontWeight: FontWeight.bold,

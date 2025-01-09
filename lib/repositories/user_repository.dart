@@ -14,16 +14,8 @@ class UserRepository {
 
 //FirebaseFirestore型のサブコレクションの取得
     final futures = await Future.wait([
-      _firestore
-          .collection('users')
-          .doc(userId)
-          .collection('carrer_history')
-          .get(),
-      _firestore
-          .collection('users')
-          .doc(userId)
-          .collection('qualification')
-          .get(),
+      _firestore.collection('users').doc(userId).collection('career_history').get(),
+      _firestore.collection('users').doc(userId).collection('qualification').get(),
       _firestore.collection('users').doc(userId).collection('lesson').get(),
       _firestore.collection('users').doc(userId).collection('portfolio').get(),
       _firestore.collection('users').doc(userId).collection('club').get(),

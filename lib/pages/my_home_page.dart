@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tsukulog/models/user.dart';
 import 'package:tsukulog/pages/show_page.dart';
+import 'package:tsukulog/components/user_button.dart';
 import 'package:tsukulog/repositories/user_repository.dart';
 
 class MyHomePage extends StatefulWidget {
@@ -17,16 +18,67 @@ class _MyHomePageState extends State<MyHomePage> {
   String? _errorMessage; // エラーメッセージ
 
   // 一旦関連企業用に作成したデータ
-  final List<List<String>> _companies = [
-    ['ライザップテクノロジーズ株式会社', '株式会社エスピック', '株式会社Techouse'],
-    ['株式会社インフラトップ', '株式会社Techouse','LINEヤフー株式会社']
-  ];
+final List<List<String>> _companies = [
+  ['ライザップテクノロジーズ株式会社', '株式会社エスピック', '株式会社Techouse'],
+  ['株式会社インフラトップ', '株式会社Techouse', 'LINEヤフー株式会社'],
+  ['株式会社サイバーエージェント', '株式会社メルカリ', '株式会社ディー・エヌ・エー'],
+  ['株式会社リクルート', '株式会社グリー', '株式会社Cygames'],
+  ['株式会社スタートトゥデイ', '株式会社ビズリーチ', '株式会社プレイド'],
+];
 
-  // ユーザーに付随するタグのサンプルデータ
-  final List<List<String>> _tags = [
-    ['バックエンド', 'Rails', 'Next.js', 'Swift', '短期ハッカソン', '長期インターン', '短期インターン','資格'],
-    ['フルスタック', 'Rails', 'flutter', '長期ハッカソン', 'サマーインターン', '長期インターン','メガベンチャー','人工生命','資格']
-  ];
+final List<List<String>> _tags = [
+  [
+    'バックエンド',
+    'Rails',
+    'Next.js',
+    'Swift',
+    '短期ハッカソン',
+    '長期インターン',
+    '短期インターン',
+    '資格'
+  ],
+  [
+    'フルスタック',
+    'Rails',
+    'flutter',
+    '長期ハッカソン',
+    'サマーインターン',
+    '長期インターン',
+    'メガベンチャー',
+    '人工生命',
+    '資格'
+  ],
+  [
+    'フロントエンド',
+    'React',
+    'TypeScript',
+    'デザイン',
+    'UI/UX',
+    '短期インターン',
+    'スタートアップ',
+    '資格'
+  ],
+  [
+    'データサイエンス',
+    'Python',
+    '機械学習',
+    'AI',
+    'アルゴリズム',
+    '長期インターン',
+    'メガベンチャー',
+    '資格'
+  ],
+  [
+    'モバイル開発',
+    'Kotlin',
+    'Swift',
+    'Flutter',
+    'ゲーム開発',
+    'サマーインターン',
+    'メガベンチャー',
+    '資格'
+  ],
+];
 
   @override
   void initState() {
@@ -72,161 +124,8 @@ class _MyHomePageState extends State<MyHomePage> {
                         _companies[i % _companies.length]; // サンプルデータのループ利用
                     final tags = _tags[i % _tags.length]; // タグのサンプルデータ
 
-                    return GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => ShowPage(uid: user.id),
-                          ),
-                        );
-                      },
-                      child: Card(
-                        margin: const EdgeInsets.symmetric(
-                          vertical: 8.0,
-                          horizontal: 16.0,
-                        ),
-                        elevation: 3.0,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(16.0),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.all(16.0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Row(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  // 仮アイコン
-                                  CircleAvatar(
-                                    radius: 30,
-                                    backgroundColor: Colors.blueGrey,
-                                    child: Text(
-                                      user.nickname.isNotEmpty
-                                          ? user.nickname[0] // 名前のイニシャルを表示
-                                          : '仮',
-                                      style: TextStyle(
-                                        fontSize: 24.0,
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                  ),
-                                  const SizedBox(width: 16.0),
-
-                                  // majorとgradeを表示
-                                  Expanded(
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          '${user.major} ${user.grade}',
-                                          style: const TextStyle(
-                                            fontSize: 20.0,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                        Container(
-                                          decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(12.0),
-                                          ),
-                                          child: Text(
-                                            user.futurePath,
-                                            style: TextStyle(
-                                              fontSize: 14.0,
-                                              fontWeight: FontWeight.w600,
-                                              color: Colors.grey[700],                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  Column(
-                                    crossAxisAlignment: CrossAxisAlignment.end,
-                                    children: [
-                                      Text(
-                                        user.nickname,
-                                        style: const TextStyle(
-                                          fontSize: 15.0,
-                                        ),
-                                      ),
-                                      Row(
-                                        children: [
-                                          Icon(
-                                            Icons.star,
-                                            color: Colors.amber,
-                                            size: 20.0,
-                                          ),
-                                          const SizedBox(width: 4.0),
-                                          Text(
-                                            user.star.toString(),
-                                            style:
-                                                const TextStyle(fontSize: 16.0),
-                                          ),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(height: 16.0),
-
-                              // タグ表示
-                              Wrap(
-                                spacing: 8.0,
-                                runSpacing: 4.0,
-                                children: tags.map((tag) {
-                                  return Container(
-                                    decoration: BoxDecoration(
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .primaryContainer,
-                                      borderRadius: BorderRadius.circular(8.0),
-                                    ),
-                                    padding: const EdgeInsets.symmetric(
-                                        vertical: 4.0, horizontal: 8.0),
-                                    child: Text(
-                                      tag,
-                                      style: TextStyle(
-                                        fontSize: 12.0,
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .onPrimaryContainer,
-                                      ),
-                                    ),
-                                  );
-                                }).toList(),
-                              ),
-                              const SizedBox(height: 16.0),
-
-                              // 関連企業リスト
-                              Row(
-                                children: [
-                                  const Icon(Icons.apartment),
-                                  const SizedBox(width: 8.0),
-                                  const Text(
-                                    '関連企業',
-                                    style: TextStyle(
-                                      fontSize: 16.0,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(height: 8.0),
-                              ...companies.map(
-                                (company) => Text(
-                                  company,
-                                  style: const TextStyle(fontSize: 14.0),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    );
+                    return UserButton(
+                        user: user, tags: tags, companies: companies);
                   },
                 ),
     );
