@@ -3,10 +3,12 @@ import 'package:tsukulog/components/career_detail_card.dart';
 import 'package:tsukulog/models/career_history.dart';
 
 class CareerHistoryCard extends StatefulWidget {
+  final String nickname;
   final List<CareerHistory> careerHistories;
 
   const CareerHistoryCard({
     Key? key,
+    required this.nickname,
     required this.careerHistories,
   }) : super(key: key);
 
@@ -25,8 +27,8 @@ class _CareerHistoryCardState extends State<CareerHistoryCard> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // セクションタイトル
-          const Text(
-            '経歴',
+          Text(
+            widget.nickname + 'の経歴',
             style: TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.bold

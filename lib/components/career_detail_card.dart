@@ -12,7 +12,7 @@ class CareerDetailCard extends StatefulWidget {
   final String comment;
 
   const CareerDetailCard({
-    Key? key,
+    super.key,
     required this.title,
     required this.category,
     required this.startGrade,
@@ -22,7 +22,7 @@ class CareerDetailCard extends StatefulWidget {
     required this.recommendLevel,
     required this.reason,
     required this.comment,
-  }) : super(key: key);
+  });
 
   @override
   _CareerDetailCardState createState() => _CareerDetailCardState();

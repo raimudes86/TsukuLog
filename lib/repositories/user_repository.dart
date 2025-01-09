@@ -14,16 +14,8 @@ class UserRepository {
 
 //FirebaseFirestore型のサブコレクションの取得
     final futures = await Future.wait([
-      _firestore
-          .collection('users')
-          .doc(userId)
-          .collection('carrer_history')
-          .get(),
-      _firestore
-          .collection('users')
-          .doc(userId)
-          .collection('qualification')
-          .get(),
+      _firestore.collection('users').doc(userId).collection('career_history').get(),
+      _firestore.collection('users').doc(userId).collection('qualification').get(),
       _firestore.collection('users').doc(userId).collection('lesson').get(),
       _firestore.collection('users').doc(userId).collection('portfolio').get(),
       _firestore.collection('users').doc(userId).collection('club').get(),
@@ -97,5 +89,16 @@ class UserRepository {
     } else {
       throw Exception('User not found');
     }
+  }
+
+  Future<List<User>> fetchAllUsers() async {
+    //全ユーザードキュメントを取得
+    QuerySnapshot<Map<String, dynamic>> userSnapshot =
+        await _firestore.collection('users').get();
+    //各ユーザーのIDを取得してfetchUserを呼び出す
+    final userIds = userSnapshot.docs.map((doc) => doc.id).toList();
+
+    //全ユーザーのリストを作成
+    return Future.wait(userIds.map((userId) => fetchUser(userId)));
   }
 }
