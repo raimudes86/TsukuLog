@@ -46,15 +46,19 @@ class UserButton extends StatelessWidget {
                   CircleAvatar(
                     radius: 30,
                     backgroundColor: Colors.blueGrey,
-                    child: Text(
-                      user.nickname.isNotEmpty
-                          ? user.nickname[0] // 名前のイニシャルを表示
-                          : '仮',
-                      style: TextStyle(
-                        fontSize: 24.0,
-                        color: Colors.white,
-                      ),
-                    ),
+                    backgroundImage: AssetImage(
+                        'assets/images/icon${user.selectedIcon}.webp'), // user.selectedIconに基づいて画像パスを生成
+                    child: user.selectedIcon < 1 || user.selectedIcon > 5
+                        ? Text(
+                            user.nickname.isNotEmpty
+                                ? user.nickname[0] // 名前のイニシャルを表示
+                                : '仮',
+                            style: TextStyle(
+                              fontSize: 24.0,
+                              color: Colors.white,
+                            ),
+                          )
+                        : null,
                   ),
                   const SizedBox(width: 16.0),
 
