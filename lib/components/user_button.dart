@@ -57,12 +57,11 @@ class UserButton extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(width: 16.0),
-    
+
                   // majorとgradeを表示
                   Expanded(
                     child: Column(
-                      crossAxisAlignment:
-                          CrossAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
                           '${user.major} ${user.grade}',
@@ -73,15 +72,15 @@ class UserButton extends StatelessWidget {
                         ),
                         Container(
                           decoration: BoxDecoration(
-                            borderRadius:
-                                BorderRadius.circular(12.0),
+                            borderRadius: BorderRadius.circular(12.0),
                           ),
                           child: Text(
                             user.futurePath,
                             style: TextStyle(
                               fontSize: 14.0,
                               fontWeight: FontWeight.w600,
-                              color: Colors.grey[700],                                            ),
+                              color: Colors.grey[700],
+                            ),
                           ),
                         ),
                       ],
@@ -106,8 +105,7 @@ class UserButton extends StatelessWidget {
                           const SizedBox(width: 4.0),
                           Text(
                             user.star.toString(),
-                            style:
-                                const TextStyle(fontSize: 16.0),
+                            style: const TextStyle(fontSize: 16.0),
                           ),
                         ],
                       ),
@@ -116,7 +114,7 @@ class UserButton extends StatelessWidget {
                 ],
               ),
               const SizedBox(height: 16.0),
-    
+
               // タグ表示
               Wrap(
                 spacing: 8.0,
@@ -124,9 +122,7 @@ class UserButton extends StatelessWidget {
                 children: tags.map((tag) {
                   return Container(
                     decoration: BoxDecoration(
-                      color: Theme.of(context)
-                          .colorScheme
-                          .primaryContainer,
+                      color: Theme.of(context).colorScheme.primaryContainer,
                       borderRadius: BorderRadius.circular(8.0),
                     ),
                     padding: const EdgeInsets.symmetric(
@@ -135,16 +131,14 @@ class UserButton extends StatelessWidget {
                       tag,
                       style: TextStyle(
                         fontSize: 12.0,
-                        color: Theme.of(context)
-                            .colorScheme
-                            .onPrimaryContainer,
+                        color: Theme.of(context).colorScheme.onPrimaryContainer,
                       ),
                     ),
                   );
                 }).toList(),
               ),
               const SizedBox(height: 16.0),
-    
+
               // 関連企業リスト
               Row(
                 children: [
