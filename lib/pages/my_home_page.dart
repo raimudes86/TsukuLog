@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:tsukulog/models/user.dart';
-import 'package:tsukulog/pages/show_page.dart';
 import 'package:tsukulog/components/user_button.dart';
 import 'package:tsukulog/repositories/user_repository.dart';
 
