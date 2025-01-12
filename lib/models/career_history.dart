@@ -1,4 +1,5 @@
 class CareerHistory {
+  final String id;
   final String title;
   final String category;
   final String startGrade;
@@ -10,6 +11,7 @@ class CareerHistory {
   final String comment;
 
   CareerHistory({
+    this.id = '',
     this.title = '',
     this.category = '',
     this.startGrade = '',
@@ -23,6 +25,7 @@ class CareerHistory {
 
   factory CareerHistory.fromMap(Map<String, dynamic> map) {
     return CareerHistory(
+      id: map['id'] ?? '',
       title: map['title'] ?? '',
       category: map['category'] ?? '',
       startGrade: map['start_grade'] ?? '',

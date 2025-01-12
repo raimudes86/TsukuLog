@@ -5,9 +5,9 @@ class PortfolioCard extends StatelessWidget {
   final List<PortFolio> portfolios;
 
   const PortfolioCard({
-    Key? key,
+    super.key,
     required this.portfolios,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

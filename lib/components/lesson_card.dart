@@ -5,9 +5,9 @@ class LessonCard extends StatelessWidget {
   final List<Lesson> lessons;
 
   const LessonCard({
-    Key? key,
+    super.key,
     required this.lessons,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

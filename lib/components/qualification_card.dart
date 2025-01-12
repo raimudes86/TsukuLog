@@ -5,9 +5,9 @@ class QualificationCard extends StatelessWidget {
   final List<Qualification> qualifications;
 
   const QualificationCard({
-    Key? key,
+    super.key,
     required this.qualifications,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

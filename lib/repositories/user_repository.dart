@@ -30,8 +30,16 @@ class UserRepository {
     final suggestSnapshot = futures[5];
 
     //コレクションのインスタンスから、中身の取得とUserに渡すリストの作成
-    List<Map<String, dynamic>> careerData =
-        careerSnapshot.docs.map((doc) => doc.data()).toList();
+    // List<Map<String, dynamic>> careerData =
+    //     careerSnapshot.docs.map((doc) => doc.data()).toList();
+    // careerData にドキュメント ID を含める
+    List<Map<String, dynamic>> careerData = careerSnapshot.docs.map((doc) {
+      final data = doc.data();
+      return {
+        ...data,
+        'id': doc.id, // ドキュメント ID を追加
+      };
+    }).toList();
     List<Map<String, dynamic>> qualificationData =
         qualificationSnapshot.docs.map((doc) => doc.data()).toList();
     List<Map<String, dynamic>> lessonData =
@@ -42,10 +50,11 @@ class UserRepository {
         clubSnapshot.docs.map((doc) => doc.data()).toList();
     List<Map<String, dynamic>> suggestData =
         suggestSnapshot.docs.map((doc) => doc.data()).toList();
+
+    // bestCareer を特定
+    String? bestCareerId = userDoc.data()?['best_career_id'];
     Map<String, dynamic>? bestCareer = careerSnapshot.docs
-        .firstWhereOrNull(
-          (doc) => doc.id == userDoc.data()!['best_career_id'],
-        )
+        .firstWhereOrNull((doc) => doc.id == bestCareerId)
         ?.data();
 
     //careerDataを日付順にソート

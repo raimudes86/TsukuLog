@@ -33,7 +33,7 @@ class _ShowPageState extends State<ShowPage> {
   String major = '';
   String futurePath = '';
   int selecetedIcon = 1;
-  CareerHistory? bestCareer;
+  String bestCareerId = '';
   List<CareerHistory> careerHistories = [];
   List<Qualification> qualifications = [];
   List<Lesson> lessons = [];
@@ -60,7 +60,7 @@ class _ShowPageState extends State<ShowPage> {
         major = user.major;
         futurePath = user.futurePath;
         selecetedIcon = user.selectedIcon;
-        bestCareer = user.bestCareer;
+        bestCareerId = user.bestCareerId;
         careerHistories = user.careerHistorys;
         qualifications = user.qualifications;
         lessons = user.lessons;
@@ -107,17 +107,11 @@ class _ShowPageState extends State<ShowPage> {
                   ),
 
                   // Best Career
-                  if (bestCareer != null)
+                  if (bestCareerId.isNotEmpty)
+                    // Text('Best Career: ${bestCareerId}'), // デバッグ用
                     BestCareerCard(
-                      title: bestCareer!.title,
-                      category: bestCareer!.category,
-                      startGrade: bestCareer!.startGrade,
-                      startMonth: bestCareer!.startMonth,
-                      span: bestCareer!.span,
-                      difficultLevel: bestCareer!.difficultLevel,
-                      recommendLevel: bestCareer!.recommendLevel,
-                      reason: bestCareer!.reason,
-                      comment: bestCareer!.comment,
+                      bestCareerId: bestCareerId,
+                      careerHistories: careerHistories,
                     ),
 
                   if (suggests.isNotEmpty) SuggestCard(suggests: suggests),
@@ -126,6 +120,7 @@ class _ShowPageState extends State<ShowPage> {
                   if (careerHistories.isNotEmpty) 
                     CareerHistoryCard(
                       nickname: nickname,
+                      bestCareerId: bestCareerId,
                       careerHistories: careerHistories
                     ),
 

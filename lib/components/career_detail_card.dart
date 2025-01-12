@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:tsukulog/components/career_icon.dart';
 
 class CareerDetailCard extends StatefulWidget {
+  final String id;
+  final bool isBestCareer;
   final String title;
   final String category;
   final String startGrade;
@@ -14,6 +16,8 @@ class CareerDetailCard extends StatefulWidget {
 
   const CareerDetailCard({
     super.key,
+    required this.id,
+    required this.isBestCareer,
     required this.title,
     required this.category,
     required this.startGrade,
@@ -30,18 +34,31 @@ class CareerDetailCard extends StatefulWidget {
 }
 
 class _CareerDetailCardState extends State<CareerDetailCard> {
-  bool _isCommentVisible = false; // 感想が表示されているかどうかを管理するフラグ
 
   @override
   Widget build(BuildContext context) {
     return Card(
       margin: const EdgeInsets.symmetric(vertical: 8),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      color: widget.isBestCareer ? Colors.yellow[100] : null, // ハイライト色
+      elevation: widget.isBestCareer ? 8 : null, // ハイライト時の影の強さ
+      shadowColor: widget.isBestCareer ? Colors.yellow : null, // ハイライト時の影の色
       child: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            // Text(
+            //   widget.id == null 
+            //   ? 'idがnullです' 
+            //   : widget.id.isEmpty 
+            //       ? 'idがありません' 
+            //       : widget.id,
+            //   style: TextStyle(
+            //     fontSize: 12, 
+            //     color: Colors.grey
+            //   ),
+            // ), // デバッグ用
             // 左のアイコンとタイトルの行
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
