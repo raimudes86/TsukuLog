@@ -43,7 +43,6 @@ class User {
   factory User.fromFirestore(
     String id,
     Map<String, dynamic> userMap,
-    Map<String, dynamic>? bestCareerData,
     List<Map<String, dynamic>> careerData,
     List<Map<String, dynamic>> qualificationData,
     List<Map<String, dynamic>> lessonData,
@@ -53,11 +52,11 @@ class User {
   ) {
     return User(
       id: id,
-      nickname: userMap['nickname'] ?? '',
+      nickname: userMap['nickname'] ?? '未設定',
       star: userMap['star'] ?? 0,
-      grade: userMap['grade'] ?? '',
-      major: userMap['major'] ?? '',
-      futurePath: userMap['future_path'] ?? '',
+      grade: userMap['grade'] ?? '未設定',
+      major: userMap['major'] ?? '未設定',
+      futurePath: userMap['future_path'] ?? '未設定',
       selectedIcon: userMap['selected_icon'] ?? 0,
       bestCareerId: userMap['best_career_id'] ?? '',
       careerHistorys:

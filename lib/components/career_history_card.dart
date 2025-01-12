@@ -15,7 +15,7 @@ class CareerHistoryCard extends StatefulWidget {
   });
 
   @override
-  _CareerHistoryCardState createState() => _CareerHistoryCardState();
+  State<CareerHistoryCard> createState() => _CareerHistoryCardState();
 }
 
 class _CareerHistoryCardState extends State<CareerHistoryCard> {
