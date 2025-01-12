@@ -45,9 +45,10 @@ class UserButton extends StatelessWidget {
                   // 仮アイコン
                   CircleAvatar(
                     radius: 30,
-                    backgroundColor: Colors.blueGrey,
-                    backgroundImage: AssetImage(
-                        'assets/images/icon${user.selectedIcon}.webp'), // user.selectedIconに基づいて画像パスを生成
+                    // backgroundColor: Colors.blueGrey,
+                    backgroundImage: user.selectedIcon > 0 && user.selectedIcon < 6
+                      ? AssetImage('assets/images/icon${user.selectedIcon}.webp')
+                      : null, // user.selectedIconに基づいて画像パスを生成
                     child: user.selectedIcon < 1 || user.selectedIcon > 5
                         ? Text(
                             user.nickname.isNotEmpty

@@ -7,10 +7,10 @@ class CareerHistoryCard extends StatefulWidget {
   final List<CareerHistory> careerHistories;
 
   const CareerHistoryCard({
-    Key? key,
+    super.key,
     required this.nickname,
     required this.careerHistories,
-  }) : super(key: key);
+  });
 
   @override
   _CareerHistoryCardState createState() => _CareerHistoryCardState();
@@ -27,12 +27,20 @@ class _CareerHistoryCardState extends State<CareerHistoryCard> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // セクションタイトル
-          Text(
-            widget.nickname + 'の経歴',
-            style: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold
-            ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Icon(Icons.double_arrow, color: Color(0xFF252525)),
+              SizedBox(width: 4),
+              Text(
+                widget.nickname + 'の経歴',
+                style: TextStyle(
+                  color: Color(0xFF252525),
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
           ),
           const SizedBox(height: 8),
 
