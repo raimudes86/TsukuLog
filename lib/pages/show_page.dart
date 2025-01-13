@@ -32,6 +32,7 @@ class _ShowPageState extends State<ShowPage> {
   String grade = '';
   String major = '';
   String futurePath = '';
+  int selecetedIcon = 1;
   CareerHistory? bestCareer;
   List<CareerHistory> careerHistories = [];
   List<Qualification> qualifications = [];
@@ -58,6 +59,7 @@ class _ShowPageState extends State<ShowPage> {
         grade = user.grade;
         major = user.major;
         futurePath = user.futurePath;
+        selecetedIcon = user.selectedIcon;
         bestCareer = user.bestCareer;
         careerHistories = user.careerHistorys;
         qualifications = user.qualifications;
@@ -100,6 +102,7 @@ class _ShowPageState extends State<ShowPage> {
                     major: major,
                     futurePath: futurePath,
                     star: star,
+                    selectedIcon: selecetedIcon,
                     // imageUrl: '',
                   ),
 
