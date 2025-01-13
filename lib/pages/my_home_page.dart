@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart' as auth;
 import 'package:flutter/material.dart';
 import 'package:tsukulog/models/user.dart';
 import 'package:tsukulog/components/user_button.dart';
@@ -93,6 +94,13 @@ final List<List<String>> _tags = [
   void initState() {
     super.initState();
     _fetchUsers(); // 初期化時にデータを取得
+    // ログインしているユーザー情報を取得
+    var user = auth.FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      print('ログインしているユーザー: ${user.email}');
+    } else {
+      print('ログインしていません');
+    }
   }
 
   Future<void> _fetchUsers() async {
