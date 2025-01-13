@@ -2,51 +2,44 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:tsukulog/pages/my_home_page.dart';
+import 'package:tsukulog/pages/sign_up_page.dart';
 
-class SignUpPage extends StatefulWidget {
-  const SignUpPage({super.key});
+class SignInPage extends StatefulWidget {
+  const SignInPage({super.key});
 
   @override
-  State<SignUpPage> createState() => _SignUpPageState();
+  State<SignInPage> createState() => _SignInPageState();
 }
 
-class _SignUpPageState extends State<SignUpPage> {
-  // FirebaseAuthのインスタンスを取得
+class _SignInPageState extends State<SignInPage> {
   final _auth = FirebaseAuth.instance;
-  //firestoreのインスタンスを取得
   final _firestore = FirebaseFirestore.instance.collection('users');
-  //Formの状態を管理するためのkeyを設定
   final _formKey = GlobalKey<FormState>();
+  //このUserはfirebaseAuthのやつだから、うちのモデルとは関係ない
+  User? user;
 
   String _email = '';
   String _password = '';
-  //発生したエラーメッセージを格納する変数
   String _errorMessage = '';
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('新規登録'),
+        title: const Text('ログイン'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        //FormウィジェットでTextFormFieldを囲うことで、
-        //ボタン押したときなどに、一斉にバリデーションチェックなどが可能になる
         child: Form(
-          //ここでFormの状態を管理するためのkeyを設定
           key: _formKey,
           child: Column(
             children: [
-              //ただのTextFieldではなく、TextFormFieldを使うことで、
-              //Formのバリデーションチェックが可能になる
               TextFormField(
                 decoration: const InputDecoration(labelText: 'メールアドレス'),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'メールアドレスを入力してください';
                   }
-                  //正規表現でメールアドレスの形式チェック
                   if (!RegExp(
                           r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$')
                       .hasMatch(value)) {
@@ -54,7 +47,6 @@ class _SignUpPageState extends State<SignUpPage> {
                   }
                   return null;
                 },
-                //送信時のFormState.save()で呼び出される(_formKey.currentState!.save()のように)
                 onSaved: (value) {
                   _email = value!;
                 },
@@ -78,67 +70,51 @@ class _SignUpPageState extends State<SignUpPage> {
               const SizedBox(height: 16.0),
               ElevatedButton(
                 onPressed: () async {
-                  // Formのバリデーションチェック
-                  //_formKey.cuttentStateで現在のFormStateオブジェクトを取得
-                  //このオブジェクトに対してvalidate()メソッドを呼び出すことで、フォーム全体の検証が可能
                   if (_formKey.currentState!.validate()) {
-                    //バリデーションが通った場合にauthenticationに保存を試みる
-                    //各Form内のonSavedを呼び出して、_emailと_passwordに値をセット
                     _formKey.currentState!.save();
                     try {
-                      await _auth.createUserWithEmailAndPassword(
-                        email: _email,
-                        password: _password,
-                      );
-                      //debag
-                      if (_auth.currentUser != null) {
-                        print("新規登録成功: ${_auth.currentUser!.uid}");
-                      }
-                      //firestoreにユーザー情報を保存
-                      await _firestore.doc(_auth.currentUser!.uid).set({
-                        'nickname': '未設定',
-                        'star': 0, // 初期値
-                        'grade': '未設定',
-                        'major': '未設定',
-                        'future_path': '未設定',
-                        'best_career_id': '未設定',
-                        'selected_icon': 0,
-                        'tags': [],
-                        'companies': [],
-                        'created_at': FieldValue.serverTimestamp(),
-                      });
+                      //このUserはfirebaseAuthのやつだから、うちのモデルとは関係ない
+                      user = (await _auth.signInWithEmailAndPassword(
+                              email: _email, password: _password))
+                          .user;
                     } on FirebaseAuthException catch (e) {
-                      if (e.code == 'email-already-in-use') {
-                        setState(() {
-                          _errorMessage = "メールアドレスはすでに登録されています。";
-                        });
+                      if (e.code == 'user-not-found') {
+                        _errorMessage = "パスワードまたはメールアドレスが正しくありません。";
+                      } else if (e.code == 'wrong-password') {
+                        _errorMessage = "パスワードまたはメールアドレスが正しくありません。";
+                      //見直し必要
                       } else {
                         setState(() {
-                          _errorMessage = "エラーが発生しました";
+                          _errorMessage = "パスワードまたはメールアドレスが正しくありません。";
                         });
                       }
                     }
                   }
                   //非同期処理中に現在のウィジェットが破棄されるとcontextを使用した操作でエラー
                   //mountedプロパティでウィジェットが破棄されていないか確認をしてから画面遷移
-                  if (mounted) {
+                  if (mounted && user != null) {
                     Navigator.pushReplacement(
                       // ignore: use_build_context_synchronously
                       context,
-                      //サインインの処理をしてからホームページに飛びたいよね
                       MaterialPageRoute(
                         builder: (context) => MyHomePage(title: 'つくログ'),
                       ),
                     );
                   }
                 },
-                child: const Text('新規登録'),
+                child: const Text('ログイン'),
               ),
               if (_errorMessage.isNotEmpty)
                 Text(
                   _errorMessage,
                   style: const TextStyle(color: Colors.red),
                 ),
+              TextButton(
+                  onPressed: () {
+                    Navigator.pushReplacement(context,
+                        MaterialPageRoute(builder: (context) => SignUpPage()));
+                  },
+                  child: Text('新規登録はこちらから'))
             ],
           ),
         ),
