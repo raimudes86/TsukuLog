@@ -37,6 +37,11 @@ class CareerIcon extends StatelessWidget {
       'backgroundColor': Colors.purple,
       'iconColor': Colors.white,
     },
+    'コンペ': {
+      'icon': Icons.emoji_events,
+      'backgroundColor': Colors.red,
+      'iconColor': Colors.white,
+    },
   };
 
   @override

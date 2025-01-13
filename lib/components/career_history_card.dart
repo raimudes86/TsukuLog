@@ -4,16 +4,18 @@ import 'package:tsukulog/models/career_history.dart';
 
 class CareerHistoryCard extends StatefulWidget {
   final String nickname;
+  final String bestCareerId;
   final List<CareerHistory> careerHistories;
 
   const CareerHistoryCard({
     super.key,
     required this.nickname,
+    required this.bestCareerId,
     required this.careerHistories,
   });
 
   @override
-  _CareerHistoryCardState createState() => _CareerHistoryCardState();
+  State<CareerHistoryCard> createState() => _CareerHistoryCardState();
 }
 
 class _CareerHistoryCardState extends State<CareerHistoryCard> {
@@ -47,6 +49,8 @@ class _CareerHistoryCardState extends State<CareerHistoryCard> {
           // 経歴ごとのカード
           ...widget.careerHistories.map(
             (career) => CareerDetailCard(
+              id: career.id,
+              isBestCareer: career.id == widget.bestCareerId,
               title: career.title, 
               category: career.category, 
               startGrade: career.startGrade, 

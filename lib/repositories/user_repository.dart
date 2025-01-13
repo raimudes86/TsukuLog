@@ -14,8 +14,16 @@ class UserRepository {
 
 //FirebaseFirestore型のサブコレクションの取得
     final futures = await Future.wait([
-      _firestore.collection('users').doc(userId).collection('career_history').get(),
-      _firestore.collection('users').doc(userId).collection('qualification').get(),
+      _firestore
+          .collection('users')
+          .doc(userId)
+          .collection('career_history')
+          .get(),
+      _firestore
+          .collection('users')
+          .doc(userId)
+          .collection('qualification')
+          .get(),
       _firestore.collection('users').doc(userId).collection('lesson').get(),
       _firestore.collection('users').doc(userId).collection('portfolio').get(),
       _firestore.collection('users').doc(userId).collection('club').get(),
@@ -29,35 +37,38 @@ class UserRepository {
     final clubSnapshot = futures[4];
     final suggestSnapshot = futures[5];
 
-    //コレクションのインスタンスから、中身の取得とUserに渡すリストの作成
-    List<Map<String, dynamic>> careerData =
-        careerSnapshot.docs.map((doc) => doc.data()).toList();
-    List<Map<String, dynamic>> qualificationData =
-        qualificationSnapshot.docs.map((doc) => doc.data()).toList();
-    List<Map<String, dynamic>> lessonData =
-        lessonSnapshot.docs.map((doc) => doc.data()).toList();
-    List<Map<String, dynamic>> portfolioData =
-        portFolioSnapshot.docs.map((doc) => doc.data()).toList();
-    List<Map<String, dynamic>> clubData =
-        clubSnapshot.docs.map((doc) => doc.data()).toList();
-    List<Map<String, dynamic>> suggestData =
-        suggestSnapshot.docs.map((doc) => doc.data()).toList();
-    Map<String, dynamic>? bestCareer = careerSnapshot.docs
-        .firstWhereOrNull(
-          (doc) => doc.id == userDoc.data()!['best_career_id'],
-        )
-        ?.data();
+    //下で使うヘルパーメソッド
+    //idを追加するにはこれしか方法がないっぽい？
+    List<Map<String, dynamic>> appendIdAndMakeList(
+        QuerySnapshot<Map<String, dynamic>> snap) {
+      return snap.docs.map((doc) {
+        final data = doc.data();
+        return {
+          ...data,
+          'id': doc.id,
+        };
+      }).toList();
+    }
+
+    //ヘルパーメソッドによってサブコレクションのデータをリストに変換
+    final careerData = appendIdAndMakeList(careerSnapshot);
+    final qualificationData = appendIdAndMakeList(qualificationSnapshot);
+    final lessonData = appendIdAndMakeList(lessonSnapshot);
+    final portfolioData = appendIdAndMakeList(portFolioSnapshot);
+    final clubData = appendIdAndMakeList(clubSnapshot);
+    final suggestData = appendIdAndMakeList(suggestSnapshot);
 
     //careerDataを日付順にソート
     const sortMap = {
       'B1': 1,
       'B2': 2,
       'B3': 3,
-      'M1': 4,
-      'M2': 5,
-      'D1': 6,
-      'D2': 7,
-      'D3': 8
+      'B4': 4,
+      'M1': 5,
+      'M2': 6,
+      'D1': 7,
+      'D2': 8,
+      'D3': 9,
     };
     careerData.sort((a, b) {
       int gradeA = sortMap[a['start_grade']] ?? 0;
@@ -68,7 +79,6 @@ class UserRepository {
       }
       return a['start_month'].compareTo(b['start_month']);
     });
-
     qualificationData.sort((a, b) {
       return a['year'].compareTo(b['year']);
     });
@@ -78,7 +88,6 @@ class UserRepository {
       return User.fromFirestore(
         userDoc.id,
         userDoc.data()!,
-        bestCareer,
         careerData,
         qualificationData,
         lessonData,

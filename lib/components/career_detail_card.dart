@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:tsukulog/components/career_icon.dart';
 
 class CareerDetailCard extends StatefulWidget {
+  final String id;
+  final bool isBestCareer;
   final String title;
   final String category;
   final String startGrade;
@@ -14,6 +16,8 @@ class CareerDetailCard extends StatefulWidget {
 
   const CareerDetailCard({
     super.key,
+    required this.id,
+    required this.isBestCareer,
     required this.title,
     required this.category,
     required this.startGrade,
@@ -26,11 +30,10 @@ class CareerDetailCard extends StatefulWidget {
   });
 
   @override
-  _CareerDetailCardState createState() => _CareerDetailCardState();
+  State<CareerDetailCard> createState() => _CareerDetailCardState();
 }
 
 class _CareerDetailCardState extends State<CareerDetailCard> {
-  bool _isCommentVisible = false; // 感想が表示されているかどうかを管理するフラグ
 
   @override
   Widget build(BuildContext context) {
@@ -42,6 +45,17 @@ class _CareerDetailCardState extends State<CareerDetailCard> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            // Text(
+            //   widget.id == null 
+            //   ? 'idがnullです' 
+            //   : widget.id.isEmpty 
+            //       ? 'idがありません' 
+            //       : widget.id,
+            //   style: TextStyle(
+            //     fontSize: 12, 
+            //     color: Colors.grey
+            //   ),
+            // ), // デバッグ用
             // 左のアイコンとタイトルの行
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -104,6 +118,33 @@ class _CareerDetailCardState extends State<CareerDetailCard> {
                     ],
                   ),
                 ),
+                if (widget.isBestCareer)
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        Icons.military_tech,
+                        color: Color(0xFFFFD700),
+                        size: 45,
+                      ),
+                      const Text(
+                        'ベスト',
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: Color(0xFFFFD700),
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      const Text(
+                        'キャリア',
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: Color(0xFFFFD700),
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
               ],
             ),
             const SizedBox(height: 8),

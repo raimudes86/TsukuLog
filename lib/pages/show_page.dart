@@ -33,7 +33,7 @@ class _ShowPageState extends State<ShowPage> {
   String major = '';
   String futurePath = '';
   int selecetedIcon = 1;
-  CareerHistory? bestCareer;
+  String bestCareerId = '';
   List<CareerHistory> careerHistories = [];
   List<Qualification> qualifications = [];
   List<Lesson> lessons = [];
@@ -60,8 +60,8 @@ class _ShowPageState extends State<ShowPage> {
         major = user.major;
         futurePath = user.futurePath;
         selecetedIcon = user.selectedIcon;
-        bestCareer = user.bestCareer;
-        careerHistories = user.careerHistorys;
+        bestCareerId = user.bestCareerId;
+        careerHistories = user.careerHistories;
         qualifications = user.qualifications;
         lessons = user.lessons;
         portfolios = user.portfolios;
@@ -78,6 +78,23 @@ class _ShowPageState extends State<ShowPage> {
 
   @override
   Widget build(BuildContext context) {
+    // ユーザーのベストキャリアを取得
+    CareerHistory? bestCareer = careerHistories.firstWhere(
+      (career) => career.id == bestCareerId,
+      orElse: () => CareerHistory(
+        id: '', // デフォルトの ID
+        title: 'No Title',
+        category: 'No Category',
+        startGrade: '',
+        startMonth: 0,
+        span: '',
+        difficultLevel: 0,
+        recommendLevel: 0,
+        reason: 'No Reason',
+        comment: 'No Comment',
+      ), 
+    );
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
@@ -87,11 +104,6 @@ class _ShowPageState extends State<ShowPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            // デバッグ用
-            // const Text(
-            //   'This is the Show Page',
-            // ),
-            // Text('UID: ${widget.uid}'),
             Expanded(
               child: ListView(
                 children: [
@@ -107,17 +119,9 @@ class _ShowPageState extends State<ShowPage> {
                   ),
 
                   // Best Career
-                  if (bestCareer != null)
+                  if (bestCareerId.isNotEmpty)
                     BestCareerCard(
-                      title: bestCareer!.title,
-                      category: bestCareer!.category,
-                      startGrade: bestCareer!.startGrade,
-                      startMonth: bestCareer!.startMonth,
-                      span: bestCareer!.span,
-                      difficultLevel: bestCareer!.difficultLevel,
-                      recommendLevel: bestCareer!.recommendLevel,
-                      reason: bestCareer!.reason,
-                      comment: bestCareer!.comment,
+                      bestCareer: bestCareer,
                     ),
 
                   if (suggests.isNotEmpty) SuggestCard(suggests: suggests),
@@ -126,6 +130,7 @@ class _ShowPageState extends State<ShowPage> {
                   if (careerHistories.isNotEmpty) 
                     CareerHistoryCard(
                       nickname: nickname,
+                      bestCareerId: bestCareerId,
                       careerHistories: careerHistories
                     ),
 
