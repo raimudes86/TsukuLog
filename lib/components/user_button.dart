@@ -6,13 +6,9 @@ class UserButton extends StatelessWidget {
   const UserButton({
     super.key,
     required this.user,
-    required this.tags,
-    required this.companies,
   });
 
   final User user;
-  final List<String> tags;
-  final List<String> companies;
 
   @override
   Widget build(BuildContext context) {
@@ -124,7 +120,7 @@ class UserButton extends StatelessWidget {
               Wrap(
                 spacing: 8.0,
                 runSpacing: 4.0,
-                children: tags.map((tag) {
+                children: user.tags.map((tag) {
                   return Container(
                     decoration: BoxDecoration(
                       color: Theme.of(context).colorScheme.primaryContainer,
@@ -159,7 +155,7 @@ class UserButton extends StatelessWidget {
                 ],
               ),
               const SizedBox(height: 8.0),
-              ...companies.map(
+              ...user.companies.map(
                 (company) => Text(
                   company,
                   style: const TextStyle(fontSize: 14.0),

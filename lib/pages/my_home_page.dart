@@ -17,79 +17,6 @@ class _MyHomePageState extends State<MyHomePage> {
   List<User> _users = []; // 取得したユーザーリスト
   String? _errorMessage; // エラーメッセージ
 
-  // 一旦関連企業用に作成したデータ
-final List<List<String>> _companies = [
-  ['ライザップテクノロジーズ株式会社', '株式会社エスピック', '株式会社Techouse'],
-  ['株式会社日立製作所', 'LINEヤフー株式会社'],
-  ['株式会社スプリックス'],
-  ['株式会社インフラトップ', '株式会社Techouse', '株式会社レアゾン・ホールディングス'],
-  ['株式会社カフェラテ', '株式会社ゆめみ', '株式会社しびっくぱわー'],
-];
-
-final List<List<String>> _tags = [
-  [
-    'フルスタック',
-    'Ruby',
-    'Rails',
-    'Flutter',
-    'Swift',
-    '短期ハッカソン',
-    '長期インターン',
-    '短期インターン',
-    'ベンチャー',
-    '資格'
-    'enPiT'
-  ],
-  [
-    'フロントエンド',
-    'Rails',
-    'UI/UX',
-    'デザイン'
-    '短期ハッカソン',
-    'サマーインターン',
-    '短期インターン',
-    'メガベンチャー',
-    '大手',
-    'enPiT'
-  ],
-  [
-    'データサイエンス',
-    'Python',
-    'Flutter',
-    '機械学習',
-    'AI',
-    'アルゴリズム',
-    '長期インターン',
-    'メガベンチャー',
-    '資格'
-    'enPiT'
-  ],
-  [
-    'フルスタック',
-    'Ruby',
-    'Rails',
-    'JavaScript',
-    'Flutter',
-    'Swift',
-    '長期インターン'
-    '長期ハッカソン'
-    'ベンチャー',
-    '資格'
-    'enPiT'
-  ],
-  [
-    'バックエンド'
-    'モバイル開発',
-    'Flutter',
-    'AI'
-    '短期ハッカソン',
-    '長期インターン',
-    '受賞'
-    '資格'
-    'enPiT'
-  ],
-];
-
   @override
   void initState() {
     super.initState();
@@ -101,8 +28,9 @@ final List<List<String>> _tags = [
       List<User> users = await UserRepository().fetchAllUsers();
       // 自分以外のユーザー以外取得
       users = users
-          .where((user) => user.id != auth.FirebaseAuth.instance.currentUser!.uid)
-          .toList(); 
+          .where(
+              (user) => user.id != auth.FirebaseAuth.instance.currentUser!.uid)
+          .toList();
 
       // データをセットしてUIを更新
       setState(() {
@@ -133,12 +61,8 @@ final List<List<String>> _tags = [
                   itemCount: _users.length,
                   itemBuilder: (context, i) {
                     final user = _users[i];
-                    final companies =
-                        _companies[i % _companies.length]; // サンプルデータのループ利用
-                    final tags = _tags[i % _tags.length]; // タグのサンプルデータ
 
-                    return UserButton(
-                        user: user, tags: tags, companies: companies);
+                    return UserButton(user: user);
                   },
                 ),
     );
