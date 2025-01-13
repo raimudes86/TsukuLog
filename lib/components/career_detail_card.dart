@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:tsukulog/components/career_icon.dart';
 
 class CareerDetailCard extends StatefulWidget {
+  final String id;
+  final bool isBestCareer;
   final String title;
   final String category;
   final String startGrade;
@@ -13,6 +16,8 @@ class CareerDetailCard extends StatefulWidget {
 
   const CareerDetailCard({
     super.key,
+    required this.id,
+    required this.isBestCareer,
     required this.title,
     required this.category,
     required this.startGrade,
@@ -25,11 +30,10 @@ class CareerDetailCard extends StatefulWidget {
   });
 
   @override
-  _CareerDetailCardState createState() => _CareerDetailCardState();
+  State<CareerDetailCard> createState() => _CareerDetailCardState();
 }
 
 class _CareerDetailCardState extends State<CareerDetailCard> {
-  bool _isCommentVisible = false; // 感想が表示されているかどうかを管理するフラグ
 
   @override
   Widget build(BuildContext context) {
@@ -41,6 +45,17 @@ class _CareerDetailCardState extends State<CareerDetailCard> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            // Text(
+            //   widget.id == null 
+            //   ? 'idがnullです' 
+            //   : widget.id.isEmpty 
+            //       ? 'idがありません' 
+            //       : widget.id,
+            //   style: TextStyle(
+            //     fontSize: 12, 
+            //     color: Colors.grey
+            //   ),
+            // ), // デバッグ用
             // 左のアイコンとタイトルの行
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -49,25 +64,8 @@ class _CareerDetailCardState extends State<CareerDetailCard> {
                 Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Container(
-                      width: 48,
-                      height: 48,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: Colors.grey[400],
-                      ),
-                      child: const Center(
-                        child: Text(
-                          '*',
-                          style: TextStyle(
-                            fontSize: 24,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                          ),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 16),
+                    CareerIcon(categoryName: widget.category),
+                    const SizedBox(height: 8),
                     Text(
                       '${widget.startGrade}/${widget.startMonth}月から',
                       style: TextStyle(
@@ -76,7 +74,7 @@ class _CareerDetailCardState extends State<CareerDetailCard> {
                       ),
                     ),
                     Text(
-                      '${widget.span}',
+                      widget.span,
                       style: TextStyle(
                         fontSize: 12,
                         color: Color(0xFF252525),
@@ -84,7 +82,7 @@ class _CareerDetailCardState extends State<CareerDetailCard> {
                     ),
                   ],
                 ),
-                const SizedBox(width: 16),
+                const SizedBox(width:10),
                 // タイトルとカテゴリ
                 Expanded(
                   child: Column(
@@ -120,9 +118,36 @@ class _CareerDetailCardState extends State<CareerDetailCard> {
                     ],
                   ),
                 ),
+                if (widget.isBestCareer)
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        Icons.military_tech,
+                        color: Color(0xFFFFD700),
+                        size: 45,
+                      ),
+                      const Text(
+                        'ベスト',
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: Color(0xFFFFD700),
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      const Text(
+                        'キャリア',
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: Color(0xFFFFD700),
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
               ],
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: 8),
 
             // ハードルとおすすめ度の星評価
             Row(
@@ -131,7 +156,12 @@ class _CareerDetailCardState extends State<CareerDetailCard> {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text('ハードル', style: TextStyle(fontSize: 14)),
+                    const Text('個人的ハードル', 
+                      style: TextStyle(fontSize: 14,
+                      color: Color(0xFF252525),
+                      fontWeight: FontWeight.bold,
+                      ),
+                    ),
                     const SizedBox(height: 4),
                     _buildStarRating(widget.difficultLevel),
                   ],
@@ -139,55 +169,83 @@ class _CareerDetailCardState extends State<CareerDetailCard> {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text('おすすめ度', style: TextStyle(fontSize: 14)),
+                    const Text('おすすめ度', 
+                      style: TextStyle(fontSize: 14,
+                        color: Color(0xFF252525),
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                     const SizedBox(height: 4),
                     _buildStarRating(widget.recommendLevel),
                   ],
                 ),
               ],
             ),
-            const SizedBox(height: 16),
-
+            const SizedBox(height: 8),
             // 理由
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Icon(Icons.lightbulb_outline, color: Color(0xFF252525), size: 24),
+                const SizedBox(width: 4),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text(
+                        '入ったきっかけ',
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: Color(0xFF252525),
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 4),
             Text(
               widget.reason,
               style: const TextStyle(
                 fontSize: 14,
-                color: Color(0XFF252525),
+                color: Color(0xFF252525),
               ),
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: 16),
 
-            // 感想を見るリンク
-            InkWell(
-              onTap: () {
-                // 感想を表示・非表示切り替え
-                setState(() {
-                  _isCommentVisible = !_isCommentVisible;
-                });
-              },
-              child: Text(
-                _isCommentVisible ? '感想を閉じる' : '感想を見る',
-                style: const TextStyle(
-                  fontSize: 14,
-                  color: Colors.purple,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-
-            // 感想（表示・非表示）
-            if (_isCommentVisible)
-              Padding(
-                padding: const EdgeInsets.only(top: 8),
-                child: Text(
-                  widget.comment,
-                  style: const TextStyle(
-                    fontSize: 14,
-                    color: Color(0XFF252525),
+            // コメント
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Icon(Icons.comment, color: Color(0xFF252525), size: 24),
+                const SizedBox(width: 4),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text(
+                        'コメント',
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: Color(0xFF252525),
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
+              ],
+            ),
+            const SizedBox(height: 4),
+            Text(
+              widget.comment,
+              style: const TextStyle(
+                fontSize: 14,
+                color: Color(0xFF252525),
               ),
+            ),
           ],
         ),
       ),
@@ -201,7 +259,7 @@ class _CareerDetailCardState extends State<CareerDetailCard> {
         return Icon(
           index < stars ? Icons.star : Icons.star_border,
           color: Colors.amber,
-          size: 20,
+          size: 30,
         );
       }),
     );

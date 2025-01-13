@@ -1,31 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:tsukulog/models/career_history.dart';
+import 'package:tsukulog/components/career_icon.dart';
+
 
 class BestCareerCard extends StatelessWidget {
-  final String title;
-  final String category;
-  final String startGrade;
-  final int startMonth;
-  final String span;
-  final int difficultLevel;
-  final int recommendLevel;
-  final String reason;
-  final String comment;
+  final CareerHistory bestCareer;
 
   const BestCareerCard({
     super.key,
-    required this.title,
-    required this.category,
-    required this.startGrade,
-    required this.startMonth,
-    required this.span,
-    required this.difficultLevel,
-    required this.recommendLevel,
-    required this.reason,
-    required this.comment,
+    required this.bestCareer,
   });
 
   @override
   Widget build(BuildContext context) {
+    // 存在しない場合は空のウィジェットを返す
+    if (bestCareer.id.isEmpty) {
+      return const SizedBox.shrink(); // 空のウィジェットを返す
+    }
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -34,7 +26,11 @@ class BestCareerCard extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             SizedBox(width: 10),
-            Icon(Icons.double_arrow, color: Color(0xFF252525)),
+            Icon(
+              Icons.military_tech,
+              color: Color(0xFF252525),
+              size: 30.0,
+            ),
             SizedBox(width: 4),
             Text(
               'マイベストキャリア',
@@ -59,32 +55,15 @@ class BestCareerCard extends StatelessWidget {
                 children: [
                   // 学年/月とアイコン
                   Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      // アイコン
-                      Container(
-                        width: 50,
-                        height: 50,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: const Color(0XFF49484B),
-                        ),
-                        child: const Center(
-                          child: Text(
-                            '*',
-                            style: TextStyle(
-                              fontSize: 44,
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
-                      ),
+                      CareerIcon(categoryName: bestCareer.category, size: 60),
                       const SizedBox(width: 16),
                       // 学年/月
                       Text(
-                        '$startGrade / $startMonth月 から $span',
+                        '${bestCareer.startGrade}の${bestCareer.startMonth}月から${bestCareer.span}',
                         style: TextStyle(
-                          fontSize: 14,
+                          fontSize: 20,
                           color: Color(0xFF252525),
                         ),
                       ),
@@ -97,9 +76,9 @@ class BestCareerCard extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        title,
+                        bestCareer.title,
                         style: const TextStyle(
-                          fontSize: 20,
+                          fontSize: 24,
                           color: Color(0xFF252525),
                           fontWeight: FontWeight.bold,
                         ),
@@ -115,7 +94,7 @@ class BestCareerCard extends StatelessWidget {
                           borderRadius: BorderRadius.circular(8),
                         ),
                         child: Text(
-                          category,
+                          bestCareer.category,
                           style: const TextStyle(
                             fontSize: 12,
                             fontWeight: FontWeight.bold,
@@ -137,9 +116,13 @@ class BestCareerCard extends StatelessWidget {
                         children: [
                           const Text(
                             'ハードル',
-                            style: TextStyle(fontSize: 14),
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: Color(0xFF252525),
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
-                          _buildStarRating(difficultLevel),
+                          _buildStarRating(bestCareer.difficultLevel, 30.0),
                         ],
                       ),
                       // おすすめ度評価
@@ -148,9 +131,13 @@ class BestCareerCard extends StatelessWidget {
                         children: [
                           const Text(
                             'おすすめ度',
-                            style: TextStyle(fontSize: 14),
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: Color(0xFF252525),
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
-                          _buildStarRating(recommendLevel),
+                          _buildStarRating(bestCareer.recommendLevel, 30.0),
                         ],
                       ),
                     ],
@@ -158,17 +145,31 @@ class BestCareerCard extends StatelessWidget {
                   const SizedBox(height: 16),
 
                   // 理由
-                  const Text(
-                    '入ったきっかけ',
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: Color(0xFF252525),
-                      fontWeight: FontWeight.bold,
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Icon(Icons.lightbulb_outline, color: Color(0xFF252525), size: 24),
+                      const SizedBox(width: 4),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text(
+                              '入ったきっかけ',
+                              style: TextStyle(
+                                fontSize: 16,
+                                color: Color(0xFF252525),
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
+                    ],
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    reason,
+                    bestCareer.reason,
                     style: const TextStyle(
                       fontSize: 14,
                       color: Color(0xFF252525),
@@ -177,17 +178,31 @@ class BestCareerCard extends StatelessWidget {
                   const SizedBox(height: 16),
 
                   // コメント
-                  const Text(
-                    'コメント',
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: Color(0xFF252525),
-                      fontWeight: FontWeight.bold,
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Icon(Icons.comment, color: Color(0xFF252525), size: 24),
+                      const SizedBox(width: 4),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text(
+                              'コメント',
+                              style: TextStyle(
+                                fontSize: 16,
+                                color: Color(0xFF252525),
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
+                    ],
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    comment,
+                    bestCareer.comment,
                     style: const TextStyle(
                       fontSize: 14,
                       color: Color(0xFF252525),
@@ -204,13 +219,13 @@ class BestCareerCard extends StatelessWidget {
   }
 
   // 星評価ウィジェット
-  Widget _buildStarRating(int stars) {
+  Widget _buildStarRating(int stars, double starSize) {
     return Row(
       children: List.generate(5, (index) {
         return Icon(
           index < stars ? Icons.star : Icons.star_border,
           color: Colors.amber,
-          size: 20,
+          size: starSize,
         );
       }),
     );

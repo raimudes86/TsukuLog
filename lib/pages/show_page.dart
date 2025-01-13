@@ -32,7 +32,8 @@ class _ShowPageState extends State<ShowPage> {
   String grade = '';
   String major = '';
   String futurePath = '';
-  CareerHistory? bestCareer;
+  int selecetedIcon = 1;
+  String bestCareerId = '';
   List<CareerHistory> careerHistories = [];
   List<Qualification> qualifications = [];
   List<Lesson> lessons = [];
@@ -58,8 +59,9 @@ class _ShowPageState extends State<ShowPage> {
         grade = user.grade;
         major = user.major;
         futurePath = user.futurePath;
-        bestCareer = user.bestCareer;
-        careerHistories = user.careerHistorys;
+        selecetedIcon = user.selectedIcon;
+        bestCareerId = user.bestCareerId;
+        careerHistories = user.careerHistories;
         qualifications = user.qualifications;
         lessons = user.lessons;
         portfolios = user.portfolios;
@@ -76,6 +78,23 @@ class _ShowPageState extends State<ShowPage> {
 
   @override
   Widget build(BuildContext context) {
+    // ユーザーのベストキャリアを取得
+    CareerHistory? bestCareer = careerHistories.firstWhere(
+      (career) => career.id == bestCareerId,
+      orElse: () => CareerHistory(
+        id: '', // デフォルトの ID
+        title: 'No Title',
+        category: 'No Category',
+        startGrade: '',
+        startMonth: 0,
+        span: '',
+        difficultLevel: 0,
+        recommendLevel: 0,
+        reason: 'No Reason',
+        comment: 'No Comment',
+      ), 
+    );
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
@@ -85,11 +104,6 @@ class _ShowPageState extends State<ShowPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            // デバッグ用
-            // const Text(
-            //   'This is the Show Page',
-            // ),
-            // Text('UID: ${widget.uid}'),
             Expanded(
               child: ListView(
                 children: [
@@ -100,21 +114,14 @@ class _ShowPageState extends State<ShowPage> {
                     major: major,
                     futurePath: futurePath,
                     star: star,
+                    selectedIcon: selecetedIcon,
                     // imageUrl: '',
                   ),
 
                   // Best Career
-                  if (bestCareer != null)
+                  if (bestCareerId.isNotEmpty)
                     BestCareerCard(
-                      title: bestCareer!.title,
-                      category: bestCareer!.category,
-                      startGrade: bestCareer!.startGrade,
-                      startMonth: bestCareer!.startMonth,
-                      span: bestCareer!.span,
-                      difficultLevel: bestCareer!.difficultLevel,
-                      recommendLevel: bestCareer!.recommendLevel,
-                      reason: bestCareer!.reason,
-                      comment: bestCareer!.comment,
+                      bestCareer: bestCareer,
                     ),
 
                   if (suggests.isNotEmpty) SuggestCard(suggests: suggests),
@@ -123,6 +130,7 @@ class _ShowPageState extends State<ShowPage> {
                   if (careerHistories.isNotEmpty) 
                     CareerHistoryCard(
                       nickname: nickname,
+                      bestCareerId: bestCareerId,
                       careerHistories: careerHistories
                     ),
 
