@@ -40,9 +40,6 @@ class _CareerDetailCardState extends State<CareerDetailCard> {
     return Card(
       margin: const EdgeInsets.symmetric(vertical: 8),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-      color: widget.isBestCareer ? Colors.yellow[100] : null, // ハイライト色
-      elevation: widget.isBestCareer ? 8 : null, // ハイライト時の影の強さ
-      shadowColor: widget.isBestCareer ? Colors.yellow : null, // ハイライト時の影の色
       child: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(
@@ -121,6 +118,33 @@ class _CareerDetailCardState extends State<CareerDetailCard> {
                     ],
                   ),
                 ),
+                if (widget.isBestCareer)
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        Icons.military_tech,
+                        color: Color(0xFFFFD700),
+                        size: 45,
+                      ),
+                      const Text(
+                        'ベスト',
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: Color(0xFFFFD700),
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      const Text(
+                        'キャリア',
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: Color(0xFFFFD700),
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
               ],
             ),
             const SizedBox(height: 8),

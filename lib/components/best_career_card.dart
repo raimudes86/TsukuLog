@@ -4,33 +4,15 @@ import 'package:tsukulog/components/career_icon.dart';
 
 
 class BestCareerCard extends StatelessWidget {
-  final String bestCareerId;
-  final List<CareerHistory> careerHistories;
+  final CareerHistory bestCareer;
 
   const BestCareerCard({
     super.key,
-    required this.bestCareerId,
-    required this.careerHistories,
+    required this.bestCareer,
   });
 
   @override
   Widget build(BuildContext context) {
-    CareerHistory? bestCareer = careerHistories.firstWhere(
-      (career) => career.id == bestCareerId,
-      orElse: () => CareerHistory(
-        id: '', // デフォルトの ID
-        title: 'No Title',
-        category: 'No Category',
-        startGrade: '',
-        startMonth: 0,
-        span: '',
-        difficultLevel: 0,
-        recommendLevel: 0,
-        reason: 'No Reason',
-        comment: 'No Comment',
-      ), 
-    );
-
     // 存在しない場合は空のウィジェットを返す
     if (bestCareer.id.isEmpty) {
       return const SizedBox.shrink(); // 空のウィジェットを返す
@@ -44,7 +26,11 @@ class BestCareerCard extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             SizedBox(width: 10),
-            Icon(Icons.double_arrow, color: Color(0xFF252525)),
+            Icon(
+              Icons.military_tech,
+              color: Color(0xFF252525),
+              size: 30.0,
+            ),
             SizedBox(width: 4),
             Text(
               'マイベストキャリア',
@@ -69,9 +55,9 @@ class BestCareerCard extends StatelessWidget {
                 children: [
                   // 学年/月とアイコン
                   Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      // アイコン
-                    CareerIcon(categoryName: bestCareer.category, size: 60),
+                      CareerIcon(categoryName: bestCareer.category, size: 60),
                       const SizedBox(width: 16),
                       // 学年/月
                       Text(

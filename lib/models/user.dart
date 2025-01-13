@@ -15,7 +15,7 @@ class User {
   final String futurePath;
   final int selectedIcon;
   final String bestCareerId;
-  final List<CareerHistory> careerHistorys;
+  final List<CareerHistory> careerHistories;
   final List<Qualification> qualifications;
   final List<Lesson> lessons;
   final List<Club> clubs;
@@ -31,7 +31,7 @@ class User {
     required this.futurePath,
     required this.selectedIcon,
     required this.bestCareerId,
-    required this.careerHistorys,
+    required this.careerHistories,
     required this.qualifications,
     required this.lessons,
     required this.clubs,
@@ -59,7 +59,7 @@ class User {
       futurePath: userMap['future_path'] ?? '未設定',
       selectedIcon: userMap['selected_icon'] ?? 0,
       bestCareerId: userMap['best_career_id'] ?? '',
-      careerHistorys:
+      careerHistories:
           careerData.map((data) => CareerHistory.fromMap(data)).toList(),
       qualifications:
           qualificationData.map((data) => Qualification.fromMap(data)).toList(),
