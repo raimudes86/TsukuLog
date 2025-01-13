@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:tsukulog/pages/my_home_page.dart';
+import 'package:tsukulog/pages/sign_in_page.dart';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({super.key});
@@ -125,7 +126,6 @@ class _SignUpPageState extends State<SignUpPage> {
                     Navigator.pushReplacement(
                       // ignore: use_build_context_synchronously
                       context,
-                      //サインインの処理をしてからホームページに飛びたいよね
                       MaterialPageRoute(
                         builder: (context) => MyHomePage(title: 'つくログ'),
                       ),
@@ -139,6 +139,12 @@ class _SignUpPageState extends State<SignUpPage> {
                   _errorMessage,
                   style: const TextStyle(color: Colors.red),
                 ),
+              TextButton(
+                  onPressed: () {
+                    Navigator.pushReplacement(context,
+                        MaterialPageRoute(builder: (context) => SignInPage()));
+                  },
+                  child: Text('ログインはこちらから')),
             ],
           ),
         ),

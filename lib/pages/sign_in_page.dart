@@ -82,7 +82,7 @@ class _SignInPageState extends State<SignInPage> {
                         _errorMessage = "パスワードまたはメールアドレスが正しくありません。";
                       } else if (e.code == 'wrong-password') {
                         _errorMessage = "パスワードまたはメールアドレスが正しくありません。";
-                      //見直し必要
+                        //見直し必要
                       } else {
                         setState(() {
                           _errorMessage = "パスワードまたはメールアドレスが正しくありません。";
@@ -114,7 +114,7 @@ class _SignInPageState extends State<SignInPage> {
                     Navigator.pushReplacement(context,
                         MaterialPageRoute(builder: (context) => SignUpPage()));
                   },
-                  child: Text('新規登録はこちらから'))
+                  child: Text('新規登録はこちらから')),
             ],
           ),
         ),
