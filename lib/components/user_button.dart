@@ -150,7 +150,7 @@ class UserButton extends StatelessWidget {
                   const Icon(Icons.apartment),
                   const SizedBox(width: 8.0),
                   const Text(
-                    '関連企業',
+                    '関わったことのある企業',
                     style: TextStyle(
                       fontSize: 16.0,
                       fontWeight: FontWeight.bold,
