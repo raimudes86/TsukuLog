@@ -47,8 +47,8 @@ class AuthWrapper extends StatelessWidget {
         }
         if (snapshot.hasData) {
           // ユーザーがログインしている場合、MyHomePage を表示
-          // return const MyHomePage(title: 'つくログ');
-          return const SignUpPage();
+          return const MyHomePage(title: 'つくログ');
+          // return const SignUpPage();
         }
         // ユーザーがログインしていない場合、SignUpPage を表示
         return const SignUpPage();
