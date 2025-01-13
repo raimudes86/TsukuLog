@@ -94,19 +94,15 @@ final List<List<String>> _tags = [
   void initState() {
     super.initState();
     _fetchUsers(); // 初期化時にデータを取得
-    // ログインしているユーザー情報を取得
-    var user = auth.FirebaseAuth.instance.currentUser;
-    if (user != null) {
-      print('ログインしているユーザー: ${user.email}');
-    } else {
-      print('ログインしていません');
-    }
   }
 
   Future<void> _fetchUsers() async {
     try {
-      // Firestoreなどからデータを取得
       List<User> users = await UserRepository().fetchAllUsers();
+      // 自分以外のユーザー以外取得
+      users = users
+          .where((user) => user.id != auth.FirebaseAuth.instance.currentUser!.uid)
+          .toList(); 
 
       // データをセットしてUIを更新
       setState(() {
