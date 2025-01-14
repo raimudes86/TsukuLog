@@ -34,8 +34,9 @@ class _MyHomePageState extends State<MyHomePage> {
       List<User> users = await UserRepository().fetchAllUsers();
       // 自分以外のユーザー以外取得
       users = users
-          .where(
-              (user) => user.id != auth.FirebaseAuth.instance.currentUser!.uid)
+          .where((user) =>
+              user.id != auth.FirebaseAuth.instance.currentUser!.uid &&
+              user.careerHistories.isNotEmpty)
           .toList();
 
       // データをセットしてUIを更新
