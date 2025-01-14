@@ -19,6 +19,7 @@ class CareerHistoryCard extends StatefulWidget {
 }
 
 class _CareerHistoryCardState extends State<CareerHistoryCard> {
+  // ignore: prefer_final_fields, unused_field
   bool _isOldestToNewest = true;
 
   @override
@@ -35,7 +36,7 @@ class _CareerHistoryCardState extends State<CareerHistoryCard> {
               Icon(Icons.double_arrow, color: Color(0xFF252525)),
               SizedBox(width: 4),
               Text(
-                widget.nickname + 'の経歴',
+                '${widget.nickname}の経歴',
                 style: TextStyle(
                   color: Color(0xFF252525),
                   fontSize: 20,

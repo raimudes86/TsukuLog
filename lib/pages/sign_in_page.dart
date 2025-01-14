@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:tsukulog/pages/my_home_page.dart';
@@ -13,7 +12,6 @@ class SignInPage extends StatefulWidget {
 
 class _SignInPageState extends State<SignInPage> {
   final _auth = FirebaseAuth.instance;
-  final _firestore = FirebaseFirestore.instance.collection('users');
   final _formKey = GlobalKey<FormState>();
   //このUserはfirebaseAuthのやつだから、うちのモデルとは関係ない
   User? user;
