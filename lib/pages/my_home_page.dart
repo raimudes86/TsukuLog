@@ -16,12 +16,25 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   bool _isLoading = true; // データ取得中かどうか
   List<User> _users = []; // 取得したユーザーリスト
+  List<User> _usersData = []; //ずっと固定しておく元データ(フィルターで消えちゃわないように)
   String? _errorMessage; // エラーメッセージ
+  int? _choiceIndex; //並び替えボタン
   final menuList = [
     "ユーザー一覧",
     "プロフィール閲覧・編集",
     "ログアウト",
   ];
+  final sortMap = {
+    'B1': 1,
+    'B2': 2,
+    'B3': 3,
+    'B4': 4,
+    'M1': 5,
+    'M2': 6,
+    'D1': 7,
+    'D2': 8,
+    'D3': 9,
+  };
 
   @override
   void initState() {
@@ -42,6 +55,7 @@ class _MyHomePageState extends State<MyHomePage> {
       // データをセットしてUIを更新
       setState(() {
         _users = users;
+        _usersData = users;
         _isLoading = false;
       });
     } catch (e) {
@@ -65,12 +79,50 @@ class _MyHomePageState extends State<MyHomePage> {
           ? const Center(child: CircularProgressIndicator())
           : _errorMessage != null
               ? Center(child: Text(_errorMessage!))
-              : ListView.builder(
-                  itemCount: _users.length,
-                  itemBuilder: (context, i) {
-                    final user = _users[i];
-                    return UserButton(user: user);
-                  },
+              : Center(
+                  child: Column(
+                    children: [
+                      Wrap(spacing: 10, children: [
+                        ChoiceChip(
+                            label: Text("いいね順"),
+                            selected: _choiceIndex == 0,
+                            // backgroundColor: Colors.grey[600],
+                            selectedColor:
+                                Theme.of(context).colorScheme.inversePrimary,
+                            onSelected: (_) {
+                              setState(() {
+                                _choiceIndex = 0;
+                                _users.sort((a, b) => b.star.compareTo(a.star));
+                              });
+                            }),
+                        ChoiceChip(
+                            label: Text("学年順"),
+                            selected: _choiceIndex == 1,
+                            // backgroundColor: Colors.grey[600],
+                            selectedColor:
+                                Theme.of(context).colorScheme.inversePrimary,
+                            onSelected: (_) {
+                              setState(() {
+                                _choiceIndex = 1;
+                                _users.sort((a, b) {
+                                  int gradeA = sortMap[a.grade] ?? 0;
+                                  int gradeB = sortMap[b.grade] ?? 0;
+                                  return gradeA.compareTo(gradeB);
+                                });
+                              });
+                            }),
+                      ]),
+                      Expanded(
+                        child: ListView.builder(
+                          itemCount: _users.length,
+                          itemBuilder: (context, i) {
+                            final user = _users[i];
+                            return UserButton(user: user);
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
     );
   }
