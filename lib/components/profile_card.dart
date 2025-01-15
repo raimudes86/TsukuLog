@@ -1,22 +1,98 @@
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart' as auth;
 
-class ProfileCard extends StatelessWidget {
+class ProfileCard extends StatefulWidget {
+  final String userId; // プロフィールのユーザーID
   final String nickname;
   final String grade;
   final String major;
   final String futurePath;
-  final int star;
+  final int initialLike;
   final int selectedIcon;
 
   const ProfileCard({
     super.key,
+    required this.userId,
     required this.nickname,
     required this.grade,
     required this.major,
     required this.futurePath,
-    required this.star,
+    required this.initialLike,
     required this.selectedIcon,
   });
+
+  @override
+  State<ProfileCard> createState() => _ProfileCardState();
+}
+
+class _ProfileCardState extends State<ProfileCard> {
+  int _like = 0; // いいね数を管理
+  bool _isLiked = false; // いいね状態を管理
+  final String currentUserId =
+      auth.FirebaseAuth.instance.currentUser!.uid; // ログイン中のユーザーID
+
+  @override
+  void initState() {
+    _like = widget.initialLike; // いいね数を初期化
+    super.initState();
+    _checkIfLiked(); // 初期状態でいいね済みか確認
+  }
+
+  // Firestoreからいいね済みかを確認
+  Future<void> _checkIfLiked() async {
+    final likesRef = FirebaseFirestore.instance.collection('likes');
+    final likeDoc = await likesRef
+        .where('fromUserId', isEqualTo: currentUserId)
+        .where('toUserId', isEqualTo: widget.userId)
+        .get();
+
+    setState(() {
+      _isLiked = likeDoc.docs.isNotEmpty;
+    });
+  }
+
+  // いいねをトグル（追加または削除）
+  Future<void> _toggleLike() async {
+    final likesRef = FirebaseFirestore.instance.collection('likes');
+    final userDoc =
+        FirebaseFirestore.instance.collection('users').doc(widget.userId);
+
+    if (_isLiked) {
+      // いいねを削除
+      final likeDoc = await likesRef
+          .where('fromUserId', isEqualTo: currentUserId)
+          .where('toUserId', isEqualTo: widget.userId)
+          .get();
+
+      if (likeDoc.docs.isNotEmpty) {
+        await likesRef.doc(likeDoc.docs.first.id).delete();
+
+        // Firestoreでスターをデクリメント
+        await userDoc.update({'like': FieldValue.increment(-1)});
+
+        setState(() {
+          _like--;
+          _isLiked = false;
+        });
+      }
+    } else {
+      // いいねを追加
+      await likesRef.add({
+        'fromUserId': currentUserId,
+        'toUserId': widget.userId,
+        'timestamp': FieldValue.serverTimestamp(),
+      });
+
+      // Firestoreでスターをインクリメント
+      await userDoc.update({'like': FieldValue.increment(1)});
+
+      setState(() {
+        _like++;
+        _isLiked = true;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -32,10 +108,16 @@ class ProfileCard extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              const Icon(Icons.star, color: Colors.white),
+              GestureDetector(
+                onTap: _toggleLike,
+                child: Icon(
+                  _isLiked ? Icons.favorite : Icons.favorite_border,
+                  color: _isLiked ? Colors.red : Colors.white,
+                ),
+              ),
               const SizedBox(width: 4),
               Text(
-                '参考になった $star',
+                '参考になった $_like',
                 style: const TextStyle(color: Colors.white, fontSize: 14),
               ),
             ],
@@ -49,7 +131,7 @@ class ProfileCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      nickname,
+                      widget.nickname,
                       style: const TextStyle(
                         color: Colors.white,
                         fontSize: 24,
@@ -59,7 +141,7 @@ class ProfileCard extends StatelessWidget {
                     const SizedBox(height: 8),
                     // 学年と専攻
                     Text(
-                      '$grade  $major',
+                      '${widget.grade}  ${widget.major}',
                       style: const TextStyle(
                         color: Colors.white,
                         fontSize: 18,
@@ -74,7 +156,7 @@ class ProfileCard extends StatelessWidget {
                         borderRadius: BorderRadius.circular(16),
                       ),
                       child: Text(
-                        '  $futurePath  ',
+                        '  ${widget.futurePath}  ',
                         style: const TextStyle(
                           color: Colors.black,
                           fontSize: 16,
@@ -86,11 +168,12 @@ class ProfileCard extends StatelessWidget {
               ),
               CircleAvatar(
                 radius: 60,
-                backgroundImage: AssetImage('assets/images/icon$selectedIcon.webp'),
-                child: selectedIcon < 1 || selectedIcon > 5
+                backgroundImage:
+                    AssetImage('assets/images/icon${widget.selectedIcon}.webp'),
+                child: widget.selectedIcon < 1 || widget.selectedIcon > 5
                     ? Text(
-                        nickname.isNotEmpty
-                            ? nickname[0] // 名前のイニシャルを表示
+                        widget.nickname.isNotEmpty
+                            ? widget.nickname[0] // 名前のイニシャルを表示
                             : '仮',
                         style: const TextStyle(
                           fontSize: 48.0,

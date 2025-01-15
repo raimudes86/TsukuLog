@@ -27,8 +27,10 @@ class ShowPage extends StatefulWidget {
 }
 
 class _ShowPageState extends State<ShowPage> {
+  bool isLoading = true;
+
   String nickname = '';
-  int star = 0;
+  int like = 0;
   String grade = '';
   String major = '';
   String futurePath = '';
@@ -55,7 +57,7 @@ class _ShowPageState extends State<ShowPage> {
 
       setState(() {
         nickname = user.nickname;
-        star = user.star;
+        like = user.like;
         grade = user.grade;
         major = user.major;
         futurePath = user.futurePath;
@@ -67,17 +69,24 @@ class _ShowPageState extends State<ShowPage> {
         portfolios = user.portfolios;
         clubs = user.clubs;
         suggests = user.suggests;
+
+        isLoading = false; // ローディング終了
       });
     } catch (e) {
       developer.log('Error: $e');
       setState(() {
         nickname = 'Error';
+        isLoading = false; // ローディング終了
       });
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    if (isLoading) {
+      return const Center(child: CircularProgressIndicator());
+    }
+
     // ユーザーのベストキャリアを取得
     CareerHistory? bestCareer = careerHistories.firstWhere(
       (career) => career.id == bestCareerId,
@@ -92,7 +101,7 @@ class _ShowPageState extends State<ShowPage> {
         recommendLevel: 0,
         reason: 'No Reason',
         comment: 'No Comment',
-      ), 
+      ),
     );
 
     return Scaffold(
@@ -109,11 +118,12 @@ class _ShowPageState extends State<ShowPage> {
                 children: [
                   // Profile
                   ProfileCard(
+                    userId: widget.uid,
                     nickname: nickname,
                     grade: grade,
                     major: major,
                     futurePath: futurePath,
-                    star: star,
+                    initialLike: like,
                     selectedIcon: selecetedIcon,
                     // imageUrl: '',
                   ),
@@ -127,21 +137,22 @@ class _ShowPageState extends State<ShowPage> {
                   if (suggests.isNotEmpty) SuggestCard(suggests: suggests),
 
                   // Career History
-                  if (careerHistories.isNotEmpty) 
+                  if (careerHistories.isNotEmpty)
                     CareerHistoryCard(
-                      nickname: nickname,
-                      bestCareerId: bestCareerId,
-                      careerHistories: careerHistories
-                    ),
+                        nickname: nickname,
+                        bestCareerId: bestCareerId,
+                        careerHistories: careerHistories),
 
                   // Qualification
-                  if (qualifications.isNotEmpty) QualificationCard(qualifications: qualifications),
+                  if (qualifications.isNotEmpty)
+                    QualificationCard(qualifications: qualifications),
 
                   // Lesson
                   if (lessons.isNotEmpty) LessonCard(lessons: lessons),
 
                   // Portfolio
-                  if (portfolios.isNotEmpty) PortfolioCard(portfolios: portfolios),
+                  if (portfolios.isNotEmpty)
+                    PortfolioCard(portfolios: portfolios),
 
                   // Club
                   if (clubs.isNotEmpty) ClubCard(clubs: clubs),

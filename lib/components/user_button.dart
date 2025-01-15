@@ -42,9 +42,11 @@ class UserButton extends StatelessWidget {
                   CircleAvatar(
                     radius: 30,
                     // backgroundColor: Colors.blueGrey,
-                    backgroundImage: user.selectedIcon > 0 && user.selectedIcon < 6
-                      ? AssetImage('assets/images/icon${user.selectedIcon}.webp')
-                      : null, // user.selectedIconに基づいて画像パスを生成
+                    backgroundImage:
+                        user.selectedIcon > 0 && user.selectedIcon < 6
+                            ? AssetImage(
+                                'assets/images/icon${user.selectedIcon}.webp')
+                            : null, // user.selectedIconに基づいて画像パスを生成
                     child: user.selectedIcon < 1 || user.selectedIcon > 5
                         ? Text(
                             user.nickname.isNotEmpty
@@ -105,7 +107,7 @@ class UserButton extends StatelessWidget {
                           ),
                           const SizedBox(width: 4.0),
                           Text(
-                            user.star.toString(),
+                            user.like.toString(),
                             style: const TextStyle(fontSize: 16.0),
                           ),
                         ],

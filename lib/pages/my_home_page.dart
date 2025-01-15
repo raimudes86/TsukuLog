@@ -96,7 +96,7 @@ class _MyHomePageState extends State<MyHomePage> {
                             onSelected: (_) {
                               setState(() {
                                 _choiceIndex = 0;
-                                _users.sort((a, b) => b.star.compareTo(a.star));
+                                _users.sort((a, b) => b.like.compareTo(a.like));
                               });
                             }),
                         ChoiceChip(
