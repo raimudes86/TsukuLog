@@ -4,7 +4,6 @@ import 'package:tsukulog/main.dart';
 import 'package:tsukulog/models/user.dart';
 import 'package:tsukulog/components/user_button.dart';
 import 'package:tsukulog/pages/show_page.dart';
-import 'package:tsukulog/pages/sign_in_page.dart';
 import 'package:tsukulog/repositories/user_repository.dart';
 
 class MyHomePage extends StatefulWidget {
