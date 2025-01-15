@@ -95,7 +95,8 @@ class _SignInPageState extends State<SignInPage> {
                       // ignore: use_build_context_synchronously
                       context,
                       MaterialPageRoute(
-                        builder: (context) => MyHomePage(title: 'つくログ'),
+                        builder: (context) =>
+                            MyHomePage(title: 'つくログ', isLoggedin: true),
                       ),
                     );
                   }
@@ -113,6 +114,12 @@ class _SignInPageState extends State<SignInPage> {
                         MaterialPageRoute(builder: (context) => SignUpPage()));
                   },
                   child: Text('新規登録はこちらから')),
+              TextButton(
+                  onPressed: () {
+                    Navigator.pushReplacement(context,
+                        MaterialPageRoute(builder: (context) => MyHomePage(title: "つくログ", isLoggedin: false)));
+                  },
+                  child: Text('ゲストとしてログイン')),
             ],
           ),
         ),

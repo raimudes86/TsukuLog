@@ -1,14 +1,17 @@
+import 'package:collection/collection.dart';
 import 'package:firebase_auth/firebase_auth.dart' as auth;
 import 'package:flutter/material.dart';
 import 'package:tsukulog/main.dart';
 import 'package:tsukulog/models/user.dart';
 import 'package:tsukulog/components/user_button.dart';
 import 'package:tsukulog/pages/sign_in_page.dart';
+import 'package:tsukulog/pages/sign_up_page.dart';
 import 'package:tsukulog/repositories/user_repository.dart';
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
+  const MyHomePage({super.key, required this.title, required this.isLoggedin});
   final String title;
+  final bool isLoggedin;
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
@@ -22,6 +25,7 @@ class _MyHomePageState extends State<MyHomePage> {
   int? _choiceIndex; //並び替えボタン
   String? _selectedGrade;
   String? _selectedFuture;
+  User? _me;
   final menuList = [
     "ユーザー一覧",
     "プロフィール閲覧・編集",
@@ -42,18 +46,31 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   void initState() {
     super.initState();
-    _fetchUsers(); // 初期化時にデータを取得
+    _fetchUsersAndSetMe(); // 初期化時にデータを取得
   }
 
-  Future<void> _fetchUsers() async {
+  Future<void> _fetchUsersAndSetMe() async {
     try {
       List<User> users = await UserRepository().fetchAllUsers();
-      // 自分以外のユーザー以外取得
-      users = users
-          .where((user) =>
-              user.id != auth.FirebaseAuth.instance.currentUser!.uid &&
-              user.careerHistories.isNotEmpty)
-          .toList();
+      final currentUser = auth.FirebaseAuth.instance.currentUser;
+
+      // ログインしているユーザーの情報を_meにセット
+      if (currentUser != null) {
+        final me = users.firstWhere((user) => user.id == currentUser.uid);
+        setState(() {
+          _me = me;
+        });
+      }
+
+      // 自分以外のユーザーを_usersに入れる
+      if (currentUser == null) {
+        users = users.where((user) => user.careerHistories.isNotEmpty).toList();
+      } else {
+        users = users
+            .where((user) =>
+                user.id != currentUser.uid && user.careerHistories.isNotEmpty)
+            .toList();
+      }
 
       // データをセットしてUIを更新
       setState(() {
@@ -76,8 +93,24 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text(widget.title),
+        actions: [
+          _me != null
+              //ログインしている場合にアイコンと名前を表示
+              ? GestureDetector(
+                  onTap: () {
+                    //マイページに飛ぶ処理を書くよ;
+                  },
+                  child: MyAccount(me: _me),
+                )
+              : Row(
+                  children: [
+                    Text("ゲスト", style: TextStyle(color: Colors.black)),
+                    SizedBox(width: 16),
+                  ],
+                ),
+        ],
       ),
-      drawer: buildDrawer(context, menuList),
+      drawer: buildDrawer(context, menuList, widget.isLoggedin),
       body: _isLoading
           ? const Center(child: CircularProgressIndicator())
           : _errorMessage != null
@@ -201,6 +234,40 @@ class _MyHomePageState extends State<MyHomePage> {
         _selectedFuture = result[1];
       });
     }
+  }
+}
+
+class MyAccount extends StatelessWidget {
+  const MyAccount({
+    super.key,
+    required User? me,
+  }) : _me = me;
+
+  final User? _me;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(mainAxisSize: MainAxisSize.min, children: [
+      CircleAvatar(
+        radius: 20,
+        // backgroundColor: Colors.blueGrey,
+        backgroundImage: _me!.selectedIcon > 0 && _me!.selectedIcon < 6
+            ? AssetImage('assets/images/icon${_me!.selectedIcon}.webp')
+            : null, // _me!.selectedIconに基づいて画像パスを生成
+        child: _me!.selectedIcon < 1 || _me!.selectedIcon > 5
+            ? Text(
+                _me!.nickname.isNotEmpty
+                    ? _me!.nickname[0] // 名前のイニシャルを表示
+                    : '仮',
+                style: TextStyle(
+                  fontSize: 24.0,
+                  color: Colors.white,
+                ),
+              )
+            : null,
+      ),
+      SizedBox(width: 16),
+    ]);
   }
 }
 
@@ -373,7 +440,8 @@ Widget listTile(String title, IconData icon, VoidCallback onTap) {
   );
 }
 
-Drawer buildDrawer(BuildContext context, List<String> menuList) {
+Drawer buildDrawer(
+    BuildContext context, List<String> menuList, bool isloggedin) {
   return Drawer(
     child: Column(
       children: [
@@ -398,22 +466,49 @@ Drawer buildDrawer(BuildContext context, List<String> menuList) {
                 Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => MyHomePage(title: 'つくログ'),
+                    builder: (context) =>
+                        MyHomePage(title: 'つくログ', isLoggedin: isloggedin),
                   ),
                 );
               }),
-              listTile('プロフィール閲覧・編集', Icons.person, () {
-                // プロフィール閲覧・編集タップ時の動作
-              }),
-              listTile('ログアウト', Icons.logout, () {
-                auth.FirebaseAuth.instance.signOut();
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => MyApp(),
-                  ),
-                );
-              }),
+              if (isloggedin)
+                listTile('プロフィール閲覧・編集', Icons.person, () {
+                  Navigator.pushReplacement(
+                    context,
+                    //マイページへの遷移を記述する
+                    MaterialPageRoute(
+                      builder: (context) => MyApp(),
+                    ),
+                  );
+                }),
+              if (isloggedin)
+                listTile('ログアウト', Icons.logout, () {
+                  auth.FirebaseAuth.instance.signOut();
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => MyApp(),
+                    ),
+                  );
+                }),
+              if (!isloggedin)
+                listTile('ログイン', Icons.login, () {
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => SignInPage(),
+                    ),
+                  );
+                }),
+              if (!isloggedin)
+                listTile('新規登録', Icons.person_add, () {
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => SignUpPage(),
+                    ),
+                  );
+                }),
             ],
           ),
         ),
