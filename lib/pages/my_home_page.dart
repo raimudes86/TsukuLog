@@ -85,10 +85,15 @@ class _MyHomePageState extends State<MyHomePage> {
               : Center(
                   child: Column(
                     children: [
-                      Row(spacing: 10, children: [
+                      Row(spacing: 3, children: [
                         SizedBox(width: 8),
                         ChoiceChip(
-                            label: Text("いいね順"),
+                            label: Text("いいね順",
+                                style: TextStyle(
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.bold,
+                                )),
+                            showCheckmark: false,
                             selected: _choiceIndex == 0,
                             // backgroundColor: Colors.grey[600],
                             selectedColor:
@@ -100,7 +105,12 @@ class _MyHomePageState extends State<MyHomePage> {
                               });
                             }),
                         ChoiceChip(
-                            label: Text("学年順"),
+                            label: Text("関連企業の数順",
+                                style: TextStyle(
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.bold,
+                                )),
+                            showCheckmark: false,
                             selected: _choiceIndex == 1,
                             // backgroundColor: Colors.grey[600],
                             selectedColor:
@@ -108,11 +118,8 @@ class _MyHomePageState extends State<MyHomePage> {
                             onSelected: (_) {
                               setState(() {
                                 _choiceIndex = 1;
-                                _users.sort((a, b) {
-                                  int gradeA = sortMap[a.grade] ?? 0;
-                                  int gradeB = sortMap[b.grade] ?? 0;
-                                  return gradeA.compareTo(gradeB);
-                                });
+                                _users.sort((a, b) => b.companies.length
+                                    .compareTo(a.companies.length));
                               });
                             }),
                         Spacer(),
