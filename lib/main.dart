@@ -1,6 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:tsukulog/pages/copy_data_page.dart';
 import 'package:tsukulog/pages/my_home_page.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:tsukulog/pages/sign_up_page.dart';
@@ -48,6 +47,7 @@ class AuthWrapper extends StatelessWidget {
         if (snapshot.hasData) {
           // ユーザーがログインしている場合、MyHomePage を表示
           return const MyHomePage(title: 'つくログ');
+          // return RightSlideModalExample();
           // return const SignUpPage();
         }
         // ユーザーがログインしていない場合、SignUpPage を表示
