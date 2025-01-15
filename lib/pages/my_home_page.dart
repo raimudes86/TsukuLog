@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart' as auth;
 import 'package:flutter/material.dart';
+import 'package:tsukulog/main.dart';
 import 'package:tsukulog/models/user.dart';
 import 'package:tsukulog/components/user_button.dart';
 import 'package:tsukulog/pages/sign_in_page.dart';
@@ -402,7 +403,7 @@ Drawer buildDrawer(BuildContext context, List<String> menuList) {
                 Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => SignInPage(),
+                    builder: (context) => MyApp(),
                   ),
                 );
               }),
