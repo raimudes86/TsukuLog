@@ -151,15 +151,19 @@ class _ProfileCardState extends State<ProfileCard> {
             children: [
               GestureDetector(
                 onTap: currentUser == null ? _showPopUp : _toggleLike,
-                child: Icon(
-                  _isLiked ? Icons.favorite : Icons.favorite_border,
-                  color: _isLiked ? Colors.red : Colors.white,
+                child: Row(
+                  children: [
+                    Icon(
+                      _isLiked ? Icons.favorite : Icons.favorite_border,
+                      color: _isLiked ? Colors.red : Colors.white,
+                    ),
+                    const SizedBox(width: 4),
+                    Text(
+                      '参考になった $_like',
+                      style: const TextStyle(color: Colors.white, fontSize: 14),
+                    ),
+                  ],
                 ),
-              ),
-              const SizedBox(width: 4),
-              Text(
-                '参考になった $_like',
-                style: const TextStyle(color: Colors.white, fontSize: 14),
               ),
             ],
           ),
