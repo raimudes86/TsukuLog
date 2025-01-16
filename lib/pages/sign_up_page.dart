@@ -216,7 +216,8 @@ class _SignUpPageState extends State<SignUpPage> {
                         // ignore: use_build_context_synchronously
                         context,
                         MaterialPageRoute(
-                          builder: (context) => MyHomePage(title: 'つくログ'),
+                          builder: (context) =>
+                              MyHomePage(title: 'つくログ', isLoggedin: true),
                         ),
                       );
                     }
@@ -235,6 +236,12 @@ class _SignUpPageState extends State<SignUpPage> {
                         MaterialPageRoute(builder: (context) => SignInPage()));
                   },
                   child: Text('ログインはこちらから')),
+              TextButton(
+                  onPressed: () {
+                    Navigator.pushReplacement(context,
+                        MaterialPageRoute(builder: (context) => MyHomePage(title: "つくログ", isLoggedin: false)));
+                  },
+                  child: Text('ゲストとしてログイン')),
             ],
           ),
         ),
@@ -244,27 +251,27 @@ class _SignUpPageState extends State<SignUpPage> {
 
   DropdownButton<String> selectGrade() {
     return DropdownButton<String>(
-                  isExpanded: true,
-                  items: _academicStage == RadioValue.first
-                      ? ["B1", "B2", "B3", "B4"].map((grade) {
-                          return DropdownMenuItem(
-                            value: grade,
-                            child: Text(grade),
-                          );
-                        }).toList()
-                      : ["M1", "M2", "D1", "D2", "D3"].map((grade) {
-                          return DropdownMenuItem(
-                            value: grade,
-                            child: Text(grade),
-                          );
-                        }).toList(),
-                  hint: Text("学年を選択"),
-                  value: _grade,
-                  onChanged: (value) {
-                    setState(() {
-                      _grade = value.toString();
-                    });
-                  });
+        isExpanded: true,
+        items: _academicStage == RadioValue.first
+            ? ["B1", "B2", "B3", "B4"].map((grade) {
+                return DropdownMenuItem(
+                  value: grade,
+                  child: Text(grade),
+                );
+              }).toList()
+            : ["M1", "M2", "D1", "D2", "D3"].map((grade) {
+                return DropdownMenuItem(
+                  value: grade,
+                  child: Text(grade),
+                );
+              }).toList(),
+        hint: Text("学年を選択"),
+        value: _grade,
+        onChanged: (value) {
+          setState(() {
+            _grade = value.toString();
+          });
+        });
   }
 
   //学術院選択
