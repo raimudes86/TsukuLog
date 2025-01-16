@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:tsukulog/main.dart';
 import 'package:tsukulog/models/user.dart';
 import 'package:tsukulog/components/user_button.dart';
-import 'package:tsukulog/pages/sign_in_page.dart';
+import 'package:tsukulog/pages/show_page.dart';
 import 'package:tsukulog/repositories/user_repository.dart';
 
 class MyHomePage extends StatefulWidget {
@@ -101,7 +101,7 @@ class _MyHomePageState extends State<MyHomePage> {
                             onSelected: (_) {
                               setState(() {
                                 _choiceIndex = 0;
-                                _users.sort((a, b) => b.star.compareTo(a.star));
+                                _users.sort((a, b) => b.like.compareTo(a.like));
                               });
                             }),
                         ChoiceChip(
@@ -140,7 +140,22 @@ class _MyHomePageState extends State<MyHomePage> {
                           itemCount: _users.length,
                           itemBuilder: (context, i) {
                             final user = _users[i];
-                            return UserButton(user: user);
+                            return GestureDetector(
+                              onTap: () async {
+                                // ShowPage への遷移
+                                await Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        ShowPage(uid: user.id),
+                                  ),
+                                );
+
+                                // ShowPage から戻ったときにデータを更新
+                                _fetchUsers();
+                              },
+                              child: UserButton(user: user),
+                            );
                           },
                         ),
                       ),
