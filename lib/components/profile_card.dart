@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart' as auth;
+import 'package:tsukulog/pages/sign_in_page.dart';
+import 'package:tsukulog/pages/sign_up_page.dart';
 
 class ProfileCard extends StatefulWidget {
   final String userId; // プロフィールのユーザーID
@@ -29,8 +31,7 @@ class ProfileCard extends StatefulWidget {
 class _ProfileCardState extends State<ProfileCard> {
   int _like = 0; // いいね数を管理
   bool _isLiked = false; // いいね状態を管理
-  final String currentUserId =
-      auth.FirebaseAuth.instance.currentUser!.uid; // ログイン中のユーザーID
+  final auth.User? currentUser = auth.FirebaseAuth.instance.currentUser;
 
   @override
   void initState() {
@@ -42,8 +43,15 @@ class _ProfileCardState extends State<ProfileCard> {
   // Firestoreからいいね済みかを確認
   Future<void> _checkIfLiked() async {
     final likesRef = FirebaseFirestore.instance.collection('likes');
+    // ログインしていない場合はいいね済みとしない
+    if (currentUser == null) {
+      setState(() {
+        _isLiked = false;
+      });
+      return;
+    }
     final likeDoc = await likesRef
-        .where('fromUserId', isEqualTo: currentUserId)
+        .where('fromUserId', isEqualTo: currentUser!.uid)
         .where('toUserId', isEqualTo: widget.userId)
         .get();
 
@@ -61,7 +69,7 @@ class _ProfileCardState extends State<ProfileCard> {
     if (_isLiked) {
       // いいねを削除
       final likeDoc = await likesRef
-          .where('fromUserId', isEqualTo: currentUserId)
+          .where('fromUserId', isEqualTo: currentUser!.uid)
           .where('toUserId', isEqualTo: widget.userId)
           .get();
 
@@ -79,7 +87,7 @@ class _ProfileCardState extends State<ProfileCard> {
     } else {
       // いいねを追加
       await likesRef.add({
-        'fromUserId': currentUserId,
+        'fromUserId': currentUser!.uid,
         'toUserId': widget.userId,
         'timestamp': FieldValue.serverTimestamp(),
       });
@@ -92,6 +100,39 @@ class _ProfileCardState extends State<ProfileCard> {
         _isLiked = true;
       });
     }
+  }
+
+  void _showPopUp() {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('ログインが必要です'),
+          content: Column(mainAxisSize: MainAxisSize.min, children: [
+            TextButton(
+                onPressed: () {
+                  Navigator.pushReplacement(context,
+                      MaterialPageRoute(builder: (context) => SignInPage()));
+                },
+                child: Text('ログインはこちらから')),
+            TextButton(
+                onPressed: () {
+                  Navigator.pushReplacement(context,
+                      MaterialPageRoute(builder: (context) => SignUpPage()));
+                },
+                child: Text('新規登録はこちらから')),
+          ]),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: const Text('閉じる'),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
@@ -109,16 +150,20 @@ class _ProfileCardState extends State<ProfileCard> {
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               GestureDetector(
-                onTap: _toggleLike,
-                child: Icon(
-                  _isLiked ? Icons.favorite : Icons.favorite_border,
-                  color: _isLiked ? Colors.red : Colors.white,
+                onTap: currentUser == null ? _showPopUp : _toggleLike,
+                child: Row(
+                  children: [
+                    Icon(
+                      _isLiked ? Icons.favorite : Icons.favorite_border,
+                      color: _isLiked ? Colors.red : Colors.white,
+                    ),
+                    const SizedBox(width: 4),
+                    Text(
+                      '参考になった $_like',
+                      style: const TextStyle(color: Colors.white, fontSize: 14),
+                    ),
+                  ],
                 ),
-              ),
-              const SizedBox(width: 4),
-              Text(
-                '参考になった $_like',
-                style: const TextStyle(color: Colors.white, fontSize: 14),
               ),
             ],
           ),
