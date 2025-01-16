@@ -185,7 +185,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                 );
 
                                 // ShowPage から戻ったときにデータを更新
-                                _fetchUsers();
+                                _fetchUsersAndSetMe();
                               },
                               child: UserButton(user: user),
                             );
