@@ -9,7 +9,7 @@ import 'package:tsukulog/models/suggest.dart';
 class User {
   final String id;
   final String nickname;
-  final int star;
+  final int like;
   final String grade;
   final String major;
   final String futurePath;
@@ -27,7 +27,7 @@ class User {
   User({
     required this.id,
     required this.nickname,
-    required this.star,
+    required this.like,
     required this.grade,
     required this.major,
     required this.futurePath,
@@ -57,7 +57,7 @@ class User {
     return User(
       id: id,
       nickname: userMap['nickname'] ?? '未設定',
-      star: userMap['star'] ?? 0,
+      like: userMap['like'] ?? 0,
       grade: userMap['grade'] ?? '未設定',
       major: userMap['major'] ?? '未設定',
       futurePath: userMap['future_path'] ?? '未設定',
