@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:tsukulog/models/portfolio.dart';
 
 class PortfolioCard extends StatelessWidget {
@@ -9,10 +10,19 @@ class PortfolioCard extends StatelessWidget {
     required this.portfolios,
   });
 
+  // URLを開くメソッド
+  Future<void> _launchURL(String url) async {
+    final Uri uri = Uri.parse(url);
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(uri);
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
-      
       padding: const EdgeInsets.all(16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -26,7 +36,7 @@ class PortfolioCard extends StatelessWidget {
                 '制作物・成果物',
                 style: TextStyle(
                   fontSize: 20,
-                  fontWeight: FontWeight.bold
+                  fontWeight: FontWeight.bold,
                 ),
               ),
             ],
@@ -44,12 +54,22 @@ class PortfolioCard extends StatelessWidget {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          portfolio.name,
-                          style: const TextStyle(
-                            color: Color(0XFF252525),
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
+                        GestureDetector(
+                          onTap: portfolio.link.isNotEmpty
+                              ? () => _launchURL(portfolio.link)
+                              : null,
+                          child: Text(
+                            portfolio.name,
+                            style: TextStyle(
+                              color: portfolio.link.isNotEmpty
+                                  ? Colors.blue // リンクがある場合は青色
+                                  : Color(0XFF252525), // デフォルト色
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                              decoration: portfolio.link.isNotEmpty
+                                  ? TextDecoration.underline // 下線を追加
+                                  : TextDecoration.none,
+                            ),
                           ),
                         ),
                         const SizedBox(height: 4),
