@@ -1,4 +1,3 @@
-import 'package:collection/collection.dart';
 import 'package:firebase_auth/firebase_auth.dart' as auth;
 import 'package:flutter/material.dart';
 import 'package:tsukulog/main.dart';
@@ -191,6 +190,7 @@ class _MyHomePageState extends State<MyHomePage> {
       //ここではこのメソッドの下に定義したRightModalPageクラスのWidgetを呼び出す
       PageRouteBuilder(
         opaque: false, // 背景を透過する設定
+        // ignore: deprecated_member_use
         barrierColor: Colors.black.withOpacity(0.5),
         pageBuilder: (context, animation, secondaryAnimation) {
           //モーダルのウィジェットを呼び出す
