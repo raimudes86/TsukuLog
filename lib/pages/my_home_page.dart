@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:tsukulog/main.dart';
 import 'package:tsukulog/models/user.dart';
 import 'package:tsukulog/components/user_button.dart';
+import 'package:tsukulog/pages/my_page.dart';
 import 'package:tsukulog/pages/sign_in_page.dart';
 import 'package:tsukulog/pages/sign_up_page.dart';
 import 'package:tsukulog/pages/show_page.dart';
@@ -94,29 +95,38 @@ class _MyHomePageState extends State<MyHomePage> {
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text(widget.title),
         actions: [
-          _me != null
-              //ログインしている場合にアイコンと名前を表示
-              ? GestureDetector(
-                  onTap: () {
-                    //マイページに飛ぶ処理を書くよ;
-                  },
-                  child: MyAccount(me: _me),
-                )
-              : Row(
-                  children: [
-                    Text("ゲスト", style: TextStyle(color: Colors.black)),
-                    SizedBox(width: 16),
-                  ],
-                ),
+          _isLoading
+              ? const Center(child: CircularProgressIndicator())
+              : _me != null
+                  //ログインしている場合にアイコンと名前を表示
+                  ? GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => MyPage(currentUser: _me),
+                          ),
+                        );
+                      },
+                      child: MyAccount(me: _me),
+                    )
+                  : Row(
+                      children: [
+                        Text("ゲスト", style: TextStyle(color: Colors.black)),
+                        SizedBox(width: 16),
+                      ],
+                    ),
         ],
       ),
-      drawer: buildDrawer(context, menuList, widget.isLoggedin),
+      //タイトルに左のメニューバーのこと(drawer)
+      drawer: buildDrawer(context, menuList, widget.isLoggedin, _me),
       body: _isLoading
           ? const Center(child: CircularProgressIndicator())
           : _errorMessage != null
               ? Center(child: Text(_errorMessage!))
               : Center(
                   child: Column(
+                    //並び替えと絞り込みのボタン
                     children: [
                       Row(spacing: 3, children: [
                         SizedBox(width: 8),
@@ -457,7 +467,7 @@ Widget listTile(String title, IconData icon, VoidCallback onTap) {
 }
 
 Drawer buildDrawer(
-    BuildContext context, List<String> menuList, bool isloggedin) {
+    BuildContext context, List<String> menuList, bool isloggedin, User? _me) {
   return Drawer(
     child: Column(
       children: [
@@ -489,11 +499,11 @@ Drawer buildDrawer(
               }),
               if (isloggedin)
                 listTile('プロフィール閲覧・編集', Icons.person, () {
-                  Navigator.pushReplacement(
+                  Navigator.push(
                     context,
                     //マイページへの遷移を記述する
                     MaterialPageRoute(
-                      builder: (context) => MyApp(),
+                      builder: (context) => MyPage(currentUser: _me),
                     ),
                   );
                 }),
