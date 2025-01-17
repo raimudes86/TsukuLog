@@ -32,13 +32,13 @@ class CopyDataPage extends StatelessWidget {
           await firestore.collection('users').doc(sourceUserId).get();
 
       if (!sourceDoc.exists) {
-        print("元のユーザーデータが見つかりません。");
+        debugPrint("元のユーザーデータが見つかりません。");
         return;
       }
 
       final sourceData = sourceDoc.data();
       await firestore.collection('users').doc(targetUserId).set(sourceData!);
-      print("親ドキュメントをコピーしました。");
+      debugPrint("親ドキュメントをコピーしました。");
 
       const subcollectionNames = [
         'portfolio',
@@ -63,13 +63,14 @@ class CopyDataPage extends StatelessWidget {
               .collection(subcollectionName)
               .doc(doc.id)
               .set(doc.data());
-          print("サブコレクション '$subcollectionName' のドキュメント '${doc.id}' をコピーしました。");
+          debugPrint(
+              "サブコレクション '$subcollectionName' のドキュメント '${doc.id}' をコピーしました。");
         }
       }
 
-      print("すべてのデータをコピーしました。");
+      debugPrint("すべてのデータをコピーしました。");
     } catch (e) {
-      print("エラーが発生しました: $e");
+      debugPrint("エラーが発生しました: $e");
     }
   }
 }
