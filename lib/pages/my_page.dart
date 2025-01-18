@@ -243,7 +243,79 @@ class _MyPageState extends State<MyPage> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          showModalBottomSheet(
+            context: context,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+            ),
+            builder: (BuildContext context) {
+              return Container(
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      '項目を追加',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const Divider(),
+                    ListTile(
+                      leading: Icon(Icons.lightbulb),
+                      title: Text('これだけはやっておけ！！'),
+                      onTap: () {
+                        Navigator.pop(context);
+                      },
+                    ),
+                    ListTile(
+                      leading: Icon(Icons.double_arrow),
+                      title: Text('経歴'),
+                      onTap: () {
+                        Navigator.pop(context);
+                      },
+                    ),
+                    ListTile(
+                      leading: Icon(Icons.workspace_premium),
+                      title: Text('資格・受賞歴'),
+                      onTap: () {
+                        // 資格の追加処理
+                        Navigator.pop(context); // モーダルを閉じる
+                      },
+                    ),
+                    ListTile(
+                      leading: Icon(Icons.menu_book),
+                      title: Text('おすすめの授業'),
+                      onTap: () {
+                        // 資格の追加処理
+                        Navigator.pop(context); // モーダルを閉じる
+                      },
+                    ),
+                    ListTile(
+                      leading: Icon(Icons.build),
+                      title: Text('制作物・成果物'),
+                      onTap: () {
+                        // 資格の追加処理
+                        Navigator.pop(context); // モーダルを閉じる
+                      },
+                    ),
+                    ListTile(
+                      leading: Icon(Icons.groups),
+                      title: Text('コミュニティ'),
+                      onTap: () {
+                        // サークルの追加処理
+                        Navigator.pop(context); // モーダルを閉じる
+                      },
+                    ),
+                    const SizedBox(height: 16),
+                  ],
+                ),
+              );
+            },
+          );
+        },
         backgroundColor: Colors.cyan[400],
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(50),
