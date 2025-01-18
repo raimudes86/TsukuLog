@@ -12,7 +12,6 @@ class LessonCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      
       padding: const EdgeInsets.all(16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -24,10 +23,7 @@ class LessonCard extends StatelessWidget {
               const SizedBox(width: 4),
               const Text(
                 'おすすめの授業',
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold
-                ),
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
             ],
           ),
