@@ -25,6 +25,7 @@ class MyPage extends StatefulWidget {
 
 class _MyPageState extends State<MyPage> {
   bool isLoading = true;
+  String? selectedItem;
 
   String nickname = '';
   int like = 0;
@@ -74,6 +75,84 @@ class _MyPageState extends State<MyPage> {
         isLoading = false; // ローディング終了
       });
     }
+  }
+
+  void showFormModal(BuildContext context, String selectedItem) {
+    showModalBottomSheet(
+      context: context,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+      ),
+      builder: (BuildContext context) {
+        return Container(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                selectedItem,
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const Divider(),
+              if (selectedItem == 'これだけはやっておけ！！') ...[
+                TextField(
+                  decoration: InputDecoration(
+                    labelText: 'これだけはやっておけ！！',
+                    border: OutlineInputBorder(),
+                  ),
+                ),
+              ] else if (selectedItem == '経歴') ...[
+                TextField(
+                  decoration: InputDecoration(
+                    labelText: '経歴',
+                    border: OutlineInputBorder(),
+                  ),
+                ),
+              ] else if (selectedItem == '資格・受賞歴') ...[
+                TextField(
+                  decoration: InputDecoration(
+                    labelText: '資格・受賞歴',
+                    border: OutlineInputBorder(),
+                  ),
+                ),
+              ] else if (selectedItem == 'おすすめの授業') ...[
+                TextField(
+                  decoration: InputDecoration(
+                    labelText: 'おすすめの授業',
+                    border: OutlineInputBorder(),
+                  ),
+                ),
+              ] else if (selectedItem == '制作物・成果物') ...[
+                TextField(
+                  decoration: InputDecoration(
+                    labelText: '制作物・成果物',
+                    border: OutlineInputBorder(),
+                  ),
+                ),
+              ] else if (selectedItem == 'コミュニティ') ...[
+                TextField(
+                  decoration: InputDecoration(
+                    labelText: 'サークル・団体名',
+                    border: OutlineInputBorder(),
+                  ),
+                ),
+              ],
+              const SizedBox(height: 16),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.pop(context); // フォームを閉じる
+                },
+                child: Text('保存する'),
+              ),
+            ],
+          ),
+        );
+      },
+    );
   }
 
   @override
@@ -267,46 +346,66 @@ class _MyPageState extends State<MyPage> {
                       leading: Icon(Icons.lightbulb),
                       title: Text('これだけはやっておけ！！'),
                       onTap: () {
+                        setState(() {
+                          selectedItem = 'これだけはやっておけ！！';
+                        });
                         Navigator.pop(context);
+                        showFormModal(context, selectedItem!);
                       },
                     ),
                     ListTile(
                       leading: Icon(Icons.double_arrow),
                       title: Text('経歴'),
                       onTap: () {
+                        setState(() {
+                          selectedItem = '経歴';
+                        });
                         Navigator.pop(context);
+                        showFormModal(context, selectedItem!);
                       },
                     ),
                     ListTile(
                       leading: Icon(Icons.workspace_premium),
                       title: Text('資格・受賞歴'),
                       onTap: () {
-                        // 資格の追加処理
-                        Navigator.pop(context); // モーダルを閉じる
+                        setState(() {
+                          selectedItem = '資格・受賞歴';
+                        });
+                        Navigator.pop(context);
+                        showFormModal(context, selectedItem!);
                       },
                     ),
                     ListTile(
                       leading: Icon(Icons.menu_book),
                       title: Text('おすすめの授業'),
                       onTap: () {
-                        // 資格の追加処理
-                        Navigator.pop(context); // モーダルを閉じる
+                        setState(() {
+                          selectedItem = 'おすすめの授業';
+                        });
+                        Navigator.pop(context);
+                        showFormModal(context, selectedItem!);
                       },
                     ),
                     ListTile(
                       leading: Icon(Icons.build),
                       title: Text('制作物・成果物'),
                       onTap: () {
-                        // 資格の追加処理
-                        Navigator.pop(context); // モーダルを閉じる
+                        setState(() {
+                          selectedItem = '制作物・成果物';
+                        });
+                        Navigator.pop(context);
+                        showFormModal(context, selectedItem!);
                       },
                     ),
                     ListTile(
                       leading: Icon(Icons.groups),
                       title: Text('コミュニティ'),
                       onTap: () {
-                        // サークルの追加処理
-                        Navigator.pop(context); // モーダルを閉じる
+                        setState(() {
+                          selectedItem = 'コミュニティ';
+                        });
+                        Navigator.pop(context);
+                        showFormModal(context, selectedItem!);
                       },
                     ),
                     const SizedBox(height: 16),
