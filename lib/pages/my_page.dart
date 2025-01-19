@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:tsukulog/components/best_career_card.dart';
 import 'package:tsukulog/components/career_history_card.dart';
 import 'package:tsukulog/components/club_card.dart';
+import 'package:tsukulog/components/forms/lesson_form.dart';
 import 'package:tsukulog/components/forms/suggest_form.dart';
 import 'package:tsukulog/components/lesson_card.dart';
 import 'package:tsukulog/components/portfolio_card.dart';
@@ -109,42 +110,36 @@ class _MyPageState extends State<MyPage> {
                   suggest: null,
                   onSaveComplete: fetchUserData,
                 ),
-              if (selectedItem == '経歴') ...[
-                TextField(
-                  decoration: InputDecoration(
-                    labelText: '経歴',
-                    border: OutlineInputBorder(),
-                  ),
+              if (selectedItem == '経歴')
+                SuggestForm(
+                  uid: widget.uid,
+                  suggest: null,
+                  onSaveComplete: fetchUserData,
                 ),
-              ] else if (selectedItem == '資格・受賞歴') ...[
-                TextField(
-                  decoration: InputDecoration(
-                    labelText: '資格・受賞歴',
-                    border: OutlineInputBorder(),
-                  ),
+              if (selectedItem == '資格・受賞歴')
+                SuggestForm(
+                  uid: widget.uid,
+                  suggest: null,
+                  onSaveComplete: fetchUserData,
                 ),
-              ] else if (selectedItem == 'おすすめの授業') ...[
-                TextField(
-                  decoration: InputDecoration(
-                    labelText: 'おすすめの授業',
-                    border: OutlineInputBorder(),
-                  ),
+              if (selectedItem == 'おすすめの授業')
+                LessonForm(
+                  uid: widget.uid,
+                  lesson: null,
+                  onSaveComplete: fetchUserData,
                 ),
-              ] else if (selectedItem == '制作物・成果物') ...[
-                TextField(
-                  decoration: InputDecoration(
-                    labelText: '制作物・成果物',
-                    border: OutlineInputBorder(),
-                  ),
+              if (selectedItem == '制作物・成果物')
+                SuggestForm(
+                  uid: widget.uid,
+                  suggest: null,
+                  onSaveComplete: fetchUserData,
                 ),
-              ] else if (selectedItem == 'コミュニティ') ...[
-                TextField(
-                  decoration: InputDecoration(
-                    labelText: 'サークル・団体名',
-                    border: OutlineInputBorder(),
-                  ),
+              if (selectedItem == 'コミュニティ')
+                SuggestForm(
+                  uid: widget.uid,
+                  suggest: null,
+                  onSaveComplete: fetchUserData,
                 ),
-              ],
             ],
           ),
         );
