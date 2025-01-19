@@ -104,7 +104,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => MyPage(currentUser: _me),
+                            builder: (context) => MyPage(uid: _me!.id),
                           ),
                         );
                       },
@@ -503,7 +503,7 @@ Drawer buildDrawer(
                     context,
                     //マイページへの遷移を記述する
                     MaterialPageRoute(
-                      builder: (context) => MyPage(currentUser: me),
+                      builder: (context) => MyPage(uid: me!.id),
                     ),
                   );
                 }),

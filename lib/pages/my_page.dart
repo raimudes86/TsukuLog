@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:tsukulog/components/best_career_card.dart';
 import 'package:tsukulog/components/career_history_card.dart';
 import 'package:tsukulog/components/club_card.dart';
+import 'package:tsukulog/components/forms/suggest_form.dart';
 import 'package:tsukulog/components/lesson_card.dart';
 import 'package:tsukulog/components/portfolio_card.dart';
 import 'package:tsukulog/components/qualification_card.dart';
@@ -14,10 +15,12 @@ import 'package:tsukulog/models/portfolio.dart';
 import 'package:tsukulog/models/qualification.dart';
 import 'package:tsukulog/models/suggest.dart';
 import 'package:tsukulog/models/user.dart';
+import 'package:tsukulog/repositories/user_repository.dart';
 
 class MyPage extends StatefulWidget {
-  const MyPage({super.key, required this.currentUser});
-  final User? currentUser;
+  final String uid; // ユーザーIDを受け取るプロパティ
+
+  const MyPage({super.key, required this.uid});
 
   @override
   State<MyPage> createState() => _MyPageState();
@@ -41,6 +44,8 @@ class _MyPageState extends State<MyPage> {
   List<Club> clubs = [];
   List<Suggest> suggests = [];
 
+  final userRepository = UserRepository();
+
   @override
   void initState() {
     super.initState();
@@ -49,7 +54,7 @@ class _MyPageState extends State<MyPage> {
 
   Future<void> fetchUserData() async {
     try {
-      User user = widget.currentUser!;
+      User user = await userRepository.fetchUser(widget.uid);
 
       setState(() {
         nickname = user.nickname;
@@ -98,14 +103,13 @@ class _MyPageState extends State<MyPage> {
                 ),
               ),
               const Divider(),
-              if (selectedItem == 'これだけはやっておけ！！') ...[
-                TextField(
-                  decoration: InputDecoration(
-                    labelText: 'これだけはやっておけ！！',
-                    border: OutlineInputBorder(),
-                  ),
+              if (selectedItem == 'これだけはやっておけ！！')
+                SuggestForm(
+                  uid: widget.uid,
+                  suggest: null,
+                  onSaveComplete: fetchUserData,
                 ),
-              ] else if (selectedItem == '経歴') ...[
+              if (selectedItem == '経歴') ...[
                 TextField(
                   decoration: InputDecoration(
                     labelText: '経歴',
@@ -141,13 +145,6 @@ class _MyPageState extends State<MyPage> {
                   ),
                 ),
               ],
-              const SizedBox(height: 16),
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.pop(context); // フォームを閉じる
-                },
-                child: Text('保存する'),
-              ),
             ],
           ),
         );
