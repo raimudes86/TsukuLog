@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:tsukulog/components/best_career_card.dart';
 import 'package:tsukulog/components/career_history_card.dart';
 import 'package:tsukulog/components/club_card.dart';
+import 'package:tsukulog/components/forms/club_form.dart';
 import 'package:tsukulog/components/forms/lesson_form.dart';
 import 'package:tsukulog/components/forms/suggest_form.dart';
 import 'package:tsukulog/components/lesson_card.dart';
@@ -135,9 +136,9 @@ class _MyPageState extends State<MyPage> {
                   onSaveComplete: fetchUserData,
                 ),
               if (selectedItem == 'コミュニティ')
-                SuggestForm(
+                ClubForm(
                   uid: widget.uid,
-                  suggest: null,
+                  club: null,
                   onSaveComplete: fetchUserData,
                 ),
             ],
