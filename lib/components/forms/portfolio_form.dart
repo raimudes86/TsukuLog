@@ -108,7 +108,7 @@ class _PortfolioFormState extends State<PortfolioForm> {
           children: [
             // 説明文
             const Text(
-              '共有しても良い制作物や成果物、ポートフォリオについて教えてください',
+              '公開しても良い制作物や成果物、ポートフォリオについて教えてください',
               style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 16),
