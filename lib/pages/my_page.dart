@@ -4,6 +4,7 @@ import 'package:tsukulog/components/career_history_card.dart';
 import 'package:tsukulog/components/club_card.dart';
 import 'package:tsukulog/components/forms/club_form.dart';
 import 'package:tsukulog/components/forms/lesson_form.dart';
+import 'package:tsukulog/components/forms/portfolio_form.dart';
 import 'package:tsukulog/components/forms/suggest_form.dart';
 import 'package:tsukulog/components/lesson_card.dart';
 import 'package:tsukulog/components/portfolio_card.dart';
@@ -87,6 +88,7 @@ class _MyPageState extends State<MyPage> {
   void showFormModal(BuildContext context, String selectedItem) {
     showModalBottomSheet(
       context: context,
+      isScrollControlled: true,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
       ),
@@ -130,9 +132,9 @@ class _MyPageState extends State<MyPage> {
                   onSaveComplete: fetchUserData,
                 ),
               if (selectedItem == '制作物・成果物')
-                SuggestForm(
+                PortfolioForm(
                   uid: widget.uid,
-                  suggest: null,
+                  portfolio: null,
                   onSaveComplete: fetchUserData,
                 ),
               if (selectedItem == 'コミュニティ')
