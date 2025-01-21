@@ -72,13 +72,19 @@ class _CareerHistoryFormState extends State<CareerHistoryForm> {
     });
 
     try {
-      final docRef = FirebaseFirestore.instance
-          .collection('users')
-          .doc(widget.uid)
-          .collection('career_history');
+      final userDocRef =
+          FirebaseFirestore.instance.collection('users').doc(widget.uid);
+      final careerHistoryCollectionRef =
+          userDocRef.collection('career_history');
+      final String? company =
+          _companyController.text.isNotEmpty ? _companyController.text : null;
 
+      DocumentReference docRef;
+
+      // 保存または更新処理
       if (widget.careerHistory == null) {
-        await docRef.add({
+        // 新規登録
+        docRef = await careerHistoryCollectionRef.add({
           'title': _titleController.text,
           'category': _selectedCategory,
           'start_grade': _startGrade,
@@ -88,10 +94,12 @@ class _CareerHistoryFormState extends State<CareerHistoryForm> {
           'recommend_level': _recommendLevel,
           'reason': _reasonController.text,
           'comment': _commentController.text,
-          'company': _companyController.text,
+          'company': company,
         });
       } else {
-        await docRef.doc(widget.careerHistory!.id).update({
+        // 編集
+        docRef = careerHistoryCollectionRef.doc(widget.careerHistory!.id);
+        await docRef.update({
           'title': _titleController.text,
           'category': _selectedCategory,
           'start_grade': _startGrade,
@@ -101,15 +109,31 @@ class _CareerHistoryFormState extends State<CareerHistoryForm> {
           'recommend_level': _recommendLevel,
           'reason': _reasonController.text,
           'comment': _commentController.text,
-          'company': _companyController.text,
+          'company': company,
         });
+      }
+
+      // ベストキャリアの更新
+      if (_isBestCareer) {
+        await userDocRef.update({'best_career_id': docRef.id});
+      }
+
+      // companies リストの更新
+      if (company != null) {
+        final userSnapshot = await userDocRef.get();
+        final List<dynamic> companies = userSnapshot.data()?['companies'] ?? [];
+
+        if (!companies.contains(company)) {
+          companies.add(company);
+          await userDocRef.update({'companies': companies});
+        }
       }
 
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(widget.careerHistory == null ? '追加しました！' : '更新しました！'),
-          ),
+              content:
+                  Text(widget.careerHistory == null ? '追加しました！' : '更新しました！')),
         );
         widget.onSaveComplete();
         Navigator.pop(context);
@@ -254,7 +278,7 @@ class _CareerHistoryFormState extends State<CareerHistoryForm> {
                 const SizedBox(width: 16),
                 Expanded(
                   child: DropdownButtonFormField<String>(
-                    value: _startMonth?.toString(),
+                    value: _startMonth != null ? '${_startMonth}月' : null,
                     decoration: const InputDecoration(
                       labelText: '開始月',
                       border: OutlineInputBorder(),
@@ -267,8 +291,15 @@ class _CareerHistoryFormState extends State<CareerHistoryForm> {
                         .toList(),
                     onChanged: (value) {
                       setState(() {
+                        // 選択された値から '月' を削除して数値に変換
                         _startMonth = int.tryParse(value!.replaceAll('月', ''));
                       });
+                    },
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return '開始月を選択してください';
+                      }
+                      return null;
                     },
                   ),
                 ),
@@ -353,6 +384,12 @@ class _CareerHistoryFormState extends State<CareerHistoryForm> {
                 hintStyle: TextStyle(fontSize: 12),
                 border: OutlineInputBorder(),
               ),
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'きっかけ等を入力してください';
+                }
+                return null;
+              },
               maxLines: 3,
             ),
             const SizedBox(height: 16),
@@ -365,6 +402,12 @@ class _CareerHistoryFormState extends State<CareerHistoryForm> {
                 hintStyle: TextStyle(fontSize: 12),
                 border: OutlineInputBorder(),
               ),
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'コメントを入力してください';
+                }
+                return null;
+              },
               maxLines: 5,
             ),
             const SizedBox(height: 16),
@@ -375,12 +418,6 @@ class _CareerHistoryFormState extends State<CareerHistoryForm> {
                 hintText: '例）株式会社〇〇',
                 border: OutlineInputBorder(),
               ),
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return '関連企業名を入力してください';
-                }
-                return null;
-              },
             ),
             const SizedBox(height: 16),
             Row(
