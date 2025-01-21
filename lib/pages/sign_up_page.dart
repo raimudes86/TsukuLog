@@ -35,11 +35,11 @@ class _SignUpPageState extends State<SignUpPage> {
   //大学か大学院かのラジオボタンの値を保持する変数
   RadioValue? _academicStage = RadioValue.first;
   //学群
-  String? _selectedClusters = null;
+  String? _selectedClusters;
   //学類
-  String? _selectedMajor = null;
+  String? _selectedMajor;
   //学年
-  String? _grade = null;
+  String? _grade;
 
   @override
   Widget build(BuildContext context) {
@@ -131,10 +131,10 @@ class _SignUpPageState extends State<SignUpPage> {
                   Text('大学または大学院'),
                   Row(
                     children: [
-                      RadioButton(RadioValue.first),
+                      radioButton(RadioValue.first),
                       const Text('大学'),
                       const SizedBox(width: 16.0),
-                      RadioButton(RadioValue.second),
+                      radioButton(RadioValue.second),
                       const Text('大学院'),
                     ],
                   ),
@@ -147,14 +147,14 @@ class _SignUpPageState extends State<SignUpPage> {
                 children: _academicStage == RadioValue.first
                     ? [
                         Text('学群 (大学用)'),
-                        DropDownClusters(),
+                        dropDownClusters(),
                         const SizedBox(height: 16.0),
                         Text('学類 (大学用)'),
-                        DropDownMajor(),
+                        dropDownMajor(),
                       ]
                     : [
                         Text('学術院'),
-                        DropDownGraduate(),
+                        dropDownGraduate(),
                       ],
               ),
               const SizedBox(height: 16.0),
@@ -182,7 +182,7 @@ class _SignUpPageState extends State<SignUpPage> {
                       );
                       //debag
                       if (_auth.currentUser != null) {
-                        print("新規登録成功: ${_auth.currentUser!.uid}");
+                        debugPrint("新規登録成功: ${_auth.currentUser!.uid}");
                       }
                       //firestoreにユーザー情報を保存
                       await _firestore.doc(_auth.currentUser!.uid).set({
@@ -238,8 +238,11 @@ class _SignUpPageState extends State<SignUpPage> {
                   child: Text('ログインはこちらから')),
               TextButton(
                   onPressed: () {
-                    Navigator.pushReplacement(context,
-                        MaterialPageRoute(builder: (context) => MyHomePage(title: "つくログ", isLoggedin: false)));
+                    Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                MyHomePage(title: "つくログ", isLoggedin: false)));
                   },
                   child: Text('ゲストとしてログイン')),
             ],
@@ -275,7 +278,7 @@ class _SignUpPageState extends State<SignUpPage> {
   }
 
   //学術院選択
-  DropdownButton<String> DropDownGraduate() {
+  DropdownButton<String> dropDownGraduate() {
     final List<String> graduate = [
       "人文社会ビジネス科学学術院",
       "理工情報生命学術院",
@@ -300,7 +303,7 @@ class _SignUpPageState extends State<SignUpPage> {
   }
 
   //学類選択
-  DropdownButton<String> DropDownMajor() {
+  DropdownButton<String> dropDownMajor() {
     final Map<String, List<String>> clustersAndMajors = {
       "情報学群": ["情報科学類", "情報メディア創成学類", "知識情報図書館学類"],
       "理工学群": [
@@ -340,7 +343,7 @@ class _SignUpPageState extends State<SignUpPage> {
   }
 
   //学群選択
-  DropdownButton<String> DropDownClusters() {
+  DropdownButton<String> dropDownClusters() {
     final List<String> clusters = [
       "情報学群",
       "理工学群",
@@ -371,7 +374,7 @@ class _SignUpPageState extends State<SignUpPage> {
         });
   }
 
-  Radio<RadioValue> RadioButton(RadioValue radioValue) {
+  Radio<RadioValue> radioButton(RadioValue radioValue) {
     return Radio<RadioValue>(
       value: radioValue,
       groupValue: _academicStage,

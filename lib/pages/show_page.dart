@@ -125,7 +125,6 @@ class _ShowPageState extends State<ShowPage> {
                     futurePath: futurePath,
                     initialLike: like,
                     selectedIcon: selecetedIcon,
-                    // imageUrl: '',
                   ),
 
                   // Best Career
@@ -134,6 +133,7 @@ class _ShowPageState extends State<ShowPage> {
                       bestCareer: bestCareer,
                     ),
 
+                  // Suggest
                   if (suggests.isNotEmpty) SuggestCard(suggests: suggests),
 
                   // Career History

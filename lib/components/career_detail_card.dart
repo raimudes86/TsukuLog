@@ -34,7 +34,6 @@ class CareerDetailCard extends StatefulWidget {
 }
 
 class _CareerDetailCardState extends State<CareerDetailCard> {
-
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -46,43 +45,28 @@ class _CareerDetailCardState extends State<CareerDetailCard> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // Text(
-            //   widget.id == null 
-            //   ? 'idがnullです' 
-            //   : widget.id.isEmpty 
-            //       ? 'idがありません' 
+            //   widget.id == null
+            //   ? 'idがnullです'
+            //   : widget.id.isEmpty
+            //       ? 'idがありません'
             //       : widget.id,
             //   style: TextStyle(
-            //     fontSize: 12, 
+            //     fontSize: 12,
             //     color: Colors.grey
             //   ),
             // ), // デバッグ用
             // 左のアイコンとタイトルの行
             Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 // 左側のアイコン
                 Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     CareerIcon(categoryName: widget.category),
-                    const SizedBox(height: 8),
-                    Text(
-                      '${widget.startGrade}/${widget.startMonth}月から',
-                      style: TextStyle(
-                        fontSize: 12,
-                        color: Color(0xFF252525),
-                      ),
-                    ),
-                    Text(
-                      widget.span,
-                      style: TextStyle(
-                        fontSize: 12,
-                        color: Color(0xFF252525),
-                      ),
-                    ),
                   ],
                 ),
-                const SizedBox(width:10),
+                const SizedBox(width: 10),
                 // タイトルとカテゴリ
                 Expanded(
                   child: Column(
@@ -154,12 +138,32 @@ class _CareerDetailCardState extends State<CareerDetailCard> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Column(
+                  children: [
+                    Text(
+                      '${widget.startGrade}/${widget.startMonth}月から',
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: Color(0xFF252525),
+                      ),
+                    ),
+                    Text(
+                      widget.span,
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: Color(0xFF252525),
+                      ),
+                    ),
+                  ],
+                ),
+                Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text('個人的ハードル', 
-                      style: TextStyle(fontSize: 14,
-                      color: Color(0xFF252525),
-                      fontWeight: FontWeight.bold,
+                    const Text(
+                      '個人的ハードル',
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: Color(0xFF252525),
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
                     const SizedBox(height: 4),
@@ -169,8 +173,10 @@ class _CareerDetailCardState extends State<CareerDetailCard> {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text('おすすめ度', 
-                      style: TextStyle(fontSize: 14,
+                    const Text(
+                      'おすすめ度',
+                      style: TextStyle(
+                        fontSize: 14,
                         color: Color(0xFF252525),
                         fontWeight: FontWeight.bold,
                       ),
@@ -186,7 +192,8 @@ class _CareerDetailCardState extends State<CareerDetailCard> {
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Icon(Icons.lightbulb_outline, color: Color(0xFF252525), size: 24),
+                const Icon(Icons.lightbulb_outline,
+                    color: Color(0xFF252525), size: 24),
                 const SizedBox(width: 4),
                 Expanded(
                   child: Column(
@@ -259,7 +266,7 @@ class _CareerDetailCardState extends State<CareerDetailCard> {
         return Icon(
           index < stars ? Icons.star : Icons.star_border,
           color: Colors.amber,
-          size: 30,
+          size: 20,
         );
       }),
     );

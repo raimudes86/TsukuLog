@@ -104,7 +104,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => MyPage(currentUser: _me),
+                            builder: (context) => MyPage(uid: _me!.id),
                           ),
                         );
                       },
@@ -467,7 +467,7 @@ Widget listTile(String title, IconData icon, VoidCallback onTap) {
 }
 
 Drawer buildDrawer(
-    BuildContext context, List<String> menuList, bool isloggedin, User? _me) {
+    BuildContext context, List<String> menuList, bool isloggedin, User? me) {
   return Drawer(
     child: Column(
       children: [
@@ -503,7 +503,7 @@ Drawer buildDrawer(
                     context,
                     //マイページへの遷移を記述する
                     MaterialPageRoute(
-                      builder: (context) => MyPage(currentUser: _me),
+                      builder: (context) => MyPage(uid: me!.id),
                     ),
                   );
                 }),
