@@ -41,7 +41,7 @@ class _ClubFormState extends State<ClubForm> {
     super.dispose();
   }
 
-  Future<void> _saveSuggest() async {
+  Future<void> _saveClub() async {
     if (!_formKey.currentState!.validate()) {
       // フォームが無効の場合は何もしない
       return;
@@ -142,7 +142,7 @@ class _ClubFormState extends State<ClubForm> {
             _isSaving
                 ? const CircularProgressIndicator() // 保存中はインジケータを表示
                 : ElevatedButton(
-                    onPressed: _saveSuggest,
+                    onPressed: _saveClub,
                     child: Text(widget.club == null ? '追加' : '更新'),
                   ),
           ],

@@ -44,7 +44,7 @@ class _PortfolioFormState extends State<PortfolioForm> {
     super.dispose();
   }
 
-  Future<void> _saveSuggest() async {
+  Future<void> _savePortfolio() async {
     if (!_formKey.currentState!.validate()) {
       // フォームが無効の場合は何もしない
       return;
@@ -158,7 +158,7 @@ class _PortfolioFormState extends State<PortfolioForm> {
             _isSaving
                 ? const CircularProgressIndicator() // 保存中はインジケータを表示
                 : ElevatedButton(
-                    onPressed: _saveSuggest,
+                    onPressed: _savePortfolio,
                     child: Text(widget.portfolio == null ? '追加' : '更新'),
                   ),
           ],

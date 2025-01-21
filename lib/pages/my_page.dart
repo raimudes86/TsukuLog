@@ -5,6 +5,7 @@ import 'package:tsukulog/components/club_card.dart';
 import 'package:tsukulog/components/forms/club_form.dart';
 import 'package:tsukulog/components/forms/lesson_form.dart';
 import 'package:tsukulog/components/forms/portfolio_form.dart';
+import 'package:tsukulog/components/forms/qualification_form.dart';
 import 'package:tsukulog/components/forms/suggest_form.dart';
 import 'package:tsukulog/components/lesson_card.dart';
 import 'package:tsukulog/components/portfolio_card.dart';
@@ -120,9 +121,9 @@ class _MyPageState extends State<MyPage> {
                   onSaveComplete: fetchUserData,
                 ),
               if (selectedItem == '資格・受賞歴')
-                SuggestForm(
+                QualificationForm(
                   uid: widget.uid,
-                  suggest: null,
+                  qualification: null,
                   onSaveComplete: fetchUserData,
                 ),
               if (selectedItem == 'おすすめの授業')
