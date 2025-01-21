@@ -278,7 +278,7 @@ class _CareerHistoryFormState extends State<CareerHistoryForm> {
                 const SizedBox(width: 16),
                 Expanded(
                   child: DropdownButtonFormField<String>(
-                    value: _startMonth != null ? '${_startMonth}月' : null,
+                    value: _startMonth != null ? '$_startMonth月' : null,
                     decoration: const InputDecoration(
                       labelText: '開始月',
                       border: OutlineInputBorder(),
