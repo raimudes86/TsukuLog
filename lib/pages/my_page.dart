@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:tsukulog/components/best_career_card.dart';
 import 'package:tsukulog/components/career_history_card.dart';
 import 'package:tsukulog/components/club_card.dart';
+import 'package:tsukulog/components/forms/career_history_form.dart';
 import 'package:tsukulog/components/forms/club_form.dart';
 import 'package:tsukulog/components/forms/lesson_form.dart';
 import 'package:tsukulog/components/forms/portfolio_form.dart';
@@ -96,9 +97,8 @@ class _MyPageState extends State<MyPage> {
       builder: (BuildContext context) {
         return Container(
           padding: const EdgeInsets.all(16),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
+          height: MediaQuery.of(context).size.height * 0.8,
+          child: ListView(
             children: [
               Text(
                 selectedItem,
@@ -115,9 +115,10 @@ class _MyPageState extends State<MyPage> {
                   onSaveComplete: fetchUserData,
                 ),
               if (selectedItem == '経歴')
-                SuggestForm(
+                CareerHistoryForm(
                   uid: widget.uid,
-                  suggest: null,
+                  bestCareerId: bestCareerId,
+                  careerHistory: null,
                   onSaveComplete: fetchUserData,
                 ),
               if (selectedItem == '資格・受賞歴')

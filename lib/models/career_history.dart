@@ -9,6 +9,7 @@ class CareerHistory {
   final int recommendLevel;
   final String reason;
   final String comment;
+  final String company;
 
   CareerHistory({
     this.id = '',
@@ -21,6 +22,7 @@ class CareerHistory {
     this.recommendLevel = 0,
     this.reason = '',
     this.comment = '',
+    this.company = '',
   });
 
   factory CareerHistory.fromMap(Map<String, dynamic> map) {
@@ -35,6 +37,7 @@ class CareerHistory {
       recommendLevel: map['recommend_level'] ?? 0,
       reason: map['reason'] ?? '',
       comment: map['comment'] ?? '',
+      company: map['company'] ?? '',
     );
   }
 }
