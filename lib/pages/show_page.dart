@@ -166,7 +166,11 @@ class _ShowPageState extends State<ShowPage> {
 
                   // Portfolio
                   if (portfolios.isNotEmpty)
-                    PortfolioCard(portfolios: portfolios),
+                    PortfolioCard(
+                      portfolios: portfolios,
+                      isMyPage: false,
+                      onEditButtonPressed: () {},
+                    ),
 
                   // Club
                   if (clubs.isNotEmpty)
