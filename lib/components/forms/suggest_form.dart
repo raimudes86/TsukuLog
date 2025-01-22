@@ -188,7 +188,7 @@ class _SuggestFormState extends State<SuggestForm> {
                     builder: (BuildContext context) {
                       return AlertDialog(
                         title: const Text('削除の確認'),
-                        content: const Text('この項目を削除しますか？この操作は取り消せません。'),
+                        content: const Text('削除しますか？この操作は取り消せません。'),
                         actions: [
                           TextButton(
                             onPressed: () => Navigator.pop(context, false),

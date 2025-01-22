@@ -91,6 +91,40 @@ class _ClubFormState extends State<ClubForm> {
     }
   }
 
+  Future<void> _deleteClub() async {
+    setState(() {
+      _isSaving = true; // 削除中のインジケータを表示
+    });
+
+    try {
+      final docRef = FirebaseFirestore.instance
+          .collection('users')
+          .doc(widget.uid)
+          .collection('club')
+          .doc(widget.club!.id);
+
+      await docRef.delete();
+
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('削除しました！')),
+        );
+        widget.onSaveComplete(); // 保存完了時のコールバック
+        Navigator.pop(context); // フォームを閉じる
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('エラーが発生しました: $e')),
+        );
+      }
+    } finally {
+      setState(() {
+        _isSaving = false;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -145,6 +179,48 @@ class _ClubFormState extends State<ClubForm> {
                     onPressed: _saveClub,
                     child: Text(widget.club == null ? '追加' : '更新'),
                   ),
+            if (widget.club != null)
+              TextButton(
+                onPressed: () async {
+                  final confirm = await showDialog<bool>(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        title: const Text('削除の確認'),
+                        content: const Text('削除しますか？この操作は取り消せません。'),
+                        actions: [
+                          TextButton(
+                            onPressed: () => Navigator.pop(context, false),
+                            child: const Text('キャンセル'),
+                          ),
+                          TextButton(
+                            onPressed: () => Navigator.pop(context, true),
+                            child: const Text('削除',
+                                style: TextStyle(color: Colors.red)),
+                          ),
+                        ],
+                      );
+                    },
+                  );
+
+                  if (confirm == true) {
+                    await _deleteClub();
+                  }
+                },
+                style: TextButton.styleFrom(
+                  backgroundColor: Colors.red, // 背景色を設定
+                  foregroundColor: Colors.white, // テキストの色を設定
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20), // 角丸の形状に設定
+                  ),
+                ),
+                child: const Text(
+                  '削除',
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+              ),
           ],
         ),
       ),
