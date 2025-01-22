@@ -181,7 +181,7 @@ class _SuggestFormState extends State<SuggestForm> {
                     child: Text(widget.suggest == null ? '追加' : '更新'),
                   ),
             if (widget.suggest != null)
-              TextButton(
+              ElevatedButton(
                 onPressed: () async {
                   final confirm = await showDialog<bool>(
                     context: context,
@@ -208,14 +208,9 @@ class _SuggestFormState extends State<SuggestForm> {
                     await _deleteSuggest();
                   }
                 },
-                style: TextButton.styleFrom(
+                style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.red, // 背景色を設定
                   foregroundColor: Colors.white, // テキストの色を設定
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20), // 角丸の形状に設定
-                  ),
                 ),
                 child: const Text(
                   '削除',
