@@ -3,16 +3,19 @@ import 'package:tsukulog/models/club.dart';
 
 class ClubCard extends StatelessWidget {
   final List<Club> clubs;
+  final bool isMyPage;
+  final Function onEditButtonPressed;
 
   const ClubCard({
     super.key,
     required this.clubs,
+    required this.isMyPage,
+    required this.onEditButtonPressed,
   });
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      
       padding: const EdgeInsets.all(16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -24,10 +27,7 @@ class ClubCard extends StatelessWidget {
               const SizedBox(width: 4),
               const Text(
                 'コミュニティ',
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold
-                ),
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
             ],
           ),
@@ -61,6 +61,29 @@ class ClubCard extends StatelessWidget {
                           ),
                         ),
                         const SizedBox(height: 8),
+                        if (isMyPage)
+                          Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: Colors.cyan[400], // 背景色
+                                    foregroundColor: Colors.white, // 文字色
+                                    padding: const EdgeInsets.symmetric(
+                                      vertical: 4, // 上下の余白
+                                      horizontal: 4, // 左右の余白
+                                    ),
+                                  ),
+                                  onPressed: () => onEditButtonPressed(
+                                      context, "コミュニティ", club),
+                                  child: const Text(
+                                    '編集',
+                                    style: TextStyle(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                ),
+                              ]),
                       ],
                     ),
                 ],

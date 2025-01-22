@@ -386,7 +386,11 @@ class _MyPageState extends State<MyPage> {
                     PortfolioCard(portfolios: portfolios),
 
                   // Club
-                  if (clubs.isNotEmpty) ClubCard(clubs: clubs),
+                  if (clubs.isNotEmpty)
+                    ClubCard(
+                        clubs: clubs,
+                        isMyPage: true,
+                        onEditButtonPressed: showEditFormModal),
                 ],
               ),
             ),
