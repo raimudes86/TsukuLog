@@ -6,12 +6,16 @@ class CareerHistoryCard extends StatefulWidget {
   final String nickname;
   final String bestCareerId;
   final List<CareerHistory> careerHistories;
+  final bool isMyPage;
+  final Function onEditButtonPressed;
 
   const CareerHistoryCard({
     super.key,
     required this.nickname,
     required this.bestCareerId,
     required this.careerHistories,
+    required this.isMyPage,
+    required this.onEditButtonPressed,
   });
 
   @override
@@ -48,20 +52,12 @@ class _CareerHistoryCardState extends State<CareerHistoryCard> {
           const SizedBox(height: 8),
 
           // 経歴ごとのカード
-          ...widget.careerHistories.map(
-            (career) => CareerDetailCard(
-              id: career.id,
-              isBestCareer: career.id == widget.bestCareerId,
-              title: career.title, 
-              category: career.category, 
-              startGrade: career.startGrade, 
-              startMonth: career.startMonth,
-              span: career.span, 
-              difficultLevel: career.difficultLevel, 
-              recommendLevel: career.recommendLevel, 
-              reason: career.reason, 
-              comment: career.comment)
-          ),
+          ...widget.careerHistories.map((career) => CareerDetailCard(
+                career: career,
+                isBestCareer: career.id == widget.bestCareerId,
+                isMyPage: widget.isMyPage,
+                onEditButtonPressed: widget.onEditButtonPressed,
+              )),
         ],
       ),
     );

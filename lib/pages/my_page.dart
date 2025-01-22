@@ -366,9 +366,12 @@ class _MyPageState extends State<MyPage> {
                   // Career History
                   if (careerHistories.isNotEmpty)
                     CareerHistoryCard(
-                        nickname: nickname,
-                        bestCareerId: bestCareerId,
-                        careerHistories: careerHistories),
+                      nickname: nickname,
+                      bestCareerId: bestCareerId,
+                      careerHistories: careerHistories,
+                      isMyPage: true,
+                      onEditButtonPressed: showEditFormModal,
+                    ),
 
                   // Qualification
                   if (qualifications.isNotEmpty)
