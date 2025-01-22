@@ -3,10 +3,14 @@ import 'package:tsukulog/models/suggest.dart';
 
 class SuggestCard extends StatelessWidget {
   final List<Suggest> suggests;
+  final bool isMyPage;
+  final Function onEditButtonPressed;
 
   const SuggestCard({
     super.key,
     required this.suggests,
+    required this.isMyPage,
+    required this.onEditButtonPressed,
   });
 
   @override

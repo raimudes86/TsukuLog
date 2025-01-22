@@ -152,6 +152,72 @@ class _MyPageState extends State<MyPage> {
     );
   }
 
+  void showEditFormModal(
+      BuildContext context, String selectedItem, dynamic item) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+      ),
+      builder: (BuildContext context) {
+        return Container(
+          padding: const EdgeInsets.all(16),
+          height: MediaQuery.of(context).size.height * 0.8,
+          child: ListView(
+            children: [
+              Text(
+                selectedItem,
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const Divider(),
+              if (selectedItem == 'これだけはやっておけ！！')
+                SuggestForm(
+                  uid: widget.uid,
+                  suggest: item,
+                  onSaveComplete: fetchUserData,
+                ),
+              if (selectedItem == '経歴')
+                CareerHistoryForm(
+                  uid: widget.uid,
+                  bestCareerId: bestCareerId,
+                  careerHistory: item,
+                  onSaveComplete: fetchUserData,
+                ),
+              if (selectedItem == '資格・受賞歴')
+                QualificationForm(
+                  uid: widget.uid,
+                  qualification: item,
+                  onSaveComplete: fetchUserData,
+                ),
+              if (selectedItem == 'おすすめの授業')
+                LessonForm(
+                  uid: widget.uid,
+                  lesson: item,
+                  onSaveComplete: fetchUserData,
+                ),
+              if (selectedItem == '制作物・成果物')
+                PortfolioForm(
+                  uid: widget.uid,
+                  portfolio: item,
+                  onSaveComplete: fetchUserData,
+                ),
+              if (selectedItem == 'コミュニティ')
+                ClubForm(
+                  uid: widget.uid,
+                  club: item,
+                  onSaveComplete: fetchUserData,
+                ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     if (isLoading) {
@@ -290,7 +356,12 @@ class _MyPageState extends State<MyPage> {
                     ),
 
                   // Suggest
-                  if (suggests.isNotEmpty) SuggestCard(suggests: suggests),
+                  if (suggests.isNotEmpty)
+                    SuggestCard(
+                      suggests: suggests,
+                      isMyPage: true,
+                      onEditButtonPressed: showEditFormModal,
+                    ),
 
                   // Career History
                   if (careerHistories.isNotEmpty)
