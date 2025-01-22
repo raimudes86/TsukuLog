@@ -372,7 +372,11 @@ class _MyPageState extends State<MyPage> {
 
                   // Qualification
                   if (qualifications.isNotEmpty)
-                    QualificationCard(qualifications: qualifications),
+                    QualificationCard(
+                      qualifications: qualifications,
+                      isMyPage: true,
+                      onEditButtonPressed: showEditFormModal,
+                    ),
 
                   // Lesson
                   if (lessons.isNotEmpty) LessonCard(lessons: lessons),

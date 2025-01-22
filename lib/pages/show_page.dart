@@ -150,7 +150,11 @@ class _ShowPageState extends State<ShowPage> {
 
                   // Qualification
                   if (qualifications.isNotEmpty)
-                    QualificationCard(qualifications: qualifications),
+                    QualificationCard(
+                      qualifications: qualifications,
+                      isMyPage: false,
+                      onEditButtonPressed: () {},
+                    ),
 
                   // Lesson
                   if (lessons.isNotEmpty) LessonCard(lessons: lessons),
