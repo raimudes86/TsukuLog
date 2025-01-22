@@ -60,7 +60,6 @@ class ClubCard extends StatelessWidget {
                             fontSize: 14,
                           ),
                         ),
-                        const SizedBox(height: 8),
                         if (isMyPage)
                           Row(
                               mainAxisAlignment: MainAxisAlignment.end,
@@ -84,6 +83,7 @@ class ClubCard extends StatelessWidget {
                                   ),
                                 ),
                               ]),
+                        const SizedBox(height: 8),
                       ],
                     ),
                 ],

@@ -379,7 +379,12 @@ class _MyPageState extends State<MyPage> {
                     ),
 
                   // Lesson
-                  if (lessons.isNotEmpty) LessonCard(lessons: lessons),
+                  if (lessons.isNotEmpty)
+                    LessonCard(
+                      lessons: lessons,
+                      isMyPage: true,
+                      onEditButtonPressed: showEditFormModal,
+                    ),
 
                   // Portfolio
                   if (portfolios.isNotEmpty)

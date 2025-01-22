@@ -60,7 +60,6 @@ class SuggestCard extends StatelessWidget {
                             fontSize: 14,
                           ),
                         ),
-                        const SizedBox(height: 8),
                         if (isMyPage)
                           Row(
                               mainAxisAlignment: MainAxisAlignment.end,
@@ -84,6 +83,7 @@ class SuggestCard extends StatelessWidget {
                                   ),
                                 ),
                               ]),
+                        const SizedBox(height: 8),
                       ],
                     ),
                 ],

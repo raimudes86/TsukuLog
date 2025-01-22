@@ -157,7 +157,12 @@ class _ShowPageState extends State<ShowPage> {
                     ),
 
                   // Lesson
-                  if (lessons.isNotEmpty) LessonCard(lessons: lessons),
+                  if (lessons.isNotEmpty)
+                    LessonCard(
+                      lessons: lessons,
+                      isMyPage: false,
+                      onEditButtonPressed: () {},
+                    ),
 
                   // Portfolio
                   if (portfolios.isNotEmpty)
