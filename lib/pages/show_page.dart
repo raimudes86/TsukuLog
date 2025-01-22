@@ -134,7 +134,12 @@ class _ShowPageState extends State<ShowPage> {
                     ),
 
                   // Suggest
-                  if (suggests.isNotEmpty) SuggestCard(suggests: suggests),
+                  if (suggests.isNotEmpty)
+                    SuggestCard(
+                      suggests: suggests,
+                      isMyPage: false,
+                      onEditButtonPressed: () {},
+                    ),
 
                   // Career History
                   if (careerHistories.isNotEmpty)

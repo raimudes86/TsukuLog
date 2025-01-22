@@ -61,6 +61,30 @@ class SuggestCard extends StatelessWidget {
                           ),
                         ),
                         const SizedBox(height: 8),
+                        if (isMyPage)
+                          Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: Colors.cyan[400], // 背景色
+                                    foregroundColor: Colors.white, // 文字色
+                                    padding: const EdgeInsets.symmetric(
+                                      vertical: 4, // 上下の余白
+                                      horizontal: 4, // 左右の余白
+                                    ),
+                                  ),
+                                  onPressed: () => onEditButtonPressed(
+                                      context, "これだけはやっておけ！！", suggest),
+                                  child: const Text(
+                                    '編集',
+                                    style: TextStyle(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                ),
+                              ]),
+                        const SizedBox(height: 8),
                       ],
                     ),
                 ],
