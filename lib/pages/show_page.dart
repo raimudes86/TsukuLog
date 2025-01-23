@@ -134,28 +134,53 @@ class _ShowPageState extends State<ShowPage> {
                     ),
 
                   // Suggest
-                  if (suggests.isNotEmpty) SuggestCard(suggests: suggests),
+                  if (suggests.isNotEmpty)
+                    SuggestCard(
+                      suggests: suggests,
+                      isMyPage: false,
+                      onEditButtonPressed: () {},
+                    ),
 
                   // Career History
                   if (careerHistories.isNotEmpty)
                     CareerHistoryCard(
-                        nickname: nickname,
-                        bestCareerId: bestCareerId,
-                        careerHistories: careerHistories),
+                      nickname: nickname,
+                      bestCareerId: bestCareerId,
+                      careerHistories: careerHistories,
+                      isMyPage: false,
+                      onEditButtonPressed: () {},
+                    ),
 
                   // Qualification
                   if (qualifications.isNotEmpty)
-                    QualificationCard(qualifications: qualifications),
+                    QualificationCard(
+                      qualifications: qualifications,
+                      isMyPage: false,
+                      onEditButtonPressed: () {},
+                    ),
 
                   // Lesson
-                  if (lessons.isNotEmpty) LessonCard(lessons: lessons),
+                  if (lessons.isNotEmpty)
+                    LessonCard(
+                      lessons: lessons,
+                      isMyPage: false,
+                      onEditButtonPressed: () {},
+                    ),
 
                   // Portfolio
                   if (portfolios.isNotEmpty)
-                    PortfolioCard(portfolios: portfolios),
+                    PortfolioCard(
+                      portfolios: portfolios,
+                      isMyPage: false,
+                      onEditButtonPressed: () {},
+                    ),
 
                   // Club
-                  if (clubs.isNotEmpty) ClubCard(clubs: clubs),
+                  if (clubs.isNotEmpty)
+                    ClubCard(
+                        clubs: clubs,
+                        isMyPage: false,
+                        onEditButtonPressed: () {}),
                 ],
               ),
             ),
