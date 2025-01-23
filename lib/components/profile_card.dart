@@ -214,11 +214,11 @@ class _ProfileCardState extends State<ProfileCard> {
               CircleAvatar(
                 radius: 60,
                 backgroundImage:
-                    widget.selectedIcon < 1 || widget.selectedIcon > 5
+                    widget.selectedIcon < 1 || widget.selectedIcon > 9
                         ? null
                         : AssetImage(
                             'assets/images/icon${widget.selectedIcon}.webp'),
-                child: widget.selectedIcon < 1 || widget.selectedIcon > 5
+                child: widget.selectedIcon < 1 || widget.selectedIcon > 9
                     ? Text(
                         widget.nickname.isNotEmpty
                             ? widget.nickname[0] // 名前のイニシャルを表示
