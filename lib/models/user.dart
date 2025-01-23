@@ -75,4 +75,28 @@ class User {
       suggests: suggestData.map((data) => Suggest.fromMap(data)).toList(),
     );
   }
+
+  factory User.fromFirestoreForSmall(
+    String id,
+    Map<String, dynamic> userMap,
+  ) {
+    return User(
+      id: id,
+      nickname: userMap['nickname'] ?? '未設定',
+      like: userMap['like'] ?? 0,
+      grade: userMap['grade'] ?? '未設定',
+      major: userMap['major'] ?? '未設定',
+      futurePath: userMap['future_path'] ?? '未設定',
+      selectedIcon: userMap['selected_icon'] ?? 0,
+      bestCareerId: userMap['best_career_id'] ?? '',
+      tags: List<String>.from(userMap['tags'] ?? []),
+      companies: List<String>.from(userMap['companies'] ?? []),
+      careerHistories: [],
+      qualifications: [],
+      lessons: [],
+      portfolios: [],
+      clubs: [],
+      suggests: [],
+    );
+  }
 }

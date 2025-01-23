@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 import '../models/user.dart';
 
 class UserRepository {
@@ -99,6 +100,20 @@ class UserRepository {
     }
   }
 
+  Future<User> fetchUserSmall(String userId) async {
+    DocumentSnapshot<Map<String, dynamic>> userDoc =
+        await _firestore.collection('users').doc(userId).get();
+    //Userの作成
+    if (userDoc.exists) {
+      return User.fromFirestoreForSmall(
+        userDoc.id,
+        userDoc.data()!,
+      );
+    } else {
+      throw Exception('User not found');
+    }
+  }
+
   Future<List<User>> fetchAllUsers() async {
     //全ユーザードキュメントを取得
     QuerySnapshot<Map<String, dynamic>> userSnapshot =
@@ -107,6 +122,6 @@ class UserRepository {
     final userIds = userSnapshot.docs.map((doc) => doc.id).toList();
 
     //全ユーザーのリストを作成
-    return Future.wait(userIds.map((userId) => fetchUser(userId)));
+    return Future.wait(userIds.map((userId) => fetchUserSmall(userId)));
   }
 }

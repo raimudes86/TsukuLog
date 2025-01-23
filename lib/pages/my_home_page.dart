@@ -24,7 +24,7 @@ class _MyHomePageState extends State<MyHomePage> {
   List<User> _users = []; // 取得したユーザーリスト
   List<User> _usersData = []; //ずっと固定しておく元データ(フィルターで消えちゃわないように)
   String? _errorMessage; // エラーメッセージ
-  int? _choiceIndex; //並び替えボタン
+  int? _choiceIndex = 0; //並び替えボタン
   List<String> _selectedGrades = []; //選択された学年
   List<String> _selectedFuture = []; //選択された進路
   List<String> _selectedMajor = []; //選択された学科
@@ -68,12 +68,10 @@ class _MyHomePageState extends State<MyHomePage> {
       }
 
       // 自分以外のユーザーを_usersに入れる
-      if (currentUser == null) {
-        users = users.where((user) => user.careerHistories.isNotEmpty).toList();
-      } else {
+      if (currentUser != null) {
         users = users
             .where((user) =>
-                user.id != currentUser.uid && user.careerHistories.isNotEmpty)
+                user.id != currentUser.uid)
             .toList();
       }
 
@@ -133,56 +131,64 @@ class _MyHomePageState extends State<MyHomePage> {
                     //並び替えと絞り込みのボタン
                     children: [
                       SizedBox(height: 8),
-                      Row(spacing: 3, children: [
-                        SizedBox(width: 8),
-                        ChoiceChip(
-                            label: Text("いいね順",
-                                style: TextStyle(
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.bold,
-                                )),
-                            showCheckmark: false,
-                            selected: _choiceIndex == 0,
-                            // backgroundColor: Colors.grey[600],
-                            selectedColor:
-                                Theme.of(context).colorScheme.inversePrimary,
-                            onSelected: (_) {
-                              setState(() {
-                                _choiceIndex = 0;
-                                _users.sort((a, b) => b.like.compareTo(a.like));
-                              });
-                            }),
-                        ChoiceChip(
-                            label: Text("関連企業の数順",
-                                style: TextStyle(
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.bold,
-                                )),
-                            showCheckmark: false,
-                            selected: _choiceIndex == 1,
-                            // backgroundColor: Colors.grey[600],
-                            selectedColor:
-                                Theme.of(context).colorScheme.inversePrimary,
-                            onSelected: (_) {
-                              setState(() {
-                                _choiceIndex = 1;
-                                _users.sort((a, b) => b.companies.length
-                                    .compareTo(a.companies.length));
-                              });
-                            }),
-                        Spacer(),
-                        GestureDetector(
-                          onTap: () {
-                            _showRightSlideModal(context);
-                          },
-                          child:
-                              Column(mainAxisSize: MainAxisSize.min, children: [
-                            Icon(Icons.tune, size: 28),
-                            Text('絞り込み'),
-                          ]),
-                        ),
-                        SizedBox(width: 8),
-                      ]),
+                      Row(
+                        children: [
+                          Spacer(),
+                          Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Icon(Icons.filter_list, size: 28),
+                              DropdownButton<int>(
+                                value: _choiceIndex,
+                                underline: SizedBox(), // 下線を非表示
+                                onChanged: (value) {
+                                  setState(() {
+                                    _choiceIndex = value!;
+                                    if (value == 0) {
+                                      _users.sort(
+                                          (a, b) => b.like.compareTo(a.like));
+                                    } else if (value == 1) {
+                                      _users.sort((a, b) => b.companies.length
+                                          .compareTo(a.companies.length));
+                                    } else if (value == 2) {
+                                      _users.sort((a, b) => b.tags.length
+                                          .compareTo(a.tags.length));
+                                    }
+                                  });
+                                },
+                                items: [
+                                  DropdownMenuItem(
+                                    value: 0,
+                                    child: Text('いいね順'),
+                                  ),
+                                  DropdownMenuItem(
+                                    value: 1,
+                                    child: Text('関連企業の数順'),
+                                  ),
+                                  DropdownMenuItem(
+                                    value: 2,
+                                    child: Text('タグの数順'),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                          SizedBox(width: 8),
+                          GestureDetector(
+                            onTap: () {
+                              _showRightSlideModal(context);
+                            },
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Icon(Icons.tune, size: 28),
+                                Text('絞り込み'),
+                              ],
+                            ),
+                          ),
+                          SizedBox(width: 8),
+                        ],
+                      ),
                       Expanded(
                         child: ListView.builder(
                           itemCount: _users.length,
