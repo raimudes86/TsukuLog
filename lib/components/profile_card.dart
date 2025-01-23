@@ -214,7 +214,10 @@ class _ProfileCardState extends State<ProfileCard> {
               CircleAvatar(
                 radius: 60,
                 backgroundImage:
-                    AssetImage('assets/images/icon${widget.selectedIcon}.webp'),
+                    widget.selectedIcon < 1 || widget.selectedIcon > 5
+                        ? null
+                        : AssetImage(
+                            'assets/images/icon${widget.selectedIcon}.webp'),
                 child: widget.selectedIcon < 1 || widget.selectedIcon > 5
                     ? Text(
                         widget.nickname.isNotEmpty

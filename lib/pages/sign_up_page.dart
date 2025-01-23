@@ -114,8 +114,8 @@ class _SignUpPageState extends State<SignUpPage> {
                   if (value == null || value.isEmpty) {
                     return '10文字以内のニックネームを入力してください';
                   }
-                  if (value.length < 2) {
-                    return 'ニックネームは1文字以上で入力してください';
+                  if (value.length < 2 || value.length > 10) {
+                    return 'ニックネームは2~10文字で入力してください';
                   }
                   return null;
                 },
