@@ -69,10 +69,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
       // 自分以外のユーザーを_usersに入れる
       if (currentUser != null) {
-        users = users
-            .where((user) =>
-                user.id != currentUser.uid)
-            .toList();
+        users = users.where((user) => user.id != currentUser.uid).toList();
       }
 
       //初期にいい感じの人を上に持ってくる
@@ -107,13 +104,16 @@ class _MyHomePageState extends State<MyHomePage> {
               : _me != null
                   //ログインしている場合にアイコンと名前を表示
                   ? GestureDetector(
-                      onTap: () {
-                        Navigator.push(
+                      onTap: () async {
+                        await Navigator.push(
                           context,
                           MaterialPageRoute(
                             builder: (context) => MyPage(uid: _me!.id),
                           ),
                         );
+
+                        // MyPage から戻ったときにデータを更新
+                        _fetchUsersAndSetMe();
                       },
                       child: MyAccount(me: _me),
                     )
