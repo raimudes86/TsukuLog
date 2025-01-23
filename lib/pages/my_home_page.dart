@@ -137,10 +137,8 @@ class _MyHomePageState extends State<MyHomePage> {
                           Column(
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              Icon(Icons.filter_list, size: 28),
                               DropdownButton<int>(
                                 value: _choiceIndex,
-                                underline: SizedBox(), // 下線を非表示
                                 onChanged: (value) {
                                   setState(() {
                                     _choiceIndex = value!;
@@ -163,7 +161,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                   ),
                                   DropdownMenuItem(
                                     value: 1,
-                                    child: Text('関連企業の数順'),
+                                    child: Text('企業数順'),
                                   ),
                                   DropdownMenuItem(
                                     value: 2,
@@ -173,7 +171,7 @@ class _MyHomePageState extends State<MyHomePage> {
                               ),
                             ],
                           ),
-                          SizedBox(width: 8),
+                          SizedBox(width: 12),
                           GestureDetector(
                             onTap: () {
                               _showRightSlideModal(context);
