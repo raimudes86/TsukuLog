@@ -345,6 +345,28 @@ class _MyPageState extends State<MyPage> {
                             ),
                           ],
                         ),
+                        const SizedBox(height: 16),
+                        Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.cyan[400], // 背景色
+                                  foregroundColor: Colors.white, // 文字色
+                                  padding: const EdgeInsets.symmetric(
+                                    vertical: 9, // 上下の余白
+                                    horizontal: 9, // 左右の余白
+                                  ),
+                                ),
+                                onPressed: () => {},
+                                child: const Text(
+                                  'プロフィール編集',
+                                  style: TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              ),
+                            ]),
                       ],
                     ),
                   ),
