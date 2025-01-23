@@ -187,7 +187,7 @@ class _SignUpPageState extends State<SignUpPage> {
                       //firestoreにユーザー情報を保存
                       await _firestore.doc(_auth.currentUser!.uid).set({
                         'nickname': _nickname,
-                        'star': 0, // 初期値
+                        'like': 0, // 初期値
                         'grade': _grade,
                         'major': _selectedMajor ?? _selectedDepartment,
                         'future_path': '未設定',

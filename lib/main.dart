@@ -5,6 +5,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:tsukulog/pages/sign_in_page.dart';
 import 'package:tsukulog/pages/sign_up_page.dart';
 import 'firebase_options.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -25,9 +26,22 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
+      //デバッグバナーを消す
+      debugShowCheckedModeBanner: false,
+      //言語設定を日本語に
+      localizationsDelegates: const [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: const [
+        Locale("ja", "JP"),
+      ],
       routes: {
-        '/home/true': (context) => const MyHomePage(title: 'つくログ', isLoggedin: true),
-        '/home/false': (context) => const MyHomePage(title: 'つくログ', isLoggedin: false),
+        '/home/true': (context) =>
+            const MyHomePage(title: 'つくログ', isLoggedin: true),
+        '/home/false': (context) =>
+            const MyHomePage(title: 'つくログ', isLoggedin: false),
         '/signUp': (context) => const SignUpPage(),
         '/signIn': (context) => const SignInPage(),
       },
