@@ -6,6 +6,7 @@ import 'package:tsukulog/components/forms/career_history_form.dart';
 import 'package:tsukulog/components/forms/club_form.dart';
 import 'package:tsukulog/components/forms/lesson_form.dart';
 import 'package:tsukulog/components/forms/portfolio_form.dart';
+import 'package:tsukulog/components/forms/profile_form.dart';
 import 'package:tsukulog/components/forms/qualification_form.dart';
 import 'package:tsukulog/components/forms/suggest_form.dart';
 import 'package:tsukulog/components/lesson_card.dart';
@@ -35,6 +36,7 @@ class _MyPageState extends State<MyPage> {
   bool isLoading = true;
   String? selectedItem;
 
+  User? userObject;
   String nickname = '';
   int like = 0;
   String grade = '';
@@ -60,6 +62,7 @@ class _MyPageState extends State<MyPage> {
   Future<void> fetchUserData() async {
     try {
       User user = await userRepository.fetchUser(widget.uid);
+      userObject = user;
 
       setState(() {
         nickname = user.nickname;
@@ -218,6 +221,38 @@ class _MyPageState extends State<MyPage> {
     );
   }
 
+  void showProfileFormModal(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+      ),
+      builder: (BuildContext context) {
+        return Container(
+          padding: const EdgeInsets.all(16),
+          height: MediaQuery.of(context).size.height * 0.8,
+          child: ListView(
+            children: [
+              const Text(
+                'プロフィール編集',
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const Divider(),
+              ProfileForm(
+                user: userObject!,
+                onSaveComplete: fetchUserData,
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     if (isLoading) {
@@ -331,7 +366,7 @@ class _MyPageState extends State<MyPage> {
                               radius: 60,
                               backgroundImage: AssetImage(
                                   'assets/images/icon$selecetedIcon.webp'),
-                              child: selecetedIcon < 1 || selecetedIcon > 5
+                              child: selecetedIcon < 1 || selecetedIcon > 9
                                   ? Text(
                                       nickname.isNotEmpty
                                           ? nickname[0] // 名前のイニシャルを表示
@@ -345,6 +380,28 @@ class _MyPageState extends State<MyPage> {
                             ),
                           ],
                         ),
+                        const SizedBox(height: 16),
+                        Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.cyan[400], // 背景色
+                                  foregroundColor: Colors.white, // 文字色
+                                  padding: const EdgeInsets.symmetric(
+                                    vertical: 9, // 上下の余白
+                                    horizontal: 9, // 左右の余白
+                                  ),
+                                ),
+                                onPressed: () => showProfileFormModal(context),
+                                child: const Text(
+                                  'プロフィール編集',
+                                  style: TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              ),
+                            ]),
                       ],
                     ),
                   ),

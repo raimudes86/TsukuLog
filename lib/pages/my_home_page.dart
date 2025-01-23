@@ -304,10 +304,10 @@ class MyAccount extends StatelessWidget {
       CircleAvatar(
         radius: 20,
         // backgroundColor: Colors.blueGrey,
-        backgroundImage: _me!.selectedIcon > 0 && _me!.selectedIcon < 6
+        backgroundImage: _me!.selectedIcon > 0 && _me!.selectedIcon < 10
             ? AssetImage('assets/images/icon${_me!.selectedIcon}.webp')
             : null, // _me!.selectedIconに基づいて画像パスを生成
-        child: _me!.selectedIcon < 1 || _me!.selectedIcon > 5
+        child: _me!.selectedIcon < 1 || _me!.selectedIcon > 9
             ? Text(
                 _me!.nickname.isNotEmpty
                     ? _me!.nickname[0] // 名前のイニシャルを表示
