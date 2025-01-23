@@ -91,13 +91,20 @@ class _RightModalPageState extends State<RightModalPage> {
                             },
                             child:
                                 Row(mainAxisSize: MainAxisSize.min, children: [
-                              Text(selectedGrades.isEmpty
-                                  ? "学年を選択"
-                                  : selectedGrades.length == 1
-                                      ? selectedGrades[0]
-                                      : selectedGrades.length == 2
-                                          ? '${selectedGrades[0]}、${selectedGrades[1]}'
-                                          : '${selectedGrades[0]}、${selectedGrades[1]}・・'),
+                              Text(
+                                selectedGrades.isEmpty
+                                    ? "学年を選択"
+                                    : selectedGrades.length == 1
+                                        ? selectedGrades[0]
+                                        : selectedGrades.length == 2
+                                            ? '${selectedGrades[0]}、${selectedGrades[1]}'
+                                            : '${selectedGrades[0]}、${selectedGrades[1]}・・',
+                                style: TextStyle(
+                                    fontSize: 16.0,
+                                    color: selectedGrades.isEmpty
+                                        ? Colors.grey
+                                        : Colors.black),
+                              ),
                               Icon(Icons.arrow_forward_ios, size: 28),
                             ]),
                           ),
@@ -121,13 +128,20 @@ class _RightModalPageState extends State<RightModalPage> {
                             },
                             child:
                                 Row(mainAxisSize: MainAxisSize.min, children: [
-                              Text(selectedFutures.isEmpty
-                                  ? "進路を選択"
-                                  : selectedFutures.length == 1
-                                      ? selectedFutures[0]
-                                      : selectedFutures.length == 2
-                                          ? '${selectedFutures[0]}、${selectedFutures[1]}'
-                                          : '${selectedFutures[0]}、${selectedFutures[1]}・・'),
+                              Text(
+                                selectedFutures.isEmpty
+                                    ? "進路を選択"
+                                    : selectedFutures.length == 1
+                                        ? selectedFutures[0]
+                                        : selectedFutures.length == 2
+                                            ? '${selectedFutures[0]}、${selectedFutures[1]}'
+                                            : '${selectedFutures[0]}、${selectedFutures[1]}・・',
+                                style: TextStyle(
+                                    fontSize: 16.0,
+                                    color: selectedGrades.isEmpty
+                                        ? Colors.grey
+                                        : Colors.black),
+                              ),
                               Icon(Icons.arrow_forward_ios, size: 28),
                             ]),
                           ),
@@ -149,13 +163,20 @@ class _RightModalPageState extends State<RightModalPage> {
                             },
                             child:
                                 Row(mainAxisSize: MainAxisSize.min, children: [
-                              Text(selectedMajor.isEmpty
-                                  ? "学類/研究群を選択"
-                                  : selectedMajor.length == 1
-                                      ? selectedMajor[0]
-                                      : selectedMajor.length == 2
-                                          ? '${selectedMajor[0]}、${selectedMajor[1]}'
-                                          : '${selectedMajor[0]}、${selectedMajor[1]}・・'),
+                              Text(
+                                selectedMajor.isEmpty
+                                    ? "学類/研究群を選択"
+                                    : selectedMajor.length == 1
+                                        ? selectedMajor[0].length > 6
+                                            ? '${selectedMajor[0].substring(0, 6)}・・'
+                                            : selectedMajor[0]
+                                        : '${selectedMajor[0].substring(0, 6)}・・',
+                                style: TextStyle(
+                                    fontSize: 16.0,
+                                    color: selectedGrades.isEmpty
+                                        ? Colors.grey
+                                        : Colors.black),
+                              ),
                               Icon(Icons.arrow_forward_ios, size: 28),
                             ]),
                           ),
