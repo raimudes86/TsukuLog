@@ -1,32 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:tsukulog/components/career_icon.dart';
+import 'package:tsukulog/models/career_history.dart';
 
 class CareerDetailCard extends StatefulWidget {
-  final String id;
+  final CareerHistory career;
   final bool isBestCareer;
-  final String title;
-  final String category;
-  final String startGrade;
-  final int startMonth;
-  final String span;
-  final int difficultLevel;
-  final int recommendLevel;
-  final String reason;
-  final String comment;
+  final bool isMyPage;
+  final Function onEditButtonPressed;
 
   const CareerDetailCard({
     super.key,
-    required this.id,
+    required this.career,
     required this.isBestCareer,
-    required this.title,
-    required this.category,
-    required this.startGrade,
-    required this.startMonth,
-    required this.span,
-    required this.difficultLevel,
-    required this.recommendLevel,
-    required this.reason,
-    required this.comment,
+    required this.isMyPage,
+    required this.onEditButtonPressed,
   });
 
   @override
@@ -34,7 +21,6 @@ class CareerDetailCard extends StatefulWidget {
 }
 
 class _CareerDetailCardState extends State<CareerDetailCard> {
-
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -45,51 +31,24 @@ class _CareerDetailCardState extends State<CareerDetailCard> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Text(
-            //   widget.id == null 
-            //   ? 'idがnullです' 
-            //   : widget.id.isEmpty 
-            //       ? 'idがありません' 
-            //       : widget.id,
-            //   style: TextStyle(
-            //     fontSize: 12, 
-            //     color: Colors.grey
-            //   ),
-            // ), // デバッグ用
-            // 左のアイコンとタイトルの行
             Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 // 左側のアイコン
                 Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    CareerIcon(categoryName: widget.category),
-                    const SizedBox(height: 8),
-                    Text(
-                      '${widget.startGrade}/${widget.startMonth}月から',
-                      style: TextStyle(
-                        fontSize: 12,
-                        color: Color(0xFF252525),
-                      ),
-                    ),
-                    Text(
-                      widget.span,
-                      style: TextStyle(
-                        fontSize: 12,
-                        color: Color(0xFF252525),
-                      ),
-                    ),
+                    CareerIcon(categoryName: widget.career.category),
                   ],
                 ),
-                const SizedBox(width:10),
+                const SizedBox(width: 10),
                 // タイトルとカテゴリ
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        widget.title,
+                        widget.career.title,
                         style: const TextStyle(
                           fontSize: 20,
                           color: Color(0XFF252525),
@@ -107,7 +66,7 @@ class _CareerDetailCardState extends State<CareerDetailCard> {
                           borderRadius: BorderRadius.circular(8),
                         ),
                         child: Text(
-                          widget.category,
+                          widget.career.category,
                           style: const TextStyle(
                             fontSize: 12,
                             fontWeight: FontWeight.bold,
@@ -154,29 +113,51 @@ class _CareerDetailCardState extends State<CareerDetailCard> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text('個人的ハードル', 
-                      style: TextStyle(fontSize: 14,
-                      color: Color(0xFF252525),
-                      fontWeight: FontWeight.bold,
+                    Text(
+                      '${widget.career.startGrade}/${widget.career.startMonth}月から',
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: Color(0xFF252525),
                       ),
                     ),
-                    const SizedBox(height: 4),
-                    _buildStarRating(widget.difficultLevel),
+                    Text(
+                      widget.career.span,
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: Color(0xFF252525),
+                      ),
+                    ),
                   ],
                 ),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text('おすすめ度', 
-                      style: TextStyle(fontSize: 14,
+                    const Text(
+                      '個人的ハードル',
+                      style: TextStyle(
+                        fontSize: 14,
                         color: Color(0xFF252525),
                         fontWeight: FontWeight.bold,
                       ),
                     ),
                     const SizedBox(height: 4),
-                    _buildStarRating(widget.recommendLevel),
+                    _buildStarRating(widget.career.difficultLevel),
+                  ],
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      'おすすめ度',
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: Color(0xFF252525),
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    _buildStarRating(widget.career.recommendLevel),
                   ],
                 ),
               ],
@@ -186,7 +167,8 @@ class _CareerDetailCardState extends State<CareerDetailCard> {
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Icon(Icons.lightbulb_outline, color: Color(0xFF252525), size: 24),
+                const Icon(Icons.lightbulb_outline,
+                    color: Color(0xFF252525), size: 24),
                 const SizedBox(width: 4),
                 Expanded(
                   child: Column(
@@ -207,7 +189,7 @@ class _CareerDetailCardState extends State<CareerDetailCard> {
             ),
             const SizedBox(height: 4),
             Text(
-              widget.reason,
+              widget.career.reason,
               style: const TextStyle(
                 fontSize: 14,
                 color: Color(0xFF252525),
@@ -240,12 +222,31 @@ class _CareerDetailCardState extends State<CareerDetailCard> {
             ),
             const SizedBox(height: 4),
             Text(
-              widget.comment,
+              widget.career.comment,
               style: const TextStyle(
                 fontSize: 14,
                 color: Color(0xFF252525),
               ),
             ),
+            if (widget.isMyPage)
+              Row(mainAxisAlignment: MainAxisAlignment.end, children: [
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.cyan[400], // 背景色
+                    foregroundColor: Colors.white, // 文字色
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 4, // 上下の余白
+                      horizontal: 4, // 左右の余白
+                    ),
+                  ),
+                  onPressed: () =>
+                      widget.onEditButtonPressed(context, "経歴", widget.career),
+                  child: const Text(
+                    '編集',
+                    style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                  ),
+                ),
+              ]),
           ],
         ),
       ),
@@ -259,7 +260,7 @@ class _CareerDetailCardState extends State<CareerDetailCard> {
         return Icon(
           index < stars ? Icons.star : Icons.star_border,
           color: Colors.amber,
-          size: 30,
+          size: 20,
         );
       }),
     );

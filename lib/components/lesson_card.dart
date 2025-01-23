@@ -3,16 +3,19 @@ import 'package:tsukulog/models/lesson.dart';
 
 class LessonCard extends StatelessWidget {
   final List<Lesson> lessons;
+  final bool isMyPage;
+  final Function onEditButtonPressed;
 
   const LessonCard({
     super.key,
     required this.lessons,
+    required this.isMyPage,
+    required this.onEditButtonPressed,
   });
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      
       padding: const EdgeInsets.all(16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -24,10 +27,7 @@ class LessonCard extends StatelessWidget {
               const SizedBox(width: 4),
               const Text(
                 'おすすめの授業',
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold
-                ),
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
             ],
           ),
@@ -60,6 +60,29 @@ class LessonCard extends StatelessWidget {
                             fontSize: 14,
                           ),
                         ),
+                        if (isMyPage)
+                          Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: Colors.cyan[400], // 背景色
+                                    foregroundColor: Colors.white, // 文字色
+                                    padding: const EdgeInsets.symmetric(
+                                      vertical: 4, // 上下の余白
+                                      horizontal: 4, // 左右の余白
+                                    ),
+                                  ),
+                                  onPressed: () => onEditButtonPressed(
+                                      context, "おすすめの授業", lessons),
+                                  child: const Text(
+                                    '編集',
+                                    style: TextStyle(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                ),
+                              ]),
                         const SizedBox(height: 8),
                       ],
                     ),
