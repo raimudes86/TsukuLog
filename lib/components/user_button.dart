@@ -33,11 +33,11 @@ class UserButton extends StatelessWidget {
                   radius: 30,
                   // backgroundColor: Colors.blueGrey,
                   backgroundImage:
-                      user.selectedIcon > 0 && user.selectedIcon < 6
+                      user.selectedIcon > 0 && user.selectedIcon < 10
                           ? AssetImage(
                               'assets/images/icon${user.selectedIcon}.webp')
                           : null, // user.selectedIconに基づいて画像パスを生成
-                  child: user.selectedIcon < 1 || user.selectedIcon > 5
+                  child: user.selectedIcon < 1 || user.selectedIcon > 9
                       ? Text(
                           user.nickname.isNotEmpty
                               ? user.nickname[0] // 名前のイニシャルを表示

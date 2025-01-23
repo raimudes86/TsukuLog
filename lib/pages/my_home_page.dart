@@ -75,6 +75,11 @@ class _MyHomePageState extends State<MyHomePage> {
             .toList();
       }
 
+      //初期にいい感じの人を上に持ってくる
+      users.sort((a, b) => b.tags.length.compareTo(a.tags.length));
+      users.sort((a, b) => b.companies.length.compareTo(a.companies.length));
+      users.sort((a, b) => b.like.compareTo(a.like));
+
       // データをセットしてUIを更新
       setState(() {
         _users = users;
