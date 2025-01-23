@@ -1,9 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:tsukulog/pages/right_future_modal_page.dart';
 import 'package:tsukulog/pages/right_grade_modal_page.dart';
+import 'package:tsukulog/pages/right_major_modal_page.dart';
 
 class RightModalPage extends StatefulWidget {
-  const RightModalPage({super.key, required this.searchParams});
-  final List<String> searchParams;
+  const RightModalPage(
+      {super.key,
+      required this.grades,
+      required this.futures,
+      required this.majors});
+  final List<String> grades;
+  final List<String> futures;
+  final List<String> majors;
 
   @override
   State<RightModalPage> createState() => _RightModalPageState();
@@ -11,14 +19,15 @@ class RightModalPage extends StatefulWidget {
 
 class _RightModalPageState extends State<RightModalPage> {
   List<String> selectedGrades = [];
-  // List<String> _selectedFutures = [];
-
+  List<String> selectedFutures = [];
+  List<String> selectedMajor = [];
   @override
   void initState() {
     super.initState();
     // 呼び出し元からの配列をモーダル内変数に割り当て
-    selectedGrades = widget.searchParams;
-    // selectedFutures = widget.searchParams[1];
+    selectedGrades = widget.grades;
+    selectedFutures = widget.futures;
+    selectedMajor = widget.majors;
   }
 
   @override
@@ -37,15 +46,23 @@ class _RightModalPageState extends State<RightModalPage> {
                 //leadingでタイトルに左に配置できる
                 leading: IconButton(
                   icon: Icon(Icons.close),
-                  onPressed: () => Navigator.pop(context, selectedGrades),
+                  onPressed: () {
+                    final Map<String, List<String>> selectedparams = {
+                      'grades': selectedGrades,
+                      'futures': selectedFutures,
+                      'majors': selectedMajor,
+                    };
+                    Navigator.pop(context, selectedparams);
+                  },
                 ),
                 //actionsでタイトルの右に配置できる
                 actions: [
                   GestureDetector(
                     onTap: () {
                       setState(() {
-                        // _selectedFutures = [];
+                        selectedFutures = [];
                         selectedGrades = [];
+                        selectedMajor = [];
                       });
                     },
                     child: Padding(
@@ -95,28 +112,57 @@ class _RightModalPageState extends State<RightModalPage> {
                       Row(
                         children: [
                           SizedBox(width: 16.0),
-                          //学年の絞り込み
                           Text("進路", style: TextStyle(fontSize: 16.0)),
                           Spacer(),
                           GestureDetector(
                             onTap: () {
-                              _showRightGradeSlideModal(
-                                  context, selectedGrades);
+                              _showRightFutureSlideModal(
+                                  context, selectedFutures);
                             },
                             child:
                                 Row(mainAxisSize: MainAxisSize.min, children: [
-                              Text(selectedGrades.isEmpty
+                              Text(selectedFutures.isEmpty
                                   ? "進路を選択"
-                                  : selectedGrades[0].length == 1
-                                      ? selectedGrades[0]
-                                      : '${selectedGrades[0]}・・'),
+                                  : selectedFutures.length == 1
+                                      ? selectedFutures[0]
+                                      : selectedFutures.length == 2
+                                          ? '${selectedFutures[0]}、${selectedFutures[1]}'
+                                          : '${selectedFutures[0]}、${selectedFutures[1]}・・'),
                               Icon(Icons.arrow_forward_ios, size: 28),
                             ]),
                           ),
-
                           SizedBox(width: 16.0),
                         ],
                       ),
+
+                      SizedBox(height: 16.0),
+
+                      //学類の絞り込み
+                      Row(
+                        children: [
+                          SizedBox(width: 16.0),
+                          Text("学類/研究群", style: TextStyle(fontSize: 16.0)),
+                          Spacer(),
+                          GestureDetector(
+                            onTap: () {
+                              _showRightMajorSlideModal(context, selectedMajor);
+                            },
+                            child:
+                                Row(mainAxisSize: MainAxisSize.min, children: [
+                              Text(selectedMajor.isEmpty
+                                  ? "学類/研究群を選択"
+                                  : selectedMajor.length == 1
+                                      ? selectedMajor[0]
+                                      : selectedMajor.length == 2
+                                          ? '${selectedMajor[0]}、${selectedMajor[1]}'
+                                          : '${selectedMajor[0]}、${selectedMajor[1]}・・'),
+                              Icon(Icons.arrow_forward_ios, size: 28),
+                            ]),
+                          ),
+                          SizedBox(width: 16.0),
+                        ],
+                      ),
+
                       Padding(
                         padding: const EdgeInsets.all(16.0),
                         child: SizedBox(
@@ -132,7 +178,12 @@ class _RightModalPageState extends State<RightModalPage> {
                               minimumSize: Size(100, 50),
                             ),
                             onPressed: () {
-                              Navigator.pop(context, selectedGrades);
+                              final Map<String, List<String>> selectedparams = {
+                                'grades': selectedGrades,
+                                'futures': selectedFutures,
+                                'majors': selectedMajor,
+                              };
+                              Navigator.pop(context, selectedparams);
                             },
                             child: Text('検索する'),
                           ),
@@ -151,7 +202,7 @@ class _RightModalPageState extends State<RightModalPage> {
 
   void _showRightGradeSlideModal(BuildContext context, selectedValue) async {
     //閉じた時に選択された学年と進路の入ったリストをresultで受け取る
-    final result = await Navigator.of(context).push(
+    final resultGrades = await Navigator.of(context).push(
       //出てくるページの設定
       //ここではこのメソッドの下に定義したRightModalPageクラスのWidgetを呼び出す
       PageRouteBuilder(
@@ -181,7 +232,79 @@ class _RightModalPageState extends State<RightModalPage> {
     );
 
     setState(() {
-      selectedGrades = result;
+      selectedGrades = resultGrades;
+    });
+  }
+
+  void _showRightFutureSlideModal(BuildContext context, selectedValue) async {
+    //閉じた時に選択された学年と進路の入ったリストをresultで受け取る
+    final resultFutures = await Navigator.of(context).push(
+      //出てくるページの設定
+      //ここではこのメソッドの下に定義したRightModalPageクラスのWidgetを呼び出す
+      PageRouteBuilder(
+        opaque: false, // 背景を透過する設定
+        // ignore: deprecated_member_use
+        barrierColor: Colors.black.withOpacity(0.5),
+        pageBuilder: (context, animation, secondaryAnimation) {
+          //モーダルのウィジェットを呼び出す
+          return RightFutureModalPage(selectedOptions: selectedValue);
+        },
+        //画面遷移の設定
+        transitionsBuilder: (context, animation, secondaryAnimation, child) {
+          const begin = Offset(1.0, 0.0); // 右端から開始
+          const end = Offset(0.0, 0.0); // 画面の左端まで開く(出てくるぺーじを80%に縮小してるからこれで良い)
+          const curve = Curves.easeInOut;
+
+          var tween =
+              Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+          var offsetAnimation = animation.drive(tween);
+
+          return SlideTransition(
+            position: offsetAnimation,
+            child: child,
+          );
+        },
+      ),
+    );
+
+    setState(() {
+      selectedFutures = resultFutures;
+    });
+  }
+
+  void _showRightMajorSlideModal(BuildContext context, selectedValue) async {
+    //閉じた時に選択された学年と進路の入ったリストをresultで受け取る
+    final resultMajors = await Navigator.of(context).push(
+      //出てくるページの設定
+      //ここではこのメソッドの下に定義したRightModalPageクラスのWidgetを呼び出す
+      PageRouteBuilder(
+        opaque: false, // 背景を透過する設定
+        // ignore: deprecated_member_use
+        barrierColor: Colors.black.withOpacity(0.5),
+        pageBuilder: (context, animation, secondaryAnimation) {
+          //モーダルのウィジェットを呼び出す
+          return RightMajorModalPage(selectedOptions: selectedValue);
+        },
+        //画面遷移の設定
+        transitionsBuilder: (context, animation, secondaryAnimation, child) {
+          const begin = Offset(1.0, 0.0); // 右端から開始
+          const end = Offset(0.0, 0.0); // 画面の左端まで開く(出てくるぺーじを80%に縮小してるからこれで良い)
+          const curve = Curves.easeInOut;
+
+          var tween =
+              Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+          var offsetAnimation = animation.drive(tween);
+
+          return SlideTransition(
+            position: offsetAnimation,
+            child: child,
+          );
+        },
+      ),
+    );
+
+    setState(() {
+      selectedMajor = resultMajors;
     });
   }
 }

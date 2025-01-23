@@ -26,13 +26,16 @@ class _MyHomePageState extends State<MyHomePage> {
   String? _errorMessage; // エラーメッセージ
   int? _choiceIndex; //並び替えボタン
   List<String> _selectedGrades = []; //選択された学年
-  String? _selectedFuture;
+  List<String> _selectedFuture = []; //選択された進路
+  List<String> _selectedMajor = []; //選択された学科
   User? _me;
+
   final menuList = [
     "ユーザー一覧",
     "プロフィール閲覧・編集",
     "ログアウト",
   ];
+
   final sortMap = {
     'B1': 1,
     'B2': 2,
@@ -222,7 +225,10 @@ class _MyHomePageState extends State<MyHomePage> {
         barrierColor: Colors.black.withOpacity(0.5),
         pageBuilder: (context, animation, secondaryAnimation) {
           //モーダルのウィジェットを呼び出す
-          return RightModalPage(searchParams: _selectedGrades);
+          return RightModalPage(
+              grades: _selectedGrades,
+              futures: _selectedFuture,
+              majors: _selectedMajor);
         },
         //画面遷移の設定
         transitionsBuilder: (context, animation, secondaryAnimation, child) {
@@ -247,21 +253,29 @@ class _MyHomePageState extends State<MyHomePage> {
       setState(() {
         //データをリフレッシュ
         _users = _usersData;
-        // //学年でフィルター
-        // _users = result[0] != null
-        //     ? _users.where((user) => user.grade == result[0]).toList()
-        //     : _users;
-        // //進路でフィルター
-        // _users = result[1] != null
-        //     ? _users.where((user) => user.futurePath == result[1]).toList()
-        //     : _users;
-        _users = result.isNotEmpty
-            ? _users.where((user) => result.contains(user.grade)).toList()
+
+        _users = result["grades"].isNotEmpty
+            ? _users
+                .where((user) => result["grades"].contains(user.grade))
+                .toList()
+            : _users;
+
+        _users = result["futures"].isNotEmpty
+            ? _users
+                .where((user) => result["futures"].contains(user.futurePath))
+                .toList()
+            : _users;
+
+        _users = result["majors"].isNotEmpty
+            ? _users
+                .where((user) => result["majors"].contains(user.major))
+                .toList()
             : _users;
 
         //次に検索を開いたときに状態を復元するために渡す変数を更新
-        _selectedGrades = result;
-        // _selectedFuture = result[1];
+        _selectedGrades = result["grades"];
+        _selectedFuture = result["futures"];
+        _selectedMajor = result["majors"];
       });
     }
   }
