@@ -366,7 +366,7 @@ class _MyPageState extends State<MyPage> {
                               radius: 60,
                               backgroundImage: AssetImage(
                                   'assets/images/icon$selecetedIcon.webp'),
-                              child: selecetedIcon < 1 || selecetedIcon > 5
+                              child: selecetedIcon < 1 || selecetedIcon > 9
                                   ? Text(
                                       nickname.isNotEmpty
                                           ? nickname[0] // 名前のイニシャルを表示
