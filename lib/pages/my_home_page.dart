@@ -4,6 +4,7 @@ import 'package:tsukulog/main.dart';
 import 'package:tsukulog/models/user.dart';
 import 'package:tsukulog/components/user_button.dart';
 import 'package:tsukulog/pages/my_page.dart';
+import 'package:tsukulog/pages/right_modal_page.dart';
 import 'package:tsukulog/pages/sign_in_page.dart';
 import 'package:tsukulog/pages/sign_up_page.dart';
 import 'package:tsukulog/pages/show_page.dart';
@@ -24,14 +25,17 @@ class _MyHomePageState extends State<MyHomePage> {
   List<User> _usersData = []; //ずっと固定しておく元データ(フィルターで消えちゃわないように)
   String? _errorMessage; // エラーメッセージ
   int? _choiceIndex; //並び替えボタン
-  String? _selectedGrade;
-  String? _selectedFuture;
+  List<String> _selectedGrades = []; //選択された学年
+  List<String> _selectedFuture = []; //選択された進路
+  List<String> _selectedMajor = []; //選択された学科
   User? _me;
+
   final menuList = [
     "ユーザー一覧",
     "プロフィール閲覧・編集",
     "ログアウト",
   ];
+
   final sortMap = {
     'B1': 1,
     'B2': 2,
@@ -128,6 +132,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   child: Column(
                     //並び替えと絞り込みのボタン
                     children: [
+                      SizedBox(height: 8),
                       Row(spacing: 3, children: [
                         SizedBox(width: 8),
                         ChoiceChip(
@@ -221,7 +226,9 @@ class _MyHomePageState extends State<MyHomePage> {
         pageBuilder: (context, animation, secondaryAnimation) {
           //モーダルのウィジェットを呼び出す
           return RightModalPage(
-              searchParams: [_selectedGrade, _selectedFuture]);
+              grades: _selectedGrades,
+              futures: _selectedFuture,
+              majors: _selectedMajor);
         },
         //画面遷移の設定
         transitionsBuilder: (context, animation, secondaryAnimation, child) {
@@ -246,18 +253,29 @@ class _MyHomePageState extends State<MyHomePage> {
       setState(() {
         //データをリフレッシュ
         _users = _usersData;
-        //学年でフィルター
-        _users = result[0] != null
-            ? _users.where((user) => user.grade == result[0]).toList()
+
+        _users = result["grades"].isNotEmpty
+            ? _users
+                .where((user) => result["grades"].contains(user.grade))
+                .toList()
             : _users;
-        //進路でフィルター
-        _users = result[1] != null
-            ? _users.where((user) => user.futurePath == result[1]).toList()
+
+        _users = result["futures"].isNotEmpty
+            ? _users
+                .where((user) => result["futures"].contains(user.futurePath))
+                .toList()
+            : _users;
+
+        _users = result["majors"].isNotEmpty
+            ? _users
+                .where((user) => result["majors"].contains(user.major))
+                .toList()
             : _users;
 
         //次に検索を開いたときに状態を復元するために渡す変数を更新
-        _selectedGrade = result[0];
-        _selectedFuture = result[1];
+        _selectedGrades = result["grades"];
+        _selectedFuture = result["futures"];
+        _selectedMajor = result["majors"];
       });
     }
   }
@@ -294,159 +312,6 @@ class MyAccount extends StatelessWidget {
       ),
       SizedBox(width: 16),
     ]);
-  }
-}
-
-//右から召喚されるページの設定
-class RightModalPage extends StatefulWidget {
-  const RightModalPage({super.key, required this.searchParams});
-  final List<String?> searchParams;
-
-  @override
-  State<RightModalPage> createState() => _RightModalPageState();
-}
-
-class _RightModalPageState extends State<RightModalPage> {
-  String? _selectedGrade;
-  String? _selectedFuture;
-
-  @override
-  void initState() {
-    super.initState();
-    // 呼び出し元からの配列をモーダル内変数に割り当て
-    _selectedGrade = widget.searchParams[0];
-    _selectedFuture = widget.searchParams[1];
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.transparent, // 背景を透過
-      body: Align(
-        alignment: Alignment.centerRight,
-        child: Container(
-          width: MediaQuery.of(context).size.width * 0.8, // 画面サイズの8割のページを作る
-          color: Colors.white,
-          child: Column(
-            children: [
-              AppBar(
-                title: Text('絞り込み'),
-                //leadingでタイトルに左に配置できる
-                leading: IconButton(
-                  icon: Icon(Icons.close),
-                  onPressed: () =>
-                      Navigator.pop(context, [_selectedGrade, _selectedFuture]),
-                ),
-                //actionsでタイトルの右に配置できる
-                actions: [
-                  GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        _selectedFuture = null;
-                        _selectedGrade = null;
-                      });
-                    },
-                    child: Padding(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 8.0), // 左右に余白を追加
-                      child: Text('クリア', style: TextStyle(color: Colors.blue)),
-                    ),
-                  ),
-                ],
-              ),
-              Expanded(
-                child: Center(
-                  child: Column(
-                    children: [
-                      Row(
-                        children: [
-                          SizedBox(width: 8.0),
-                          Text("学年", style: TextStyle(fontSize: 16.0)),
-                          Spacer(),
-                          DropdownButton<String>(
-                            hint: Text('絞りたい学年を選択'),
-                            value: _selectedGrade,
-                            items: [
-                              "B1",
-                              "B2",
-                              "B3",
-                              "B4",
-                              "M1",
-                              "M2",
-                              "D1",
-                              "D2",
-                              "D3"
-                            ].map((grade) {
-                              return DropdownMenuItem(
-                                value: grade,
-                                child: Text(grade),
-                              );
-                            }).toList(),
-                            onChanged: (value) {
-                              setState(() {
-                                _selectedGrade = value;
-                              });
-                            },
-                          ),
-                        ],
-                      ),
-                      Row(
-                        children: [
-                          SizedBox(width: 8.0),
-                          Text("進路", style: TextStyle(fontSize: 16.0)),
-                          Spacer(),
-                          DropdownButton<String>(
-                            hint: Text('絞りたい進路を選択'),
-                            value: _selectedFuture,
-                            items: [
-                              "院進",
-                              "就職",
-                              "院進or就職",
-                            ].map((future) {
-                              return DropdownMenuItem(
-                                value: future,
-                                child: Text(future),
-                              );
-                            }).toList(),
-                            onChanged: (value) {
-                              setState(() {
-                                _selectedFuture = value;
-                              });
-                            },
-                          ),
-                        ],
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(16.0),
-                        child: SizedBox(
-                          height: 50,
-                          width: double.infinity,
-                          child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.red,
-                              foregroundColor: Colors.white,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.zero,
-                              ),
-                              minimumSize: Size(100, 50),
-                            ),
-                            onPressed: () {
-                              Navigator.pop(
-                                  context, [_selectedGrade, _selectedFuture]);
-                            },
-                            child: Text('検索する'),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
   }
 }
 
