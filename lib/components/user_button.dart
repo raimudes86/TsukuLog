@@ -57,7 +57,7 @@ class UserButton extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        '${user.major} ${user.grade}',
+                        user.nickname,
                         style: const TextStyle(
                           fontSize: 20.0,
                           fontWeight: FontWeight.bold,
@@ -68,9 +68,9 @@ class UserButton extends StatelessWidget {
                           borderRadius: BorderRadius.circular(12.0),
                         ),
                         child: Text(
-                          user.futurePath,
+                          '${user.major} ${user.grade}',
                           style: TextStyle(
-                            fontSize: 14.0,
+                            fontSize: 16.0,
                             fontWeight: FontWeight.w600,
                             color: Colors.grey[700],
                           ),
@@ -82,12 +82,19 @@ class UserButton extends StatelessWidget {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
-                    Text(
-                      user.nickname,
-                      style: const TextStyle(
-                        fontSize: 15.0,
+                    Row(children: [
+                      Icon(
+                        user.futurePath == '進学' ? Icons.school 
+                        : user.futurePath == '就職' ? Icons.business_center
+                        : Icons.help_outline,
+                        size: 16.0,
                       ),
-                    ),
+                      const SizedBox(width: 4.0),
+                      Text(
+                        user.futurePath,
+                        style: const TextStyle(fontSize: 16.0),
+                      ),
+                    ]),
                     Row(
                       children: [
                         Icon(
