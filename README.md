@@ -33,10 +33,15 @@
 ![image](https://github.com/user-attachments/assets/5fb763f1-72ec-4400-9f85-2f177aeb5a2a)
 
 ## 主な機能
-
 - **検索機能**: 学年、進路、学類でフィルタリングして情報を絞り込むことができます。
 - **経歴の可視化**: 他のユーザーの経歴や経験を一覧で閲覧可能。
 - **情報共有**: 自分の経験やおすすめを記録して公開できます。
+
+## 開発メンバー
+- [らいむ](https://github.com/raimudes86)
+- [ひろむ](https://github.com/hirodesu85)
+- [けんた](https://github.com/kenTATATA)
+- [ひなの](https://github.com/hinanokawa)
 ## デプロイ先
 
 https://tsukulog-1285f.firebaseapp.com/
